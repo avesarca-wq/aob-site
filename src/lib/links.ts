@@ -5,6 +5,7 @@ import { CONSTANTS } from '../data/catalogo';
 export const CAMINHOS: Record<PageRoute, string> = {
   home: '/',
   aves: '/aves',
+  tabela: '/tabela',
   pedido: '/pedido',
   rotas: '/rotas',
   criadores: '/criadores',
