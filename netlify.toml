@@ -1,0 +1,38 @@
+# Configuração de build e funções do site da Aves Arca.
+#
+# Este arquivo existe porque o site passou a ser publicado a partir do repositório:
+# a Netlify constrói sozinha a cada alteração enviada. Era o único caminho para ter
+# funções serverless — a publicação por zip (Netlify Drop) NÃO sobe funções.
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+# App de página única: qualquer rota desconhecida devolve o index.
+# (o arquivo public/_redirects já faz isso; fica aqui como garantia)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "SAMEORIGIN"
+    # CSP montada a partir do que o site REALMENTE carrega (inventariado em 21/08/2026):
+    #   fontes do Google, script e beacon do Umami, iframe do YouTube sem cookie,
+    #   miniatura do YouTube (i.ytimg.com) e a consulta de CEP do ViaCEP.
+    # 31/08/2026: o Pixel da Meta entrou no site (conjunto de dados 1426238322697174). Sem estas
+# tres liberacoes o pixel falha CALADO: script em connect.facebook.net, beacon e imagem
+# de 1x1 em www.facebook.com.
+# 'unsafe-inline' em style-src é necessário: o React usa atributo style (ex.: objectPosition da capa).
+    Content-Security-Policy = "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self'; script-src 'self' https://cloud.umami.is https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https://i.ytimg.com https://www.facebook.com; connect-src 'self' https://cloud.umami.is https://gateway.umami.is https://viacep.com.br https://www.facebook.com https://connect.facebook.net; frame-src https://www.youtube-nocookie.com; upgrade-insecure-requests"

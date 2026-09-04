@@ -1,0 +1,169 @@
+name: fotos-provisorias
+# Aves Arca - fotos provisorias do Wikimedia Commons -> public/especies + species.ts
+# Lote embutido (padrao): Ganso Maned, Ganso dos Andes, Anas Crecca, Pato Carolina, Cisne Negro (41 fotos).
+# Lotes futuros: colar o JSON no campo lote_json do Run workflow (nao precisa editar este arquivo).
+# Tratamento: 1600px, jpg q88 + webp, EXIF fora, SEM marca d'agua. Idempotente: pula especie que ja tem fotos.
+# Respeita o limite do Wikimedia: 3s entre downloads + espera o Retry-After em caso de 429.
+
+on:
+  workflow_dispatch:
+    inputs:
+      lote_json:
+        description: 'JSON do lote (vazio = lote embutido). Formato: {"lotes":[{"slug":...,"anchor_nome":...,"urls":[...]}],"creditos":{slug:[linhas]}}'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+jobs:
+  baixar-tratar-publicar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Instalar Pillow
+        run: pip install Pillow
+
+      - name: Baixar e tratar as fotos
+        env:
+          LOTE_JSON: ${{ inputs.lote_json }}
+        run: |
+          python3 << 'PYEOF'
+          import urllib.request, urllib.error, io, os, sys, json, time
+          from PIL import Image, ImageFilter
+
+          LOTES = [
+            ("ganso-maned", '    nome: "Ganso Maned",\n', [
+              "https://upload.wikimedia.org/wikipedia/commons/d/d8/Chenonetta_jubata_male_-_Lake_Parramatta_Reserve.jpg",
+              "https://upload.wikimedia.org/wikipedia/commons/9/9f/Chenonetta_jubata_pair.jpg",
+              "https://upload.wikimedia.org/wikipedia/commons/9/97/Maned_duck_%28Chenonetta_jubata%29_male_Adelaide.jpg",
+              "https://upload.wikimedia.org/wikipedia/commons/9/96/Maned_duck_%28Chenonetta_jubata%29_male_Sydney.jpg",
+              "https://upload.wikimedia.org/wikipedia/commons/5/5d/Maned_duck_%28Chenonetta_jubata%29_female_Sydney.jpg",
+              "https://upload.wikimedia.org/wikipedia/commons/f/fa/Maned_duck_%28Chenonetta_jubata%29_female_Adelaide.jpg",
+              "https://upload.wikimedia.org/wikipedia/commons/3/3d/Chenonetta_jubata_-Canberra%2C_Australia_-female-8.jpg",
+              "https://upload.wikimedia.org/wikipedia/commons/5/5c/Chenonetta_jubata_-Canberra%2C_Australia_-male-8.jpg"
+            ]),
+            ("ganso-dos-andes", '    nome: "Ganso dos Andes",\n', [
+              "https://upload.wikimedia.org/wikipedia/commons/3/35/Una_huallata_a_m%C3%A1s_de_4000_msnm.jpg",
+              "https://upload.wikimedia.org/wikipedia/commons/8/80/Chloephaga_melanoptera_Peru.jpg",
+              "https://upload.wikimedia.org/wikipedia/commons/a/af/Andean_Goose%2C_Chile_1.jpg",
+              "https://upload.wikimedia.org/wikipedia/commons/2/23/Andean_Goose%2C_Chile_3.jpg",
+              "https://upload.wikimedia.org/wikipedia/commons/9/9b/Andean_Goose%2C_Chile_2.jpg",
+              "https://upload.wikimedia.org/wikipedia/commons/5/55/Atacama_%284716702112%29.jpg"
+            ]),
+            ("anas-crecca", '    nome: "Anas Crecca",\n', [
+              "https://upload.wikimedia.org/wikipedia/commons/4/41/2015_Cyraneczka_zwyczajna_%28samiec%29.jpg",
+              "https://upload.wikimedia.org/wikipedia/commons/2/2a/Eurasian_Teal_Anas_crecca%2C_male%2C_RSPB_Titchwell%2C_Norfolk_%2833587386401%29.jpg",
+              "https://upload.wikimedia.org/wikipedia/commons/3/38/Eurasian_teal_%28Anas_crecca%29.jpg",
+              "https://upload.wikimedia.org/wikipedia/commons/4/4f/Krickenten-Paar.JPG",
+              "https://upload.wikimedia.org/wikipedia/commons/c/cc/Eurasian_Teal_%28Anas_crecca%29%2C_Slimbridge.jpg",
+              "https://upload.wikimedia.org/wikipedia/commons/1/16/Female_eurasian_teal_in_the_Tama_river.jpg",
+              "https://upload.wikimedia.org/wikipedia/commons/7/7f/Eurasian_Teal_%28Anas_crecca%29_male%2C_Hickling_Broad%2C_Norfolk.jpg",
+              "https://upload.wikimedia.org/wikipedia/commons/1/13/Anas_crecca_male.jpg"
+            ]),
+            ("pato-carolina", '    nome: "Pato Carolina",\n', [
+              "https://upload.wikimedia.org/wikipedia/commons/b/b4/Male_Aix_sponsa_portrait.jpg",
+              "https://upload.wikimedia.org/wikipedia/commons/8/87/Brautente_M%C3%A4nnchen_%28Aix_sponsa%29.jpg",
+              "https://upload.wikimedia.org/wikipedia/commons/7/73/Brautente_Weibchen_%28Aix_sponsa%29.jpg",
+              "https://upload.wikimedia.org/wikipedia/commons/c/c8/Wood_duck_drake_vocalizing_in_Central_Park_%2886815%29.jpg",
+              "https://upload.wikimedia.org/wikipedia/commons/6/63/Wood_duck_female_%2873468%29.jpg",
+              "https://upload.wikimedia.org/wikipedia/commons/3/31/Wood_duck_female_and_ducklings_%2873686%29.jpg",
+              "https://upload.wikimedia.org/wikipedia/commons/e/e6/Aix_sponsa_%28Wood_Duck_-_Brautente%29_-_Weltvogelpark_Walsrode_2012-02.jpg",
+              "https://upload.wikimedia.org/wikipedia/commons/a/a6/Wood_Duck%2C_Highpark_34.jpg",
+              "https://upload.wikimedia.org/wikipedia/commons/2/29/Wood_Duck%2C_Highpark_38.jpg",
+              "https://upload.wikimedia.org/wikipedia/commons/1/13/Wood_duck_in_Central_Park_%2822262%29.jpg"
+            ]),
+            ("cisne-negro", '    nome: "Cisne Negro",\n', [
+              "https://upload.wikimedia.org/wikipedia/commons/5/5f/Black_swan_%28Cygnus_atratus%29_Bruny.jpg",
+              "https://upload.wikimedia.org/wikipedia/commons/3/30/Black_swan_%28Cygnus_atratus%29_Scottsdale.jpg",
+              "https://upload.wikimedia.org/wikipedia/commons/0/0c/Black_swan_%28Cygnus_atratus%29_with_cygnets_Scottsdale.jpg",
+              "https://upload.wikimedia.org/wikipedia/commons/7/78/Black_swan_on_Avon_River%2C_Christchurch%2C_New_Zealand_01.jpg",
+              "https://upload.wikimedia.org/wikipedia/commons/8/8b/Black_swan_on_Avon_River%2C_Christchurch%2C_New_Zealand_02.jpg",
+              "https://upload.wikimedia.org/wikipedia/commons/3/33/Black_Swan_R01.jpg",
+              "https://upload.wikimedia.org/wikipedia/commons/d/d6/Black_swan444.jpg",
+              "https://upload.wikimedia.org/wikipedia/commons/8/83/Cygnus_atratus_%28Cygne_noir%29_-_20150806_12h47_%2811043%29.jpg",
+              "https://upload.wikimedia.org/wikipedia/commons/1/1d/Trauerschwan_im_Wildpark_Klaushof.jpg"
+            ]),
+          ]
+
+          CREDITOS = {
+            "ganso-maned": ['Ganso Maned (Chenonetta jubata) - fotos ilustrativas provisorias | Wikimedia Commons | alteracoes: redimensionamento e leve nitidez', '01 Foto: JJ Harrison, CC BY-SA 4.0 - commons.wikimedia.org/wiki/File:Chenonetta_jubata_male_-_Lake_Parramatta_Reserve.jpg', '02 Foto: Toby Hudson, CC BY-SA 3.0 - commons.wikimedia.org/wiki/File:Chenonetta_jubata_pair.jpg', '03 Foto: Charles J. Sharp, CC BY-SA 4.0 - commons.wikimedia.org/wiki/File:Maned_duck_(Chenonetta_jubata)_male_Adelaide.jpg', '04 Foto: Charles J. Sharp, CC BY-SA 4.0 - commons.wikimedia.org/wiki/File:Maned_duck_(Chenonetta_jubata)_male_Sydney.jpg', '05 Foto: Charles J. Sharp, CC BY-SA 4.0 - commons.wikimedia.org/wiki/File:Maned_duck_(Chenonetta_jubata)_female_Sydney.jpg', '06 Foto: Charles J. Sharp, CC BY-SA 4.0 - commons.wikimedia.org/wiki/File:Maned_duck_(Chenonetta_jubata)_female_Adelaide.jpg', '07 Foto: Duncan McCaskill, CC BY 3.0 - commons.wikimedia.org/wiki/File:Chenonetta_jubata_-Canberra,_Australia_-female-8.jpg', '08 Foto: Duncan McCaskill, CC BY 3.0 - commons.wikimedia.org/wiki/File:Chenonetta_jubata_-Canberra,_Australia_-male-8.jpg'],
+            "ganso-dos-andes": ['Ganso dos Andes (Chloephaga melanoptera) - fotos ilustrativas provisorias | Wikimedia Commons | alteracoes: redimensionamento e leve nitidez', '01 Foto: Fressia13, CC BY-SA 4.0 - commons.wikimedia.org/wiki/File:Una_huallata_a_más_de_4000_msnm.jpg', '02 Foto: Mosmas, CC BY-SA 4.0 - commons.wikimedia.org/wiki/File:Chloephaga_melanoptera_Peru.jpg', '03 Foto: Greg Schechter, CC BY 2.0 - commons.wikimedia.org/wiki/File:Andean_Goose,_Chile_1.jpg', '04 Foto: Greg Schechter, CC BY 2.0 - commons.wikimedia.org/wiki/File:Andean_Goose,_Chile_3.jpg', '05 Foto: Greg Schechter, CC BY 2.0 - commons.wikimedia.org/wiki/File:Andean_Goose,_Chile_2.jpg', '06 Foto: Ana Raquel S. Hernandes, CC BY-SA 2.0 - commons.wikimedia.org/wiki/File:Atacama_(4716702112).jpg'],
+            "anas-crecca": ['Anas Crecca (Anas crecca) - fotos ilustrativas provisorias | Wikimedia Commons | alteracoes: redimensionamento e leve nitidez', '01 Foto: Jacek Halicki, CC BY-SA 4.0 - commons.wikimedia.org/wiki/File:2015_Cyraneczka_zwyczajna_(samiec).jpg', '02 Foto: gailhampshire, CC BY 2.0 - commons.wikimedia.org/wiki/File:Eurasian_Teal_Anas_crecca,_male,_RSPB_Titchwell,_Norfolk_(33587386401).jpg', '03 Foto: Hobbyfotowiki, CC0 - commons.wikimedia.org/wiki/File:Eurasian_teal_(Anas_crecca).jpg', '04 Foto: Rosa-Maria Rinkl, CC BY-SA 4.0 - commons.wikimedia.org/wiki/File:Krickenten-Paar.JPG', '05 Foto: Charles J. Sharp, CC BY-SA 4.0 - commons.wikimedia.org/wiki/File:Eurasian_Teal_(Anas_crecca),_Slimbridge.jpg', '06 Foto: Josephus37, CC BY-SA 4.0 - commons.wikimedia.org/wiki/File:Female_eurasian_teal_in_the_Tama_river.jpg', '07 Foto: Charles J. Sharp, CC BY-SA 3.0 - commons.wikimedia.org/wiki/File:Eurasian_Teal_(Anas_crecca)_male,_Hickling_Broad,_Norfolk.jpg', '08 Foto: Phonon.b, CC BY-SA 4.0 - commons.wikimedia.org/wiki/File:Anas_crecca_male.jpg'],
+            "pato-carolina": ['Pato Carolina (Aix sponsa) - fotos ilustrativas provisorias | Wikimedia Commons | alteracoes: redimensionamento e leve nitidez', '01 Foto: Francis C. Franklin, CC BY-SA 3.0 - commons.wikimedia.org/wiki/File:Male_Aix_sponsa_portrait.jpg', '02 Foto: NoRud, CC BY-SA 4.0 - commons.wikimedia.org/wiki/File:Brautente_Männchen_(Aix_sponsa).jpg', '03 Foto: NoRud, CC BY-SA 4.0 - commons.wikimedia.org/wiki/File:Brautente_Weibchen_(Aix_sponsa).jpg', '04 Foto: Rhododendrites, CC BY-SA 4.0 - commons.wikimedia.org/wiki/File:Wood_duck_drake_vocalizing_in_Central_Park_(86815).jpg', '05 Foto: Rhododendrites, CC BY-SA 4.0 - commons.wikimedia.org/wiki/File:Wood_duck_female_(73468).jpg', '06 Foto: Rhododendrites, CC BY-SA 4.0 - commons.wikimedia.org/wiki/File:Wood_duck_female_and_ducklings_(73686).jpg', '07 Foto: Olaf Oliviero Riemer, CC BY-SA 3.0 - commons.wikimedia.org/wiki/File:Aix_sponsa_(Wood_Duck_-_Brautente)_-_Weltvogelpark_Walsrode_2012-02.jpg', '08 Foto: Fabian Roudra Baroi, CC BY-SA 4.0 - commons.wikimedia.org/wiki/File:Wood_Duck,_Highpark_34.jpg', '09 Foto: Fabian Roudra Baroi, CC BY-SA 4.0 - commons.wikimedia.org/wiki/File:Wood_Duck,_Highpark_38.jpg', '10 Foto: Rhododendrites, CC BY-SA 4.0 - commons.wikimedia.org/wiki/File:Wood_duck_in_Central_Park_(22262).jpg'],
+            "cisne-negro": ['Cisne Negro (Cygnus atratus) - fotos ilustrativas provisorias | Wikimedia Commons | alteracoes: redimensionamento e leve nitidez', '01 Foto: Charles J. Sharp, CC BY-SA 4.0 - commons.wikimedia.org/wiki/File:Black_swan_(Cygnus_atratus)_Bruny.jpg', '02 Foto: Charles J. Sharp, CC BY-SA 4.0 - commons.wikimedia.org/wiki/File:Black_swan_(Cygnus_atratus)_Scottsdale.jpg', '03 Foto: Charles J. Sharp, CC BY-SA 4.0 - commons.wikimedia.org/wiki/File:Black_swan_(Cygnus_atratus)_with_cygnets_Scottsdale.jpg', '04 Foto: Michal Klajban, CC BY-SA 4.0 - commons.wikimedia.org/wiki/File:Black_swan_on_Avon_River,_Christchurch,_New_Zealand_01.jpg', '05 Foto: Michal Klajban, CC BY-SA 4.0 - commons.wikimedia.org/wiki/File:Black_swan_on_Avon_River,_Christchurch,_New_Zealand_02.jpg', '06 Foto: Marc Ryckaert, CC BY 3.0 - commons.wikimedia.org/wiki/File:Black_Swan_R01.jpg', '07 Foto: Benjamint444, CC BY-SA 3.0 - commons.wikimedia.org/wiki/File:Black_swan444.jpg', '08 Foto: William Crochot, CC BY-SA 4.0 - commons.wikimedia.org/wiki/File:Cygnus_atratus_(Cygne_noir)_-_20150806_12h47_(11043).jpg', '09 Foto: Stephan van Helden, CC BY-SA 4.0 - commons.wikimedia.org/wiki/File:Trauerschwan_im_Wildpark_Klaushof.jpg'],
+          }
+
+          extra = os.environ.get("LOTE_JSON", "").strip()
+          if extra:
+              d = json.loads(extra)
+              LOTES = [(l["slug"], '    nome: "' + l["anchor_nome"] + '",\n', l["urls"]) for l in d["lotes"]]
+              CREDITOS = d["creditos"]
+              print(f"Lote vindo do formulario: {[s for s,_,_ in LOTES]}")
+
+          UA = {"User-Agent": "AvesArcaSiteBot/1.0 (https://avesarca.com.br; avesarca@gmail.com)"}
+
+          def baixar(url):
+              for tentativa in range(6):
+                  try:
+                      req = urllib.request.Request(url, headers=UA)
+                      return urllib.request.urlopen(req, timeout=180).read()
+                  except urllib.error.HTTPError as e:
+                      if e.code == 429:
+                          espera = min(int(e.headers.get("Retry-After") or 30), 120)
+                          print(f"  429 do Wikimedia - aguardando {espera}s (tentativa {tentativa+1}/6)")
+                          time.sleep(espera)
+                      else:
+                          raise
+              raise RuntimeError("429 persistente: " + url)
+
+          os.makedirs("public/especies", exist_ok=True)
+
+          p = "src/data/species.ts"
+          ts = open(p, encoding="utf-8").read()
+          mudou = False
+
+          for slug, anchor, urls in LOTES:
+              if f"{slug}-01.jpg" in ts:
+                  print(f"PULA {slug}: species.ts ja referencia o lote")
+                  continue
+              n = ts.count(anchor)
+              assert n == 1, f"ancora de {slug} apareceu {n}x - abortando"
+              for i, url in enumerate(urls, 1):
+                  data = baixar(url)
+                  time.sleep(3)
+                  im = Image.open(io.BytesIO(data)).convert("RGB")
+                  im.thumbnail((1600, 1600), Image.LANCZOS)
+                  im = im.filter(ImageFilter.UnsharpMask(radius=1.2, percent=70, threshold=3))
+                  im.save(f"public/especies/{slug}-{i:02d}.jpg", "JPEG", quality=88)
+                  im.save(f"public/especies/{slug}-{i:02d}.webp", "WEBP", quality=88)
+                  print(f"OK {slug}-{i:02d} {im.size}")
+              with open(f"public/especies/{slug}-creditos.txt", "w", encoding="utf-8") as f:
+                  f.write("\n".join(CREDITOS[slug]) + "\n")
+              bloco = '    fotos: [\n'
+              for i in range(1, len(urls) + 1):
+                  sep = ',' if i < len(urls) else ''
+                  bloco += f'      "/especies/{slug}-{i:02d}.jpg"{sep}\n'
+              bloco += '    ],\n'
+              ts = ts.replace(anchor, anchor + bloco, 1)
+              mudou = True
+
+          if mudou:
+              open(p, "w", encoding="utf-8").write(ts)
+              print("species.ts atualizado")
+          else:
+              print("nada a fazer")
+          PYEOF
+
+      - name: Commit e push (um unico deploy)
+        run: |
+          git config user.name "aves-arca-fotos-bot"
+          git config user.email "avesarca@gmail.com"
+          git add public/especies src/data/species.ts
+          if git diff --cached --quiet; then
+            echo "Nada novo para publicar."
+          else
+            git commit -m "Fotos provisorias lote 2: Maned, Andes, Crecca, Carolina, Cisne Negro (41x, Commons CC BY/BY-SA/CC0) + species.ts + creditos"
+            git push
+          fi

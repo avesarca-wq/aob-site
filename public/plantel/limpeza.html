@@ -1,0 +1,89 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Registrar limpeza · Aves Arca</title><style>
+:root{color-scheme:light}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Georgia,'Times New Roman',serif;background:#fbfaf7;color:#17282A;line-height:1.5}
+.wrap{max-width:640px;margin:0 auto;padding:18px 16px 40px}
+.kicker{font-family:Arial,Helvetica,sans-serif;font-size:10px;letter-spacing:.25em;color:#C1732B;font-weight:700}
+.marca{font-size:22px;letter-spacing:.3em;color:#14504B;margin-top:4px}
+.regua{height:3px;background:#C1732B;width:64px;margin:10px 0 16px}
+h1{font-size:26px;color:#14504B}
+.sub{font-family:Arial,sans-serif;font-size:11px;color:#7a8886;margin-top:2px}
+.cartao{background:#fff;border:1px solid #e4ded2;border-left:4px solid #14504B;padding:14px 16px;margin-top:14px;border-radius:2px}
+.cartao h2{font-size:17px;color:#14504B;margin-bottom:6px}
+.lbl{font-family:Arial,sans-serif;font-size:9.5px;letter-spacing:.12em;color:#8a9694;text-transform:uppercase}
+.val{font-size:14.5px;margin-bottom:7px}
+.grade{display:grid;grid-template-columns:1fr 1fr;gap:2px 14px}
+.selo{display:inline-block;font-family:Arial,sans-serif;font-size:10px;font-weight:700;padding:2px 8px;border-radius:9px;border:1px solid #14504B;color:#14504B}
+.selo.m{background:#14504B;color:#fff}
+.vazio{background:#F1EBDD;border-left:4px solid #C1732B;padding:14px 16px;margin-top:14px;font-style:italic}
+.rod{font-family:Arial,sans-serif;font-size:10px;color:#9aa5a3;margin-top:26px;border-top:1px solid #e4ded2;padding-top:8px}
+a{color:#14504B}
+.estr{font-family:Arial,sans-serif;font-size:11.5px;color:#5d6b69;margin-top:4px}
+ul.idx{list-style:none;margin-top:12px}
+ul.idx li{border-bottom:1px solid #eee8db;padding:7px 2px;display:flex;justify-content:space-between;font-size:15px}
+
+select,textarea{width:100%;font-family:Georgia,serif;font-size:15px;padding:9px;border:1px solid #d8d2c4;border-radius:3px;background:#fff;margin-top:3px}
+label.chk{display:flex;align-items:center;gap:9px;font-size:15px;padding:9px 6px;border-bottom:1px solid #eee8db}
+input[type=checkbox]{width:19px;height:19px;accent-color:#14504B}
+.btn{display:block;width:100%;text-align:center;background:#14504B;color:#fff;font-family:Arial,sans-serif;
+font-weight:bold;font-size:15px;letter-spacing:.08em;padding:13px;border-radius:3px;border:none;margin-top:14px}
+</style></head><body><div class="wrap">
+<div class="kicker">CURADORIA DE ESPÉCIES RARAS</div><div class="marca">AVES&nbsp;ARCA</div><div class="regua"></div>
+<h1>Registrar limpeza</h1><div class="sub" id="cab">—</div>
+<div class="cartao" style="border-left-color:#C1732B">
+  <div class="lbl">Colaborador</div>
+  <select id="colab"><option value="">— escolher —</option><option>A</option><option>B</option><option>C</option></select>
+  <div class="lbl" style="margin-top:10px">Produto</div>
+  <select id="prod"><option value="">— escolher —</option>
+    <option>Água e escovão (POP 01/02)</option>
+    <option>Talfon — instalações/ninhos (POP-SAN-11)</option>
+    <option>Clorexidina 20% — ovos (POP-REP-01)</option>
+    <option>Outro (anotar na observação)</option></select>
+  <div class="lbl" style="margin-top:10px">O que foi feito</div>
+  <label class="chk"><input type="checkbox" id="t1" checked> Troca de água e tanque (POP 01)</label>
+  <label class="chk"><input type="checkbox" id="t2" checked> Corredores e recinto (POP 02)</label>
+  <label class="chk"><input type="checkbox" id="t3"> Cama do ninho (POP 07/10)</label>
+  <div class="lbl" style="margin-top:10px">Observação (opcional)</div>
+  <textarea id="obs" rows="2" placeholder="ex.: tela solta, tanque trincado…"></textarea>
+  <button class="btn" onclick="enviar()">✓&nbsp;&nbsp;ENVIAR REGISTRO</button>
+  <div class="sub" id="via" style="text-align:center;margin-top:8px">—</div>
+</div>
+<div class="rod">Registro do R2.1 (camada 13) · POPs 01·02·07·10 do 04.1 · silêncio = vermelho</div></div>
+<script>
+const V=new URLSearchParams(location.search).get('v')||'';
+let CFG=null;
+fetch('dados.json?v='+Date.now()).then(r=>r.json()).then(d=>{
+  CFG=d.limpeza||{};
+  const u=(d.viveiros||[]).find(x=>String(x.n)===String(V));
+  const p=(CFG.programacao||{})[String(V)];
+  document.getElementById('cab').textContent=(u?u.tipo+' '+String(u.n).padStart(2,'0')+' · Bloco '+u.bloco:'Viveiro '+V)
+    +(p?' · programado: '+p.dia+' ('+p.colab+')':'');
+  document.getElementById('via').textContent=CFG.form_url?'grava na planilha de registros':'enviando pelo WhatsApp da casa (formulário Google ainda não ativado)';
+  if(p&&p.colab) document.getElementById('colab').value=p.colab;
+  if(p&&p.produto) {const s=document.getElementById('prod');[...s.options].forEach(o=>{if(p.produto.indexOf(o.value.split(' (')[0])===0)s.value=o.value;});}
+});
+function enviar(){
+  const c=document.getElementById('colab').value, pr=document.getElementById('prod').value;
+  if(!c){alert('Escolha o colaborador (A, B ou C).');return;}
+  if(!pr){alert('Escolha o produto.');return;}
+  const t=[['t1','água/tanque'],['t2','corredores'],['t3','cama do ninho']]
+    .filter(x=>document.getElementById(x[0]).checked).map(x=>x[1]).join(', ')||'nenhuma tarefa marcada';
+  const obs=document.getElementById('obs').value.trim();
+  if(CFG&&CFG.form_url){
+    let url=CFG.form_url+'?usp=pp_url&'+CFG.entry_viveiro+'='+encodeURIComponent(V);
+    if(CFG.entry_colab) url+='&'+CFG.entry_colab+'='+encodeURIComponent(c);
+    if(CFG.entry_produto) url+='&'+CFG.entry_produto+'='+encodeURIComponent(pr);
+    if(CFG.entry_tarefas) url+='&'+CFG.entry_tarefas+'='+encodeURIComponent(t);
+    if(CFG.entry_obs&&obs) url+='&'+CFG.entry_obs+'='+encodeURIComponent(obs);
+    location.href=url;
+  } else {
+    const agora=new Date().toLocaleString('pt-BR');
+    const msg='✅ LIMPEZA REGISTRADA\nViveiro: '+V+'\nColaborador: '+c+'\nProduto: '+pr
+      +'\nFeito: '+t+(obs?'\nObs: '+obs:'')+'\nData: '+agora;
+    location.href='https://wa.me/5511995610741?text='+encodeURIComponent(msg);
+  }
+}
+</script></body></html>

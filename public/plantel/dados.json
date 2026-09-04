@@ -1,0 +1,507 @@
+{
+ "gerado_em": "2026-08-12",
+ "nucleo": 1,
+ "limpeza": {
+  "form_url": "",
+  "entry_viveiro": "",
+  "programacao": {
+   "1": {
+    "dia": "Segunda",
+    "colab": "A",
+    "produto": "Água e escovão (POP 01/02)"
+   },
+   "2": {
+    "dia": "Segunda",
+    "colab": "A",
+    "produto": "Água e escovão (POP 01/02)"
+   },
+   "3": {
+    "dia": "Segunda",
+    "colab": "A",
+    "produto": "Água e escovão (POP 01/02)"
+   },
+   "6": {
+    "dia": "Segunda",
+    "colab": "A",
+    "produto": "Água e escovão (POP 01/02)"
+   },
+   "7": {
+    "dia": "Segunda",
+    "colab": "A",
+    "produto": "Água e escovão (POP 01/02)"
+   },
+   "8": {
+    "dia": "Segunda",
+    "colab": "A",
+    "produto": "Água e escovão (POP 01/02)"
+   },
+   "9": {
+    "dia": "Segunda",
+    "colab": "A",
+    "produto": "Água e escovão (POP 01/02)"
+   },
+   "10": {
+    "dia": "Segunda",
+    "colab": "A",
+    "produto": "Água e escovão (POP 01/02)"
+   },
+   "11": {
+    "dia": "Terça",
+    "colab": "B",
+    "produto": "Água e escovão (POP 01/02)"
+   },
+   "12": {
+    "dia": "Terça",
+    "colab": "B",
+    "produto": "Água e escovão (POP 01/02)"
+   },
+   "13": {
+    "dia": "Terça",
+    "colab": "B",
+    "produto": "Água e escovão (POP 01/02)"
+   },
+   "14": {
+    "dia": "Terça",
+    "colab": "B",
+    "produto": "Água e escovão (POP 01/02)"
+   },
+   "15": {
+    "dia": "Terça",
+    "colab": "B",
+    "produto": "Água e escovão (POP 01/02)"
+   },
+   "16": {
+    "dia": "Terça",
+    "colab": "B",
+    "produto": "Água e escovão (POP 01/02)"
+   },
+   "17": {
+    "dia": "Terça",
+    "colab": "B",
+    "produto": "Água e escovão (POP 01/02)"
+   },
+   "18": {
+    "dia": "Terça",
+    "colab": "B",
+    "produto": "Água e escovão (POP 01/02)"
+   },
+   "19": {
+    "dia": "Terça",
+    "colab": "B",
+    "produto": "Água e escovão (POP 01/02)"
+   },
+   "20": {
+    "dia": "Terça",
+    "colab": "B",
+    "produto": "Água e escovão (POP 01/02)"
+   },
+   "21": {
+    "dia": "Quarta",
+    "colab": "A",
+    "produto": "Água e escovão (POP 01/02)"
+   },
+   "22": {
+    "dia": "Quarta",
+    "colab": "A",
+    "produto": "Água e escovão (POP 01/02)"
+   },
+   "23": {
+    "dia": "Quarta",
+    "colab": "A",
+    "produto": "Água e escovão (POP 01/02)"
+   },
+   "24": {
+    "dia": "Quarta",
+    "colab": "A",
+    "produto": "Água e escovão (POP 01/02)"
+   },
+   "25": {
+    "dia": "Quarta",
+    "colab": "A",
+    "produto": "Água e escovão (POP 01/02)"
+   },
+   "26": {
+    "dia": "Quarta",
+    "colab": "A",
+    "produto": "Água e escovão (POP 01/02)"
+   },
+   "27": {
+    "dia": "Quarta",
+    "colab": "A",
+    "produto": "Água e escovão (POP 01/02)"
+   },
+   "28": {
+    "dia": "Quarta",
+    "colab": "A",
+    "produto": "Água e escovão (POP 01/02)"
+   },
+   "29": {
+    "dia": "Quarta",
+    "colab": "A",
+    "produto": "Água e escovão (POP 01/02)"
+   },
+   "30": {
+    "dia": "Quarta",
+    "colab": "A",
+    "produto": "Água e escovão (POP 01/02)"
+   },
+   "31": {
+    "dia": "Quinta",
+    "colab": "B",
+    "produto": "Água e escovão (POP 01/02)"
+   },
+   "32": {
+    "dia": "Quinta",
+    "colab": "B",
+    "produto": "Água e escovão (POP 01/02)"
+   },
+   "33": {
+    "dia": "Quinta",
+    "colab": "B",
+    "produto": "Água e escovão (POP 01/02)"
+   },
+   "34": {
+    "dia": "Quinta",
+    "colab": "B",
+    "produto": "Água e escovão (POP 01/02)"
+   },
+   "35": {
+    "dia": "Quinta",
+    "colab": "B",
+    "produto": "Água e escovão (POP 01/02)"
+   },
+   "36": {
+    "dia": "Quinta",
+    "colab": "B",
+    "produto": "Água e escovão (POP 01/02)"
+   },
+   "37": {
+    "dia": "Quinta",
+    "colab": "B",
+    "produto": "Água e escovão (POP 01/02)"
+   },
+   "38": {
+    "dia": "Quinta",
+    "colab": "B",
+    "produto": "Água e escovão (POP 01/02)"
+   },
+   "39": {
+    "dia": "Quinta",
+    "colab": "B",
+    "produto": "Água e escovão (POP 01/02)"
+   },
+   "40": {
+    "dia": "Quinta",
+    "colab": "B",
+    "produto": "Água e escovão (POP 01/02)"
+   }
+  }
+ },
+ "viveiros": [
+  {
+   "n": 1,
+   "bloco": "A",
+   "tipo": "Recinto",
+   "dim": "3 × 7 m",
+   "tanque": "1.000 L",
+   "slug": "v01"
+  },
+  {
+   "n": 2,
+   "bloco": "A",
+   "tipo": "Recinto",
+   "dim": "3 × 7 m",
+   "tanque": "1.000 L",
+   "slug": "v02"
+  },
+  {
+   "n": 3,
+   "bloco": "A",
+   "tipo": "Recinto",
+   "dim": "3 × 7 m",
+   "tanque": "1.000 L",
+   "slug": "v03"
+  },
+  {
+   "n": 6,
+   "bloco": "B",
+   "tipo": "Recinto",
+   "dim": "3 × 7 m",
+   "tanque": "1.000 L",
+   "slug": "v06"
+  },
+  {
+   "n": 7,
+   "bloco": "B",
+   "tipo": "Recinto",
+   "dim": "3 × 7 m",
+   "tanque": "1.000 L",
+   "slug": "v07"
+  },
+  {
+   "n": 8,
+   "bloco": "B",
+   "tipo": "Recinto",
+   "dim": "3 × 7 m",
+   "tanque": "1.000 L",
+   "slug": "v08"
+  },
+  {
+   "n": 9,
+   "bloco": "B",
+   "tipo": "Recinto",
+   "dim": "3 × 7 m",
+   "tanque": "1.000 L",
+   "slug": "v09"
+  },
+  {
+   "n": 10,
+   "bloco": "B",
+   "tipo": "Recinto",
+   "dim": "3 × 7 m",
+   "tanque": "1.000 L",
+   "slug": "v10"
+  },
+  {
+   "n": 11,
+   "bloco": "C",
+   "tipo": "Recinto",
+   "dim": "3 × 7 m",
+   "tanque": "1.000 L",
+   "slug": "v11"
+  },
+  {
+   "n": 12,
+   "bloco": "C",
+   "tipo": "Recinto",
+   "dim": "3 × 7 m",
+   "tanque": "1.000 L",
+   "slug": "v12"
+  },
+  {
+   "n": 13,
+   "bloco": "C",
+   "tipo": "Recinto",
+   "dim": "3 × 7 m",
+   "tanque": "1.000 L",
+   "slug": "v13"
+  },
+  {
+   "n": 14,
+   "bloco": "C",
+   "tipo": "Recinto",
+   "dim": "3 × 7 m",
+   "tanque": "1.000 L",
+   "slug": "v14"
+  },
+  {
+   "n": 15,
+   "bloco": "C",
+   "tipo": "Recinto",
+   "dim": "3 × 7 m",
+   "tanque": "1.000 L",
+   "slug": "v15"
+  },
+  {
+   "n": 16,
+   "bloco": "D",
+   "tipo": "Recinto",
+   "dim": "3 × 7 m",
+   "tanque": "1.000 L",
+   "slug": "v16"
+  },
+  {
+   "n": 17,
+   "bloco": "D",
+   "tipo": "Recinto",
+   "dim": "3 × 7 m",
+   "tanque": "1.000 L",
+   "slug": "v17"
+  },
+  {
+   "n": 18,
+   "bloco": "D",
+   "tipo": "Recinto",
+   "dim": "3 × 7 m",
+   "tanque": "1.000 L",
+   "slug": "v18"
+  },
+  {
+   "n": 19,
+   "bloco": "D",
+   "tipo": "Recinto",
+   "dim": "3 × 7 m",
+   "tanque": "1.000 L",
+   "slug": "v19"
+  },
+  {
+   "n": 20,
+   "bloco": "D",
+   "tipo": "Recinto",
+   "dim": "3 × 7 m",
+   "tanque": "1.000 L",
+   "slug": "v20"
+  },
+  {
+   "n": 21,
+   "bloco": "E",
+   "tipo": "Recinto",
+   "dim": "3 × 7 m",
+   "tanque": "1.000 L",
+   "slug": "v21"
+  },
+  {
+   "n": 22,
+   "bloco": "E",
+   "tipo": "Recinto",
+   "dim": "3 × 7 m",
+   "tanque": "1.000 L",
+   "slug": "v22"
+  },
+  {
+   "n": 23,
+   "bloco": "E",
+   "tipo": "Recinto",
+   "dim": "3 × 7 m",
+   "tanque": "1.000 L",
+   "slug": "v23"
+  },
+  {
+   "n": 24,
+   "bloco": "E",
+   "tipo": "Recinto",
+   "dim": "3 × 7 m",
+   "tanque": "1.000 L",
+   "slug": "v24"
+  },
+  {
+   "n": 25,
+   "bloco": "E",
+   "tipo": "Recinto",
+   "dim": "4 × 7 m",
+   "tanque": "1.000 L",
+   "slug": "v25"
+  },
+  {
+   "n": 26,
+   "bloco": "F",
+   "tipo": "Recinto",
+   "dim": "3 × 7 m",
+   "tanque": "1.000 L",
+   "slug": "v26"
+  },
+  {
+   "n": 27,
+   "bloco": "F",
+   "tipo": "Recinto",
+   "dim": "3 × 7 m",
+   "tanque": "1.000 L",
+   "slug": "v27"
+  },
+  {
+   "n": 28,
+   "bloco": "F",
+   "tipo": "Recinto",
+   "dim": "3 × 7 m",
+   "tanque": "1.000 L",
+   "slug": "v28"
+  },
+  {
+   "n": 29,
+   "bloco": "F",
+   "tipo": "Recinto",
+   "dim": "3 × 7 m",
+   "tanque": "1.000 L",
+   "slug": "v29"
+  },
+  {
+   "n": 30,
+   "bloco": "F",
+   "tipo": "Recinto",
+   "dim": "3 × 7 m",
+   "tanque": "1.000 L",
+   "slug": "v30"
+  },
+  {
+   "n": 31,
+   "bloco": "G",
+   "tipo": "Viveiro",
+   "dim": "3 × 21 m",
+   "tanque": "1.500 L (3.000 L após o item 12 do CAPEX)",
+   "slug": "v31"
+  },
+  {
+   "n": 32,
+   "bloco": "G",
+   "tipo": "Viveiro",
+   "dim": "3 × 21 m",
+   "tanque": "1.500 L (3.000 L após o item 12 do CAPEX)",
+   "slug": "v32"
+  },
+  {
+   "n": 33,
+   "bloco": "G",
+   "tipo": "Viveiro",
+   "dim": "3 × 21 m",
+   "tanque": "1.500 L (3.000 L após o item 12 do CAPEX)",
+   "slug": "v33"
+  },
+  {
+   "n": 34,
+   "bloco": "G",
+   "tipo": "Viveiro",
+   "dim": "3 × 21 m",
+   "tanque": "1.500 L (3.000 L após o item 12 do CAPEX)",
+   "slug": "v34"
+  },
+  {
+   "n": 35,
+   "bloco": "G",
+   "tipo": "Viveiro",
+   "dim": "3 × 21 m",
+   "tanque": "1.500 L (3.000 L após o item 12 do CAPEX)",
+   "slug": "v35"
+  },
+  {
+   "n": 36,
+   "bloco": "H",
+   "tipo": "Viveiro",
+   "dim": "3 × 21 m",
+   "tanque": "1.500 L (3.000 L após o item 12 do CAPEX)",
+   "slug": "v36"
+  },
+  {
+   "n": 37,
+   "bloco": "H",
+   "tipo": "Viveiro",
+   "dim": "3 × 21 m",
+   "tanque": "1.500 L (3.000 L após o item 12 do CAPEX)",
+   "slug": "v37"
+  },
+  {
+   "n": 38,
+   "bloco": "H",
+   "tipo": "Viveiro",
+   "dim": "3 × 21 m",
+   "tanque": "1.500 L (3.000 L após o item 12 do CAPEX)",
+   "slug": "v38"
+  },
+  {
+   "n": 39,
+   "bloco": "H",
+   "tipo": "Viveiro",
+   "dim": "3 × 21 m",
+   "tanque": "1.500 L (3.000 L após o item 12 do CAPEX)",
+   "slug": "v39"
+  },
+  {
+   "n": 40,
+   "bloco": "H",
+   "tipo": "Viveiro",
+   "dim": "3 × 21 m",
+   "tanque": "1.500 L (3.000 L após o item 12 do CAPEX)",
+   "slug": "v40"
+  }
+ ],
+ "aves": []
+}

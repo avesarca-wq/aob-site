@@ -1,0 +1,6 @@
+{
+  "name": "Aves Arca",
+  "description": "Criadouro de anatídeos ornamentais de procedência — patos, marrecos, gansos e cisnes nascidos no plantel com sanidade e legalidade documentadas.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
