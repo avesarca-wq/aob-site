@@ -86,9 +86,14 @@ export const Home: React.FC<{ onNavigate: (p: PageRoute, extra?: string) => void
               <div className="eyebrow">Fotos do plantel</div>
               <h2 className="sec-title">Destaques da lista</h2>
             </div>
-            <a href={CAMINHOS.aves} onClick={(e) => { e.preventDefault(); onNavigate('aves'); }} className="btn btn-ghost">
-              Ver todas as {TOTAL_LOTES} variedades
-            </a>
+            <div className="flex flex-wrap gap-2">
+              <a href={CAMINHOS.aves} onClick={(e) => { e.preventDefault(); onNavigate('aves'); }} className="btn btn-ghost">
+                Ver todas as {TOTAL_LOTES} variedades
+              </a>
+              <a href={CAMINHOS.tabela} onClick={(e) => { e.preventDefault(); onNavigate('tabela'); }} className="btn btn-verde">
+                Tabela de valores · pedido rápido
+              </a>
+            </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-6">
             {destaques.map((a) => (
