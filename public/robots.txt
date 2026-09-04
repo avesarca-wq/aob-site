@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Disallow: /pedido
+Sitemap: https://avesornamentaisbrasil.com.br/sitemap.xml
