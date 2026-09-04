@@ -17,6 +17,7 @@ export const Header: React.FC<Props> = ({ currentPage, onNavigate }) => {
   const itens: { route: PageRoute; label: string }[] = [
     { route: 'home', label: 'Início' },
     { route: 'aves', label: 'Aves disponíveis' },
+    { route: 'tabela', label: 'Tabela de valores' },
     { route: 'rotas', label: 'Rotas de entrega' },
     { route: 'criadores', label: 'Criadouros' },
     { route: 'contato', label: 'Contato' },
@@ -47,7 +48,7 @@ export const Header: React.FC<Props> = ({ currentPage, onNavigate }) => {
         <>
           <ShoppingBasket className="w-4 h-4" />
           <span>
-            {totalUnidades > 0 ? `Meu pedido · ${totalUnidades} · ${brl(totalReferencia)}` : 'Meu pedido'}
+            {totalUnidades > 0 ? `Pedido · ${totalUnidades} · ${brl(totalReferencia)}` : 'Meu pedido'}
           </span>
         </>
       }
@@ -73,13 +74,13 @@ export const Header: React.FC<Props> = ({ currentPage, onNavigate }) => {
             <img src="/logo-horizontal.png" alt="Aves Ornamentais Brasil" className="h-[44px] sm:h-[52px] w-auto" />
           </a>
 
-          <nav className="hidden lg:flex items-center gap-6" aria-label="Navegação principal">
+          <nav className="hidden lg:flex items-center gap-5 whitespace-nowrap" aria-label="Navegação principal">
             {itens.map((it) => (
               <Link
                 key={it.route}
                 route={it.route}
                 label={it.label}
-                className={`font-sans text-[0.86rem] font-semibold tracking-[0.3px] transition-colors pb-0.5 ${
+                className={`font-sans text-[0.82rem] font-semibold tracking-[0.2px] transition-colors pb-0.5 ${
                   currentPage === it.route
                     ? 'text-[#F6F1E6] border-b-2 border-[#D2A93C]'
                     : 'text-[#C9D2C9] hover:text-[#F6F1E6]'

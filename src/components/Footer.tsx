@@ -32,6 +32,7 @@ export const Footer: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
             <div className="eyebrow">Navegação</div>
             <div className="flex flex-col gap-2">
               <L route="aves" label="Aves disponíveis" />
+              <L route="tabela" label="Tabela de valores" />
               <L route="pedido" label="Meu pedido" />
               <L route="rotas" label="Rotas de entrega" />
               <L route="criadores" label="Criadouros parceiros" />
