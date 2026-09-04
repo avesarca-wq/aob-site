@@ -9,6 +9,7 @@ import { Footer } from './components/Footer';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import { Home } from './pages/Home';
 import { Aves } from './pages/Aves';
+import { Tabela } from './pages/Tabela';
 import { Pedido } from './pages/Pedido';
 import { Rotas } from './pages/Rotas';
 import { Criadores } from './pages/Criadores';
@@ -19,6 +20,7 @@ const M = CONSTANTS.MARCA;
 const META: Record<PageRoute, { titulo: string; descricao: string }> = {
   home: { titulo: `${M} — aves ornamentais à pronta entrega`, descricao: `${TOTAL_AVES} aves ornamentais à pronta entrega de três criadouros parceiros: aquáticas, faisões, pavões, perdizes e mais. Rota de entrega marcada, pagamento na entrega.` },
   aves: { titulo: `Aves disponíveis — ${TOTAL_LOTES} lotes — ${M}`, descricao: 'Lista de aves ornamentais à pronta entrega com preço, estoque por sexo e criadouro. Monte o pedido e pague na entrega.' },
+  tabela: { titulo: `Tabela de valores — ${TOTAL_LOTES} lotes — ${M}`, descricao: 'Todas as aves em estoque numa página só: sexo, unidade e preço. Marque as quantidades e feche o pedido direto na tabela.' },
   pedido: { titulo: `Meu pedido — ${M}`, descricao: 'Feche seu pedido de aves ornamentais: cidade, rota de entrega e confirmação pelo WhatsApp. Sem pagamento antecipado.' },
   rotas: { titulo: `Rotas de entrega — ${M}`, descricao: 'Calendário das rotas de entrega por região, cidades atendidas e frete por saída a partir de São Paulo.' },
   criadores: { titulo: `Criadouros parceiros — ${M}`, descricao: 'Aves Arca, Stima Aves e Criadouro Aliança: quem cria as aves da lista.' },
@@ -101,6 +103,7 @@ export default function App() {
             <>
               {pagina === 'home' && <Home onNavigate={navegar} />}
               {pagina === 'aves' && <Aves categoriaInicial={categoria} onNavigate={navegar} />}
+              {pagina === 'tabela' && <Tabela onNavigate={navegar} />}
               {pagina === 'pedido' && <Pedido onNavigate={navegar} />}
               {pagina === 'rotas' && <Rotas onNavigate={navegar} />}
               {pagina === 'criadores' && <Criadores onNavigate={navegar} />}
@@ -109,7 +112,7 @@ export default function App() {
             </>
           )}
         </main>
-        {pagina !== 'pedido' && <FloatingWhatsApp />}
+        {pagina !== 'pedido' && pagina !== 'tabela' && <FloatingWhatsApp />}
         <Footer onNavigate={navegar} />
       </div>
     </CartProvider>

@@ -78,6 +78,7 @@ export interface DadosCliente {
 export type PageRoute =
   | 'home'
   | 'aves'
+  | 'tabela'
   | 'pedido'
   | 'rotas'
   | 'criadores'
