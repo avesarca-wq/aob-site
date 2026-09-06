@@ -8,7 +8,7 @@ export const CONSTANTS = {
   /** WhatsApp central dos pedidos (decisão do Ricardo, 04/09/2026). */
   WHATSAPP_DISPLAY: '(11) 99561-0741',
   WHATSAPP_LINK: 'https://wa.me/5511995610741',
-  EMAIL: 'avesarca@gmail.com',
+  EMAIL: 'avesornamentaisbrasil@gmail.com',
   INSTAGRAM: 'https://www.instagram.com/avesarca',
   /** Ponto de retirada oficial. */
   RETIRADA: 'São Paulo – Capital',
