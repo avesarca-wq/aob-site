@@ -37,9 +37,11 @@ export const Rotas: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNavi
                 <div className="font-sans text-[0.85rem] text-[#C9D2C9] mt-2">
                   {info.prox
                     ? <>Próxima saída <strong className="text-[#F6F1E6]">{dataLonga(info.prox.saida)}</strong> · pedidos até {dataCurta(info.prox.fecha)}</>
-                    : info.zona.n === 1
-                      ? 'Data combinada direto pelo WhatsApp — ou retirada em São Paulo.'
-                      : 'Rota em formação: faça o pedido e a gente avisa quando fechar a data.'}
+                    : info.zona.n === 4
+                      ? 'Sua cidade está fora das rotas atuais; combinamos pelo WhatsApp.'
+                      : info.zona.n === 1
+                        ? 'Data combinada direto pelo WhatsApp — ou retirada em São Paulo.'
+                        : 'Rota em formação: faça o pedido e a gente avisa quando fechar a data.'}
                 </div>
                 <div className="font-sans text-[0.85rem] text-[#C9D2C9] mt-1">Frete: <strong className="text-[#F6F1E6]">{info.zona.tarifaTexto}</strong> · {info.zona.rotulo}</div>
                 <button onClick={() => onNavigate('aves')} className="btn btn-ouro mt-4 !py-2">Escolher as aves</button>

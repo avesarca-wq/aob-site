@@ -54,7 +54,8 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
     setEnviando(true);
     setErro('');
     const cod = gerarCodigo();
-    const rotaTxt = entrega?.rota?.nome ?? (regiao || 'fora da malha');
+    const foraDasRotas = !entrega || entrega.zona.n === 4;
+    const rotaTxt = !foraDasRotas ? (entrega!.rota?.nome ?? regiao) : 'fora das rotas atuais — combinar pelo WhatsApp';
     const proxTxt = entrega?.prox ? `${dataCurta(entrega.prox.saida)} (pedidos até ${dataCurta(entrega.prox.fecha)})` : '';
     const recebTxt = dados.recebimento === 'retirada' ? `Retirada em ${CONSTANTS.RETIRADA}` : dados.recebimento === 'rota' ? 'Entrega na rota' : 'Combinar';
     const texto =
@@ -203,7 +204,7 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
                 <label className="rotulo">Como quer receber</label>
                 <div className="grid gap-2">
                   {[
-                    { v: 'rota', t: 'Entrega na rota da minha região', d: entrega?.prox ? `Próxima saída ${dataCurta(entrega.prox.saida)}` : 'A gente confirma a data no WhatsApp' },
+                    { v: 'rota', t: 'Entrega na rota da minha região', d: (entrega ? entrega.zona.n === 4 : dados.cidade_uf.trim().length >= 3) ? 'Sua cidade está fora das rotas atuais; combinamos pelo WhatsApp' : entrega?.prox ? `Próxima saída ${dataCurta(entrega.prox.saida)}` : 'A gente confirma a data no WhatsApp' },
                     { v: 'retirada', t: `Retirada em ${CONSTANTS.RETIRADA}`, d: 'Sem frete · dia e hora combinados' },
                     { v: 'combinar', t: 'Prefiro combinar no WhatsApp', d: 'Entrega individual ou outra opção' },
                   ].map((o) => (
