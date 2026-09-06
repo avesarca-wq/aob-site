@@ -32,7 +32,7 @@ const mascaraWhats = (v: string) => {
 
 export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNavigate }) => {
   const { linhas, alterar, remover, esvaziar, totalReferencia, totalUnidades } = useCart();
-  const [dados, setDados] = useState<DadosCliente>({ nome: '', whatsapp: '', email: '', cidade_uf: '', recebimento: 'rota', observacoes: '' });
+  const [dados, setDados] = useState<DadosCliente>({ nome: '', whatsapp: '', cidade_uf: '', recebimento: 'rota', observacoes: '' });
   const [regiao, setRegiao] = useState('');
   const [enviando, setEnviando] = useState(false);
   const [erro, setErro] = useState('');
@@ -69,7 +69,6 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
       codigo: cod,
       nome: dados.nome,
       whatsapp: dados.whatsapp,
-      email: dados.email,
       cidade_uf: dados.cidade_uf,
       regiao: entrega?.cidade.r ?? regiao,
       rota: rotaTxt,
@@ -192,15 +191,9 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
                 <label className="rotulo" htmlFor="nome">Nome</label>
                 <input id="nome" className="campo" required value={dados.nome} onChange={(e) => set('nome', e.target.value)} placeholder="Como quer ser chamado" />
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="rotulo" htmlFor="whatsapp">WhatsApp</label>
-                  <input id="whatsapp" className="campo" required inputMode="tel" value={dados.whatsapp} onChange={(e) => set('whatsapp', mascaraWhats(e.target.value))} placeholder="(11) 90000-0000" />
-                </div>
-                <div>
-                  <label className="rotulo" htmlFor="email">E-mail <span className="normal-case tracking-normal font-normal">(opcional)</span></label>
-                  <input id="email" type="email" className="campo" value={dados.email} onChange={(e) => set('email', e.target.value)} placeholder="para receber a confirmação" />
-                </div>
+              <div>
+                <label className="rotulo" htmlFor="whatsapp">Telefone (WhatsApp)</label>
+                <input id="whatsapp" className="campo" required inputMode="tel" value={dados.whatsapp} onChange={(e) => set('whatsapp', mascaraWhats(e.target.value))} placeholder="(11) 90000-0000" />
               </div>
               <div>
                 <label className="rotulo">Cidade</label>
@@ -212,7 +205,7 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
                   {[
                     { v: 'rota', t: 'Entrega na rota da minha região', d: entrega?.prox ? `Próxima saída ${dataCurta(entrega.prox.saida)}` : 'A gente confirma a data no WhatsApp' },
                     { v: 'retirada', t: `Retirada em ${CONSTANTS.RETIRADA}`, d: 'Sem frete · dia e hora combinados' },
-                    { v: 'combinar', t: 'Prefiro combinar no WhatsApp', d: 'Entrega individual, aéreo ou outra opção' },
+                    { v: 'combinar', t: 'Prefiro combinar no WhatsApp', d: 'Entrega individual ou outra opção' },
                   ].map((o) => (
                     <label key={o.v} className={`flex items-start gap-3 rounded-xl border px-4 py-3 cursor-pointer ${dados.recebimento === o.v ? 'border-[#D2A93C] bg-[#F6F1E6]' : 'border-[#E1DCCF]'}`}>
                       <input type="radio" name="recebimento" value={o.v} checked={dados.recebimento === o.v} onChange={() => set('recebimento', o.v)} className="mt-1" />
