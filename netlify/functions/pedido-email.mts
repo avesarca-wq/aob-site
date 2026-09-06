@@ -7,7 +7,7 @@
  *
  * Variáveis de ambiente (Netlify → Site configuration → Environment variables):
  *   RESEND_API_KEY   obrigatória. Sem ela o aviso NÃO sai (fica só na aba Forms da Netlify).
- *   EMAIL_DESTINO    opcional. Padrão: avesarca@gmail.com. Aceita vários, separados por vírgula.
+ *   EMAIL_DESTINO    opcional. Padrão: avesornamentaisbrasil@gmail.com. Aceita vários, separados por vírgula.
  *   EMAIL_REMETENTE  opcional. Padrão: remetente de teste do Resend (só entrega no e-mail dono da conta).
  *                    Com o domínio verificado no Resend: "Aves Ornamentais Brasil <pedidos@avesornamentaisbrasil.com.br>".
  *   CONFIRMA_CLIENTE opcional. "1" manda cópia de confirmação ao cliente (só com domínio verificado).
@@ -111,7 +111,7 @@ export default {
   async formSubmitted(event: any) {
     try {
       const dados: Record<string, string> = event?.data ?? event?.payload?.data ?? {};
-      const destino = (process.env.EMAIL_DESTINO || 'avesarca@gmail.com').split(',').map((s) => s.trim()).filter(Boolean);
+      const destino = (process.env.EMAIL_DESTINO || 'avesornamentaisbrasil@gmail.com').split(',').map((s) => s.trim()).filter(Boolean);
       await enviar(destino, emailPedido(dados));
       if (process.env.CONFIRMA_CLIENTE === '1' && dados.email && /.+@.+\..+/.test(dados.email)) {
         await enviar([dados.email], emailCliente(dados));
