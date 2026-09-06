@@ -69,7 +69,6 @@ export interface CartLine {
 export interface DadosCliente {
   nome: string;
   whatsapp: string;
-  email: string;
   cidade_uf: string;
   recebimento: 'rota' | 'retirada' | 'combinar';
   observacoes: string;
