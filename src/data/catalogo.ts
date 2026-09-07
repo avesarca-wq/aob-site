@@ -35,7 +35,8 @@ export const CRIADORES: Criador[] = [
   {
     id: 'aves-arca',
     nome: 'Aves Arca',
-    responsavel: 'Ricardo',
+    responsavel: 'Ricardo Dutra',
+    profissao: 'Diretor Industrial',
     cidade: 'Diadema – SP',
     especialidade: 'Anatídeos ornamentais: patos, marrecos, gansos, tadornas e mergulhões.',
     whatsapp: '5511995610741',
@@ -47,7 +48,8 @@ export const CRIADORES: Criador[] = [
   {
     id: 'stima',
     nome: 'Stima Aves',
-    responsavel: 'Waldir',
+    responsavel: 'Waldir Bellati',
+    profissao: 'Médico Veterinário',
     cidade: 'Atibaia – SP',
     especialidade: 'Pavões, faisões, perdizes, pombas e aves exóticas.',
     whatsapp: '5511943007375',
@@ -57,7 +59,8 @@ export const CRIADORES: Criador[] = [
   {
     id: 'alianca',
     nome: 'Criadouro Aliança',
-    responsavel: 'Felipe',
+    responsavel: 'Felipe Caselato',
+    profissao: 'Empresário',
     cidade: 'Jundiaí – SP',
     especialidade: 'Faisões, pavões, perdizes e psitacídeos.',
     whatsapp: '5511974643823',
