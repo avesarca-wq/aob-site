@@ -2,8 +2,7 @@ import React from 'react';
 import { Instagram, MessageCircle, Mail } from 'lucide-react';
 import { PageRoute } from '../types';
 import { CAMINHOS, waComOrigem } from '../lib/links';
-import { CONSTANTS, CRIADORES } from '../data/catalogo';
-import { LISTA_DATA } from '../data/aves';
+import { CONSTANTS } from '../data/catalogo';
 
 export const Footer: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNavigate }) => {
   const L = ({ route, label }: { route: PageRoute; label: string }) => (
@@ -64,10 +63,6 @@ export const Footer: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
             <a href={CONSTANTS.INSTAGRAM} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 font-sans text-[0.9rem] text-[#F6F1E6] no-underline hover:text-[#D2A93C]">
               <Instagram className="w-4 h-4 text-[#D2A93C]" /> @avesarca
             </a>
-            <p className="font-sans text-[0.74rem] text-[#8FA08F] mt-5 mb-0 leading-relaxed">
-              Criadouros: {CRIADORES.map((c) => c.nome).join(' · ')}.<br />
-              Lista de {LISTA_DATA} · estoque sujeito a alteração · pagamento na entrega.
-            </p>
           </div>
         </div>
         <div className="border-t border-[#2E5240] mt-10 pt-5 flex flex-col sm:flex-row justify-between gap-2">
