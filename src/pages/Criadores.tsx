@@ -2,10 +2,8 @@ import React from 'react';
 import { MapPin, Feather, UserRound } from 'lucide-react';
 import { PageRoute } from '../types';
 import { CRIADORES, CONSTANTS } from '../data/catalogo';
-import { AVES } from '../data/aves';
 
 export const Criadores: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNavigate }) => {
-  const lotesDe = (id: string) => AVES.filter((a) => a.criador === id || (a.criador === 'parceiros' && id !== 'aves-arca'));
   return (
     <>
       <section className="sec-escura">
@@ -20,8 +18,6 @@ export const Criadores: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ on
       <section className="section" style={{ paddingTop: 32 }}>
         <div className="wrap grid grid-cols-1 md:grid-cols-3 gap-5">
           {CRIADORES.map((c) => {
-            const lotes = lotesDe(c.id);
-            const aves = lotes.reduce((s, a) => s + a.machos + a.femeas, 0);
             return (
               <div key={c.id} className="card p-7">
                 <div className="h-36 mb-5 flex items-center justify-center rounded-xl bg-white border border-[#E1DCCF] px-5 py-3 overflow-hidden">
@@ -34,9 +30,6 @@ export const Criadores: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ on
                 <p className="font-sans text-[0.78rem] text-[#5B6B5B] mt-0 mb-3 flex items-center gap-1.5"><UserRound className="w-3.5 h-3.5 text-[#B99034]" /> <span><b className="text-[#1F3B2E] font-semibold">{c.responsavel}</b> · {c.profissao}</span></p>
                 <p className="font-serif text-[1rem] text-[#1E2A24] m-0 mb-3">{c.descricao}</p>
                 <p className="font-serif text-[0.92rem] text-[#5B6B5B] m-0 flex items-start gap-1.5"><Feather className="w-4 h-4 flex-none mt-1 text-[#B99034]" /> {c.especialidade}</p>
-                <div className="mt-5 pt-4 border-t border-[#E1DCCF] font-sans text-[0.74rem] uppercase tracking-[1px] text-[#B99034] font-bold">
-                  {c.id === 'aves-arca' ? `${lotes.length} lotes · ${aves} aves na lista` : 'lotes na lista junto com o parceiro'}
-                </div>
               </div>
             );
           })}
