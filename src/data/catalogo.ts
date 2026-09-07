@@ -50,6 +50,7 @@ export const CRIADORES: Criador[] = [
     cidade: 'Atibaia – SP',
     especialidade: 'Pavões, faisões, perdizes, pombas e aves exóticas.',
     whatsapp: '5511943007375',
+    logo: '/criadouros/stima.webp',
     descricao: 'Criadouro parceiro com foco em galiformes ornamentais e aves exóticas de coleção.',
   },
   {
