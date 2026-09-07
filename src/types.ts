@@ -102,6 +102,9 @@ export interface Consultor {
   frentes: string[];
   instagram: string;
   arroba: string;
+  /** Número no formato E.164, sem o +, para o link do WhatsApp. */
+  whatsapp: string;
+  whatsappDisplay: string;
   logo: string;
   logoEscala?: number;
 }
