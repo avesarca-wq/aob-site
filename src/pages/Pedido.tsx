@@ -143,71 +143,64 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
   return (
     <>
       <section className="sec-escura">
-        <div className="wrap py-10 sm:py-14">
-          <div className="eyebrow">Meu pedido</div>
-          <h1 className="sec-title" style={{ fontSize: '2.4rem' }}>Fechar pedido</h1>
-          <p className="sec-sub" style={{ marginBottom: 0 }}>Sem pagamento antecipado: você paga na entrega, com a ave conferida. Confirmamos estoque e rota no WhatsApp.</p>
+        <div className="wrap py-10 sm:py-14 grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-8 lg:gap-12 items-start">
+          <div>
+            <div className="eyebrow">Meu pedido</div>
+            <h1 className="sec-title" style={{ fontSize: '2.4rem' }}>Fechar pedido</h1>
+            <p className="sec-sub" style={{ marginBottom: 0 }}>Sem pagamento antecipado: você paga na entrega, com a ave conferida. Confirmamos estoque e rota no WhatsApp.</p>
+          </div>
+
+          {/* AVES ESCOLHIDAS — dentro do bloco verde */}
+          <div className="rounded-2xl border border-[#3B5B4A] bg-[#1A3327] p-5 sm:p-6">
+            <h2 className="text-[1.15rem] text-[#F6F1E6] m-0 mb-3 flex items-center gap-2"><ShoppingBasket className="w-4.5 h-4.5 text-[#D2A93C]" /> Aves escolhidas</h2>
+            {itens.length === 0 ? (
+              <p className="font-sans text-[0.85rem] text-[#C9D2C9] m-0">
+                Seu pedido está vazio.{' '}
+                <button onClick={() => onNavigate('aves')} className="underline bg-transparent border-0 cursor-pointer text-[#D2A93C] font-sans text-[0.85rem] font-bold p-0">Ver as aves disponíveis</button>.
+              </p>
+            ) : (
+              <div className="grid gap-2">
+                {itens.map(({ l, a }) => (
+                  <div key={a.id} className="flex items-start gap-3 rounded-xl bg-[#22412F] px-3.5 py-2.5">
+                    <div className="min-w-0 flex-1">
+                      <div className="font-serif text-[1rem] text-[#F6F1E6] leading-tight">{a.nome}{a.detalhe ? <span className="italic text-[#C9D2C9]"> · {a.detalhe}</span> : ''}</div>
+                      <div className="font-sans text-[0.68rem] text-[#9FB3A5] mt-0.5">{CRIADOR_ROTULO[a.criador]} · {brl(a.preco)}/{UNIDADE_ROTULO[a.unidade]}</div>
+                    </div>
+                    <div className="flex items-center gap-1 flex-none">
+                      <button type="button" onClick={() => alterar(a.id, l.quantidade - 1)} aria-label="Menos" className="w-6 h-6 rounded-md border border-[#3B5B4A] bg-transparent text-[#F6F1E6] cursor-pointer leading-none">−</button>
+                      <span className="w-6 text-center font-sans text-[0.85rem] font-bold text-[#F6F1E6]">{l.quantidade}</span>
+                      <button type="button" onClick={() => alterar(a.id, l.quantidade + 1)} aria-label="Mais" className="w-6 h-6 rounded-md border border-[#3B5B4A] bg-transparent text-[#F6F1E6] cursor-pointer leading-none">+</button>
+                    </div>
+                    <div className="text-right flex-none w-20 font-sans text-[0.85rem] font-bold text-[#F6F1E6]">{brl(a.preco * l.quantidade)}</div>
+                    <button type="button" onClick={() => remover(a.id)} className="flex-none bg-transparent border-0 cursor-pointer text-[#7E9587] hover:text-[#E08463] p-0" aria-label="Remover"><Trash2 className="w-4 h-4" /></button>
+                  </div>
+                ))}
+                <div className="mt-1 pt-3 border-t border-[#3B5B4A] flex items-baseline justify-between gap-3">
+                  <span className="font-sans text-[0.78rem] text-[#C9D2C9]">{totalUnidades} {totalUnidades === 1 ? 'unidade' : 'unidades'} · valores de referência</span>
+                  <span className="font-serif text-[1.4rem] text-[#F6F1E6]">{brl(totalReferencia)}</span>
+                </div>
+                {frete !== null && dados.cidade_uf && (
+                  <div className="flex items-baseline justify-between gap-3">
+                    <span className="font-sans text-[0.78rem] text-[#C9D2C9]">Frete ({dados.recebimento === 'retirada' ? 'retirada' : entrega?.zona.rotulo})</span>
+                    <span className="font-sans text-[0.85rem] font-bold text-[#F6F1E6]">{frete === 0 ? 'R$ 0' : brl(frete)}</span>
+                  </div>
+                )}
+              </div>
+            )}
+            <button onClick={() => onNavigate('aves')} className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-[#3B5B4A] bg-transparent px-4 py-2 cursor-pointer font-sans text-[0.8rem] font-bold text-[#F6F1E6]"><ArrowLeft className="w-4 h-4" /> Adicionar mais aves</button>
+          </div>
         </div>
       </section>
 
       <section className="section" style={{ paddingTop: 32 }}>
-        <div className="wrap grid grid-cols-1 lg:grid-cols-[0.86fr_1.14fr] gap-8 items-start">
-          {/* ITENS */}
-          <div className="lg:sticky lg:top-24">
-            <h2 className="text-[1.5rem] text-[#1F3B2E] m-0 mb-4 flex items-center gap-2"><ShoppingBasket className="w-5 h-5 text-[#D2A93C]" /> Aves escolhidas</h2>
-            {itens.length === 0 ? (
-              <div className="note">
-                Seu pedido está vazio.{' '}
-                <button onClick={() => onNavigate('aves')} className="underline bg-transparent border-0 cursor-pointer text-[#1F3B2E] font-serif text-[0.95rem] p-0">Ver as aves disponíveis</button>.
-              </div>
-            ) : (
-              <div className="card p-2">
-                <table className="tabela">
-                  <thead>
-                    <tr><th>Ave</th><th>Unid.</th><th>Qtd.</th><th className="text-right">Subtotal</th><th></th></tr>
-                  </thead>
-                  <tbody>
-                    {itens.map(({ l, a }) => (
-                      <tr key={a.id}>
-                        <td>
-                          <div className="font-serif text-[1.05rem] text-[#1F3B2E] leading-tight">{a.nome}{a.detalhe ? <span className="italic text-[#5B6B5B]"> · {a.detalhe}</span> : ''}</div>
-                          <div className="text-[0.7rem] text-[#5B6B5B]">{CRIADOR_ROTULO[a.criador]} · {brl(a.preco)}/{UNIDADE_ROTULO[a.unidade]}</div>
-                        </td>
-                        <td className="text-[0.8rem]">{UNIDADE_ROTULO[a.unidade]}</td>
-                        <td>
-                          <div className="qtd">
-                            <button type="button" onClick={() => alterar(a.id, l.quantidade - 1)} aria-label="Menos">−</button>
-                            <span>{l.quantidade}</span>
-                            <button type="button" onClick={() => alterar(a.id, l.quantidade + 1)} aria-label="Mais">+</button>
-                          </div>
-                        </td>
-                        <td className="text-right font-bold text-[#1F3B2E]">{brl(a.preco * l.quantidade)}</td>
-                        <td className="text-right"><button type="button" onClick={() => remover(a.id)} className="bg-transparent border-0 cursor-pointer text-[#9AA59A] hover:text-[#B5532E]" aria-label="Remover"><Trash2 className="w-4 h-4" /></button></td>
-                      </tr>
-                    ))}
-                  </tbody>
-                  <tfoot>
-                    <tr>
-                      <td colSpan={3} className="text-[0.8rem] text-[#5B6B5B]">{totalUnidades} {totalUnidades === 1 ? 'unidade' : 'unidades'} · valores de referência</td>
-                      <td className="text-right font-serif text-[1.3rem] text-[#1F3B2E]">{brl(totalReferencia)}</td>
-                      <td></td>
-                    </tr>
-                    {frete !== null && dados.cidade_uf && (
-                      <tr><td colSpan={3} className="text-[0.8rem] text-[#5B6B5B]">Frete ({dados.recebimento === 'retirada' ? 'retirada' : entrega?.zona.rotulo})</td><td className="text-right">{frete === 0 ? 'R$ 0' : brl(frete)}</td><td></td></tr>
-                    )}
-                  </tfoot>
-                </table>
-              </div>
-            )}
-            <button onClick={() => onNavigate('aves')} className="btn btn-ghost mt-4 !py-2"><ArrowLeft className="w-4 h-4" /> Adicionar mais aves</button>
-          </div>
-
+        <div className="wrap">
           {/* DADOS */}
           <form onSubmit={enviar} name={NOME_FORM} className="card p-6 sm:p-8">
             <input type="hidden" name="form-name" value={NOME_FORM} />
             <p className="hidden"><label>Não preencher: <input name="bot-field" /></label></p>
             <h2 className="text-[1.5rem] text-[#1F3B2E] m-0 mb-5">Seus dados</h2>
-            <div className="grid gap-4">
+            <div className="grid gap-x-8 gap-y-4 lg:grid-cols-2 lg:items-start">
+              <div className="grid gap-4 content-start">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="rotulo" htmlFor="nome">Nome</label>
@@ -222,6 +215,13 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
                 <label className="rotulo">Cidade</label>
                 <CidadeInput value={dados.cidade_uf} onChange={(c, r) => { set('cidade_uf', c); setRegiao(r); }} />
               </div>
+              <div>
+                <label className="rotulo" htmlFor="obs">Observações <span className="normal-case tracking-normal font-normal">(opcional)</span></label>
+                <textarea id="obs" className="campo" rows={4} value={dados.observacoes} onChange={(e) => set('observacoes', e.target.value)} placeholder="Ex.: prefiro fêmeas mais novas; tenho interesse em outra variedade…" />
+              </div>
+              </div>
+
+              <div className="grid gap-4 content-start">
               <div>
                 <label className="rotulo">Como quer receber</label>
                 <div className="grid gap-2">
@@ -311,17 +311,17 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
                   </div>
                 )}
               </div>
-              <div>
-                <label className="rotulo" htmlFor="obs">Observações <span className="normal-case tracking-normal font-normal">(opcional)</span></label>
-                <textarea id="obs" className="campo" rows={3} value={dados.observacoes} onChange={(e) => set('observacoes', e.target.value)} placeholder="Ex.: prefiro fêmeas mais novas; tenho interesse em outra variedade…" />
               </div>
-              {erro && <div className="note !border-l-[#B5532E]">{erro}</div>}
-              <button type="submit" className="btn btn-wa w-full text-[1rem] !py-3.5" disabled={enviando || itens.length === 0}>
-                <MessageCircle className="w-5 h-5" /> {enviando ? 'Registrando…' : 'Enviar pedido pelo WhatsApp'}
-              </button>
-              <p className="font-sans text-[0.72rem] text-[#5B6B5B] m-0 leading-relaxed">
-                O pedido é registrado e a mensagem já sai montada para o WhatsApp {CONSTANTS.WHATSAPP_DISPLAY}. Os valores são de referência até a confirmação de estoque. Sem pagamento antecipado.
-              </p>
+
+              <div className="lg:col-span-2 grid gap-3">
+                {erro && <div className="note !border-l-[#B5532E]">{erro}</div>}
+                <button type="submit" className="btn btn-wa w-full text-[1rem] !py-3.5" disabled={enviando || itens.length === 0}>
+                  <MessageCircle className="w-5 h-5" /> {enviando ? 'Registrando…' : 'Enviar pedido pelo WhatsApp'}
+                </button>
+                <p className="font-sans text-[0.72rem] text-[#5B6B5B] m-0 leading-relaxed text-center">
+                  O pedido é registrado e a mensagem já sai montada para o WhatsApp {CONSTANTS.WHATSAPP_DISPLAY}. Os valores são de referência até a confirmação de estoque. Sem pagamento antecipado.
+                </p>
+              </div>
             </div>
           </form>
         </div>
