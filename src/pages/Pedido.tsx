@@ -7,6 +7,7 @@ import { useCart } from '../cart/CartContext';
 import { CidadeInput, entregaDaCidade } from '../components/CidadeInput';
 import { waComTexto } from '../lib/links';
 import { medirInitiateCheckout, medirPedido, medirContato } from '../lib/medir';
+import { ROTULOS, ORDEM, ChavePedido } from '../lib/campos-pedido';
 
 const NOME_FORM = 'pedido';
 
@@ -95,9 +96,10 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
       `Cidade: ${dados.cidade_uf || '—'} · ${rotaTxt}${proxTxt ? ` · próxima saída ${proxTxt}` : ''}\n` +
       `Recebimento: ${recebTxt}\nNome: ${dados.nome}${dados.observacoes ? `\nObs.: ${dados.observacoes}` : ''}`;
 
-    const campos: Record<string, string> = {
-      'form-name': NOME_FORM,
-      subject: `Pedido ${cod} · ${dados.nome} · ${brl(totalReferencia)} · ${rotaTxt}`,
+    // Valores por chave interna. Os nomes que vão no POST vêm de ROTULOS, porque
+    // a notificação automática da Netlify usa o nome do campo como título — ver
+    // src/lib/campos-pedido.ts.
+    const valores: Record<ChavePedido, string> = {
       codigo: cod,
       nome: dados.nome,
       whatsapp: dados.whatsapp,
@@ -111,11 +113,19 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
       recebimento: recebTxt,
       observacoes: dados.observacoes,
       pedido_resumo: resumoTexto(),
-      pedido_json: JSON.stringify(itens.map(({ l, a }) => ({ id: a.id, nome: a.nome, detalhe: a.detalhe, criador: CRIADOR_ROTULO[a.criador], unidade: a.unidade, quantidade: l.quantidade, valorUnitario: a.preco }))),
       total_referencia: String(totalReferencia),
       origem: document.referrer || 'direto',
       pagina_entrada: window.location.href,
+      pedido_json: JSON.stringify(itens.map(({ l, a }) => ({ id: a.id, nome: a.nome, detalhe: a.detalhe, criador: CRIADOR_ROTULO[a.criador], unidade: a.unidade, quantidade: l.quantidade, valorUnitario: a.preco }))),
     };
+
+    // 'form-name' e 'subject' são campos da própria Netlify (roteamento e assunto
+    // do e-mail): mantêm o nome técnico, não entram no mapa de rótulos.
+    const campos: Record<string, string> = {
+      'form-name': NOME_FORM,
+      subject: `Pedido ${cod} · ${dados.nome} · ${brl(totalReferencia)} · ${rotaTxt}`,
+    };
+    for (const chave of ORDEM) campos[ROTULOS[chave]] = valores[chave];
     try {
       const r = await fetch('/', {
         method: 'POST',
