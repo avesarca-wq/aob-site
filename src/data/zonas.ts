@@ -62,11 +62,11 @@ export const ZONAS: Record<NumeroZona, Zona> = {
   },
   4: {
     n: 4,
-    rotulo: 'Fora da malha terrestre',
+    rotulo: 'Fora das rotas atuais',
     tarifa: null,
-    tarifaTexto: 'Sob consulta',
-    prazo: 'Combinado caso a caso',
-    detalhe: 'Frete aéreo (GOLLOG/LATAM), com nota fiscal e GTA.'
+    tarifaTexto: 'A combinar',
+    prazo: 'Combinamos pelo WhatsApp',
+    detalhe: 'Sua cidade está fora das rotas atuais; combinamos pelo WhatsApp a melhor forma de entrega.'
   },
   5: {
     n: 5,
@@ -1047,7 +1047,7 @@ export const ZONA_POR_CIDADE: Record<string, NumeroZona> = {
   'Quissamã|RJ': 5,
 };
 
-/** A zona de frete de uma cidade da malha. Sem cidade reconhecida, cai no aéreo (Z4). */
+/** A zona de frete de uma cidade da malha. Sem cidade reconhecida, cai em "fora das rotas atuais" (Z4). */
 export const zonaDaCidade = (c?: Cidade | null): Zona =>
   ZONAS[(c && ZONA_POR_CIDADE[`${c.c}|${c.uf}`]) || 4];
 
