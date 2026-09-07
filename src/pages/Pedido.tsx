@@ -1,8 +1,8 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Trash2, MessageCircle, CheckCircle2, ArrowLeft, ShoppingBasket, CalendarDays, Truck, MapPin, ArrowRight } from 'lucide-react';
 import { DadosCliente, PageRoute } from '../types';
 import { aveDoId } from '../data/aves';
-import { brl, CONSTANTS, CRIADOR_ROTULO, UNIDADE_ROTULO, UNIDADE_PLURAL, dataCurta, dataLonga } from '../data/catalogo';
+import { brl, CONSTANTS, CRIADOR_ROTULO, ROTAS, UNIDADE_ROTULO, UNIDADE_PLURAL, dataCurta, dataLonga } from '../data/catalogo';
 import { useCart } from '../cart/CartContext';
 import { CidadeInput, entregaDaCidade } from '../components/CidadeInput';
 import { waComTexto } from '../lib/links';
@@ -49,10 +49,15 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
   const [erro, setErro] = useState('');
   const [codigo, setCodigo] = useState('');
   const [msgWhats, setMsgWhats] = useState('');
+  const [rotaSel, setRotaSel] = useState('');
 
   const itens = useMemo(() => linhas.map((l) => ({ l, a: aveDoId(l.id)! })).filter((x) => x.a), [linhas]);
   const entrega = useMemo(() => entregaDaCidade(dados.cidade_uf), [dados.cidade_uf]);
   const frete = dados.recebimento === 'retirada' ? 0 : entrega?.zona.tarifa ?? null;
+  // ao reconhecer a cidade, sugere a rota da região (o cliente pode trocar)
+  useEffect(() => { if (entrega?.rota) setRotaSel(entrega.rota.regiao); }, [entrega?.rota?.regiao]);
+  const rota = useMemo(() => ROTAS.find((r) => r.regiao === rotaSel) ?? entrega?.rota ?? null, [rotaSel, entrega]);
+
 
   const resumoTexto = () =>
     itens.map(({ l, a }) => `• ${l.quantidade} ${l.quantidade === 1 ? UNIDADE_ROTULO[a.unidade] : UNIDADE_PLURAL[a.unidade]} — ${a.nome}${a.detalhe ? ` (${a.detalhe})` : ''} — ${brl(a.preco)} cada`).join('\n');
@@ -66,8 +71,11 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
     setErro('');
     const cod = gerarCodigo();
     const foraDasRotas = !entrega || entrega.zona.n === 4;
-    const rotaTxt = !foraDasRotas ? (entrega!.rota?.nome ?? regiao) : 'fora das rotas atuais — combinar pelo WhatsApp';
-    const proxTxt = entrega?.prox ? `${dataCurta(entrega.prox.saida)} (pedidos até ${dataCurta(entrega.prox.fecha)})` : '';
+    const rotaTxt = dados.recebimento === 'rota' && rota
+      ? rota.nome + (entrega?.rota && entrega.rota.regiao !== rota.regiao ? ' (escolhida pelo cliente)' : '')
+      : !foraDasRotas ? (entrega!.rota?.nome ?? regiao) : 'fora das rotas atuais — combinar pelo WhatsApp';
+    const saidaSel = rota ? saidasAbertas(rota.datas, rota.fechaDiasAntes)[0] : null;
+    const proxTxt = saidaSel ? `${dataCurta(saidaSel.saida)} (pedidos até ${dataCurta(saidaSel.fecha)})` : entrega?.prox ? `${dataCurta(entrega.prox.saida)} (pedidos até ${dataCurta(entrega.prox.fecha)})` : '';
     const recebTxt = dados.recebimento === 'retirada' ? `Retirada em ${CONSTANTS.RETIRADA}` : dados.recebimento === 'rota' ? 'Entrega na rota' : 'Combinar';
     const texto =
       `Olá! Fiz o pedido *${cod}* no site Aves Ornamentais Brasil.\n\n${resumoTexto()}\n\n` +
@@ -84,6 +92,7 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
       cidade_uf: dados.cidade_uf,
       regiao: entrega?.cidade.r ?? regiao,
       rota: rotaTxt,
+      rota_escolhida: dados.recebimento === 'rota' && rota ? rota.nome : '',
       proxima_saida: proxTxt,
       frete_zona: entrega?.zona.rotulo ?? '',
       frete_valor: frete === null ? 'sob consulta' : String(frete),
@@ -228,62 +237,71 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
                     </label>
                   ))}
                 </div>
-                {dados.recebimento === 'rota' && entrega && entrega.rota && entrega.zona.n !== 4 && (() => {
-                  const saidas = saidasAbertas(entrega.rota.datas, entrega.rota.fechaDiasAntes);
-                  const prox = saidas[0];
-                  return (
-                    <div className="mt-3 rounded-xl border border-[#D2A93C] bg-[#F6F1E6] p-4">
-                      <div className="font-sans text-[0.62rem] uppercase tracking-[1.6px] text-[#B99034] font-bold">Sua rota</div>
-                      <div className="font-serif text-[1.15rem] text-[#1F3B2E] leading-tight mt-0.5">{entrega.rota.nome}</div>
+                {dados.recebimento === 'rota' && (
+                  <div className="mt-3 rounded-xl border border-[#D2A93C] bg-[#F6F1E6] p-4">
+                    <div className="font-sans text-[0.62rem] uppercase tracking-[1.6px] text-[#B99034] font-bold mb-2">
+                      {entrega?.rota ? 'Sua rota — confirme ou escolha outra' : 'Escolha a rota'}
+                    </div>
+                    <div className="grid gap-1.5">
+                      {ROTAS.map((r) => {
+                        const saidas = saidasAbertas(r.datas, r.fechaDiasAntes);
+                        const prox = saidas[0];
+                        const sugerida = entrega?.rota?.regiao === r.regiao;
+                        const sel = rotaSel === r.regiao;
+                        return (
+                          <label key={r.regiao} className={`flex items-start gap-2.5 rounded-lg border px-3 py-2.5 cursor-pointer bg-white ${sel ? 'border-[#1F3B2E] ring-1 ring-[#1F3B2E]' : 'border-[#E1DCCF]'}`}>
+                            <input type="radio" name="rota_escolhida" value={r.regiao} checked={sel} onChange={() => setRotaSel(r.regiao)} className="mt-1" />
+                            <span className="min-w-0 flex-1">
+                              <span className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+                                <span className="font-sans text-[0.85rem] font-semibold text-[#1F3B2E]">{r.nome}</span>
+                                {sugerida && <span className="font-sans text-[0.6rem] uppercase tracking-[1px] font-bold text-[#1E8E5A]">sua região</span>}
+                              </span>
+                              <span className="block font-sans text-[0.72rem] text-[#5B6B5B] mt-0.5">
+                                {prox
+                                  ? <>Próxima saída <b className="text-[#1F3B2E]">{dataCurta(prox.saida)}</b> · pedidos até {dataCurta(prox.fecha)}</>
+                                  : r.datas.length === 0 && r.fechaDiasAntes === 0
+                                    ? 'Data combinada direto, sem esperar rota fechar'
+                                    : 'Em formação — você diz a data que precisa'}
+                              </span>
+                            </span>
+                          </label>
+                        );
+                      })}
+                    </div>
 
-                      {prox ? (
-                        <>
-                          <div className="mt-3 flex items-start gap-2">
-                            <CalendarDays className="w-4 h-4 flex-none mt-0.5 text-[#1E8E5A]" />
-                            <div>
-                              <div className="font-sans text-[0.9rem] font-semibold text-[#1F3B2E] leading-tight">Próxima saída: {dataLonga(prox.saida)}</div>
-                              <div className="font-sans text-[0.74rem] text-[#5B6B5B]">Pedidos até <b>{dataCurta(prox.fecha)}</b> para entrar nessa viagem</div>
-                            </div>
-                          </div>
+                    {rota && (() => {
+                      const saidas = saidasAbertas(rota.datas, rota.fechaDiasAntes);
+                      return (
+                        <div className="mt-3 pt-3 border-t border-[#E1DCCF] grid gap-1.5">
                           {saidas.length > 1 && (
-                            <div className="mt-2.5 flex flex-wrap items-center gap-1.5">
-                              <span className="font-sans text-[0.72rem] text-[#5B6B5B]">Depois dessa:</span>
-                              {saidas.slice(1, 4).map((d) => (
-                                <span key={d.saida.toISOString()} className="font-sans text-[0.72rem] font-semibold text-[#1F3B2E] bg-white border border-[#E1DCCF] rounded-full px-2.5 py-0.5">{dataCurta(d.saida)}</span>
+                            <div className="flex flex-wrap items-center gap-1.5">
+                              <CalendarDays className="w-3.5 h-3.5 flex-none text-[#B99034]" />
+                              <span className="font-sans text-[0.72rem] text-[#5B6B5B]">Saídas de {rota.nome}:</span>
+                              {saidas.slice(0, 4).map((d, i) => (
+                                <span key={d.saida.toISOString()} className={`font-sans text-[0.72rem] font-semibold rounded-full px-2.5 py-0.5 border ${i === 0 ? 'bg-[#D2A93C] border-[#D2A93C] text-[#1F3B2E]' : 'bg-white border-[#E1DCCF] text-[#1F3B2E]'}`}>{dataCurta(d.saida)}</span>
                               ))}
                             </div>
                           )}
-                        </>
-                      ) : (
-                        <div className="mt-3 flex items-start gap-2">
-                          <CalendarDays className="w-4 h-4 flex-none mt-0.5 text-[#B99034]" />
-                          <div className="font-sans text-[0.8rem] text-[#1E2A24] leading-snug">
-                            {entrega.zona.n === 1
-                              ? 'Data combinada direto pelo WhatsApp, sem esperar a rota fechar.'
-                              : 'Rota em formação. Diga no WhatsApp até quando você precisa receber — é a demanda que fecha a data, e o seu pedido entra na conta.'}
-                          </div>
+                          {entrega && entrega.zona.n !== 4 && (
+                            <div className="flex items-start gap-2 font-sans text-[0.76rem] text-[#1E2A24]">
+                              <Truck className="w-3.5 h-3.5 flex-none mt-0.5 text-[#B99034]" />
+                              <span>Frete <b>{entrega.zona.tarifaTexto}</b> · {entrega.zona.rotulo}</span>
+                            </div>
+                          )}
+                          {rota.nota && (
+                            <div className="flex items-start gap-2 font-sans text-[0.76rem] text-[#5B6B5B]">
+                              <MapPin className="w-3.5 h-3.5 flex-none mt-0.5 text-[#B99034]" />
+                              <span>{rota.nota}</span>
+                            </div>
+                          )}
+                          <button type="button" onClick={() => onNavigate('rotas')} className="justify-self-start mt-1 inline-flex items-center gap-1 bg-transparent border-0 p-0 cursor-pointer font-sans text-[0.76rem] font-bold text-[#1F3B2E] underline">
+                            Ver o calendário completo <ArrowRight className="w-3.5 h-3.5" />
+                          </button>
                         </div>
-                      )}
-
-                      <div className="mt-3 pt-3 border-t border-[#E1DCCF] grid gap-1.5">
-                        <div className="flex items-start gap-2 font-sans text-[0.76rem] text-[#1E2A24]">
-                          <Truck className="w-3.5 h-3.5 flex-none mt-0.5 text-[#B99034]" />
-                          <span>Frete <b>{entrega.zona.tarifaTexto}</b> · {entrega.zona.rotulo}</span>
-                        </div>
-                        {prox && entrega.rota.nota && (
-                          <div className="flex items-start gap-2 font-sans text-[0.76rem] text-[#5B6B5B]">
-                            <MapPin className="w-3.5 h-3.5 flex-none mt-0.5 text-[#B99034]" />
-                            <span>{entrega.rota.nota}</span>
-                          </div>
-                        )}
-                      </div>
-
-                      <button type="button" onClick={() => onNavigate('rotas')} className="mt-3 inline-flex items-center gap-1 bg-transparent border-0 p-0 cursor-pointer font-sans text-[0.76rem] font-bold text-[#1F3B2E] underline">
-                        Ver o calendário completo <ArrowRight className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
-                  );
-                })()}
+                      );
+                    })()}
+                  </div>
+                )}
               </div>
               <div>
                 <label className="rotulo" htmlFor="obs">Observações <span className="normal-case tracking-normal font-normal">(opcional)</span></label>
