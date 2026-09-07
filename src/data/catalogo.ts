@@ -43,7 +43,7 @@ export const CRIADORES: Criador[] = [
     logo: '/criadouros/aves-arca.webp',
     logoEscala: 1.22,
     descricao:
-      'Especialista em anatídeos ornamentais para quem está começando e para quem já coleciona. Plantel de matrizes criadas em São Paulo – Capital, do marreco de entrada às espécies raras, com foto real de cada variedade.',
+      'Especialista em anatídeos ornamentais para quem começa e para quem já coleciona. Plantel criado em São Paulo – Capital, do marreco de entrada às espécies raras, com foto real de cada variedade.',
   },
   {
     id: 'stima',
