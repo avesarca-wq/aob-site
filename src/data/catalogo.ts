@@ -106,8 +106,8 @@ export const CONSULTORES: Consultor[] = [
   {
     id: 'volare',
     nome: 'Volare',
-    responsavel: 'Consultoria Volare',
-    profissao: 'Zootecnia',
+    responsavel: 'Jefferson Darlan',
+    profissao: 'Zootecnista',
     chamada: 'Solucionando problemas, desenvolvendo criadores.',
     descricao:
       'Consultoria especializada em aves, com a zootecnia aplicada ao plantel: ração e suplementação, rotina de manejo, sanidade e formação de casais. É o apoio para quem quer sair da criação por tentativa e erro e passar a reproduzir com resultado previsível.',
