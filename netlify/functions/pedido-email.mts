@@ -13,7 +13,39 @@
  *   CONFIRMA_CLIENTE opcional. "1" manda cópia de confirmação ao cliente (só com domínio verificado).
  */
 
-import { pegar, ChavePedido } from '../../src/lib/campos-pedido';
+/**
+ * MAPA DE CAMPOS — cópia deliberada de src/lib/campos-pedido.ts.
+ *
+ * A primeira versão importava de lá. Não funciona: o empacotador de funções da
+ * Netlify não resolveu o caminho para fora de netlify/functions, o deploy passou
+ * e a função morreu em silêncio — o e-mail cru da Netlify continuou chegando e
+ * só o e-mail bom sumiu (comprovado no teste AOB-TESTE-0709R, 07/09/2026).
+ * Uma função de aviso não pode depender de empacotamento: ela fica sozinha.
+ *
+ * `pega` tenta o rótulo novo e cai para o nome antigo, então mesmo que esta
+ * cópia fique para trás de src/lib/campos-pedido.ts, o pior caso é um campo
+ * aparecer vazio — nunca o e-mail inteiro deixar de sair.
+ */
+const ROTULOS = {
+  codigo: 'Código',
+  nome: 'Cliente',
+  whatsapp: 'Whatsapp',
+  cidade_uf: 'Cidade',
+  regiao: 'Região',
+  rota: 'Rota',
+  rota_escolhida: 'Rota Escolhida',
+  proxima_saida: 'Próxima Saída',
+  frete_zona: 'Zona',
+  frete_valor: 'Frete',
+  recebimento: 'Recebimento',
+  observacoes: 'Observações',
+  pedido_resumo: 'Pedido',
+  total_referencia: 'Total',
+  origem: 'Origem',
+  pagina_entrada: 'Página',
+  pedido_json: 'Itens JSON',
+} as const;
+type ChavePedido = keyof typeof ROTULOS;
 
 const RESEND_API = 'https://api.resend.com/emails';
 const COR = { verde: '#1F3B2E', ouro: '#B99034', marfim: '#F6F1E6', ink: '#1E2A24', cinza: '#5B6B5B', borda: '#E1DCCF' };
@@ -27,10 +59,11 @@ const soDigitos = (s: string) => (s || '').replace(/\D/g, '');
 /**
  * Lê um campo da submissão. Os pedidos novos chegam com os rótulos legíveis
  * ("Código", "Cidade"); os gravados antes de 07/09/2026 usam os nomes antigos
- * ("codigo", "cidade_uf"). `pegar` tenta o novo e cai para o velho, então os
- * dois continuam gerando o mesmo e-mail.
+ * ("codigo", "cidade_uf"). Tenta o novo e cai para o velho, então os dois
+ * continuam gerando o mesmo e-mail.
  */
-const g = (d: Record<string, string>, chave: ChavePedido) => pegar(d, chave);
+const g = (d: Record<string, string>, chave: ChavePedido): string =>
+  d[ROTULOS[chave]] ?? d[chave] ?? '';
 
 interface Linha { nome?: string; detalhe?: string; criador?: string; unidade?: string; quantidade?: number; valorUnitario?: number }
 const UNID: Record<string, string> = { casal: 'casal', macho: 'macho', femea: 'fêmea' };
