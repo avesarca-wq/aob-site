@@ -215,7 +215,7 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
                 <label className="rotulo">Como quer receber</label>
                 <div className="grid gap-2">
                   {[
-                    { v: 'rota', t: 'Entrega na rota da minha região', d: (entrega ? entrega.zona.n === 4 : dados.cidade_uf.trim().length >= 3) ? 'Sua cidade está fora das rotas atuais; combinamos pelo WhatsApp' : entrega?.prox ? `${entrega.rota?.nome} · próxima saída ${dataCurta(entrega.prox.saida)}` : entrega?.rota ? `${entrega.rota.nome} · a gente confirma a data no WhatsApp` : 'A gente confirma a data no WhatsApp' },
+                    { v: 'rota', t: 'Entrega na rota da minha região', d: (entrega ? entrega.zona.n === 4 : dados.cidade_uf.trim().length >= 3) ? 'Sua cidade está fora das rotas atuais; combinamos pelo WhatsApp' : entrega?.prox ? `${entrega.rota?.nome} · próxima saída ${dataCurta(entrega.prox.saida)}` : entrega?.rota ? `${entrega.rota.nome} · você diz a data que precisa, a gente confirma no WhatsApp` : 'A gente confirma a data no WhatsApp' },
                     { v: 'retirada', t: `Retirada em ${CONSTANTS.RETIRADA}`, d: 'Sem frete · dia e hora combinados' },
                     { v: 'combinar', t: 'Prefiro combinar no WhatsApp', d: 'Entrega individual ou outra opção' },
                   ].map((o) => (
@@ -260,7 +260,7 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
                           <div className="font-sans text-[0.8rem] text-[#1E2A24] leading-snug">
                             {entrega.zona.n === 1
                               ? 'Data combinada direto pelo WhatsApp, sem esperar a rota fechar.'
-                              : 'Rota em formação: seu pedido entra na lista e a gente avisa assim que a data fechar.'}
+                              : 'Rota em formação. Diga no WhatsApp até quando você precisa receber — é a demanda que fecha a data, e o seu pedido entra na conta.'}
                           </div>
                         </div>
                       )}
@@ -270,7 +270,7 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
                           <Truck className="w-3.5 h-3.5 flex-none mt-0.5 text-[#B99034]" />
                           <span>Frete <b>{entrega.zona.tarifaTexto}</b> · {entrega.zona.rotulo}</span>
                         </div>
-                        {entrega.rota.nota && entrega.zona.n !== 1 && (
+                        {prox && entrega.rota.nota && (
                           <div className="flex items-start gap-2 font-sans text-[0.76rem] text-[#5B6B5B]">
                             <MapPin className="w-3.5 h-3.5 flex-none mt-0.5 text-[#B99034]" />
                             <span>{entrega.rota.nota}</span>
