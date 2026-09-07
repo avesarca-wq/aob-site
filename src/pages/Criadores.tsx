@@ -10,7 +10,7 @@ export const Criadores: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ on
         <div className="wrap py-10 sm:py-14">
           <div className="eyebrow">Quem cria</div>
           <h1 className="sec-title" style={{ fontSize: '2.4rem' }}>Criadouros parceiros</h1>
-          <p className="sec-sub" style={{ marginBottom: 0 }}>
+          <p lang="pt-BR" className="sec-sub text-justify hyphens-auto" style={{ marginBottom: 0 }}>
             A parceria de três criadouros de São Paulo numa lista só. Você escolhe aves de plantéis diferentes no mesmo pedido e elas viajam até você na mesma rota: uma viagem só para as aves, um frete só para você. Juntos, o que nenhum deles tem sozinho.
           </p>
         </div>
