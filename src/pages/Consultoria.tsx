@@ -51,14 +51,26 @@ export const Consultoria: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ 
                 <Sprout className="w-4 h-4 flex-none mt-1 text-[#B99034]" />
                 <span>{c.frentes.join(' · ')}</span>
               </p>
-              <a
-                href={c.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-verde !py-2 inline-flex"
-              >
-                <Instagram className="w-4 h-4" /> {c.arroba}
-              </a>
+              <div className="flex flex-wrap items-center justify-center gap-2">
+                <a
+                  href={`https://wa.me/${c.whatsapp}?text=${encodeURIComponent(
+                    `Olá! Vim pela página de consultoria da Aves Ornamentais Brasil e quero falar sobre ${c.frentes[0].toLowerCase()}.`,
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-wa !py-2 inline-flex"
+                >
+                  <MessageCircle className="w-4 h-4" /> {c.whatsappDisplay}
+                </a>
+                <a
+                  href={c.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-ghost !py-2 inline-flex"
+                >
+                  <Instagram className="w-4 h-4" /> {c.arroba}
+                </a>
+              </div>
             </div>
           </div>
         ))}
@@ -71,8 +83,8 @@ export const Consultoria: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ 
             <h2 className="text-[1.5rem] text-[#1F3B2E] m-0 mb-2">A consultoria é contratada direto com cada um.</h2>
             <p lang="pt-BR" className="font-serif text-[1rem] text-[#5B6B5B] m-0 text-justify hyphens-auto">
               A AOB não intermedeia nem cobra por isso: são profissionais independentes que a rede
-              indica porque confia no trabalho. Fale com eles pelo Instagram. Se não souber por onde
-              começar, chame no nosso WhatsApp {CONSTANTS.WHATSAPP_DISPLAY} que a gente aponta o
+              indica porque confia no trabalho. Fale direto com eles pelo WhatsApp ou pelo Instagram. Se
+              não souber por onde começar, chame no nosso WhatsApp {CONSTANTS.WHATSAPP_DISPLAY} que a gente aponta o
               caminho — dúvida de espécie e recinto é com o biólogo; ração, sanidade e reprodução é
               com a zootecnia.
             </p>
