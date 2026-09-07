@@ -34,8 +34,8 @@ export const Home: React.FC<{ onNavigate: (p: PageRoute, extra?: string) => void
               </a>
             </div>
           </div>
-          <div className="hidden lg:flex justify-center">
-            <img src="/logo-selo.png" alt="" className="w-[380px] opacity-95" />
+          <div className="hidden lg:flex justify-start items-center">
+            <img src="/logo-selo.png" alt="" className="w-[460px] max-w-full" />
           </div>
         </div>
         <div className="border-t border-[#2E5240]">
