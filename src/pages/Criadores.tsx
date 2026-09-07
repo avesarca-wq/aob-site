@@ -41,8 +41,8 @@ export const Criadores: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ on
           <div className="card p-8 grid grid-cols-1 md:grid-cols-[1.4fr_0.6fr] gap-5 items-center">
             <div>
               <div className="eyebrow">Um só canal</div>
-              <h2 className="text-[1.5rem] text-[#1F3B2E] m-0 mb-2">Pedido, rota e pagamento passam pela AOB.</h2>
-              <p className="font-serif text-[1rem] text-[#5B6B5B] m-0">Você fala com um WhatsApp só ({CONSTANTS.WHATSAPP_DISPLAY}), recebe tudo na mesma rota e paga na entrega, ave por ave, ao conferir.</p>
+              <h2 className="text-[1.5rem] text-[#1F3B2E] m-0 mb-2">Você não negocia com três criadouros.</h2>
+              <p lang="pt-BR" className="font-serif text-[1rem] text-[#5B6B5B] m-0 text-justify hyphens-auto">Escolhe as aves de quem quiser e monta um pedido só. Se estiver começando, diga o que procura e para que espaço — a gente indica o criadouro certo. A AOB acerta com cada um, junta tudo na mesma rota e você paga na entrega, ave por ave, ao conferir. Um WhatsApp só: {CONSTANTS.WHATSAPP_DISPLAY}.</p>
             </div>
             <button onClick={() => onNavigate('aves')} className="btn btn-verde justify-self-start md:justify-self-end">Ver aves disponíveis</button>
           </div>
