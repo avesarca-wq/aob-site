@@ -40,6 +40,7 @@ export const CRIADORES: Criador[] = [
     especialidade: 'Anatídeos ornamentais: patos, marrecos, gansos, tadornas e mergulhões.',
     whatsapp: '5511995610741',
     logo: '/criadouros/aves-arca.webp',
+    logoEscala: 1.22,
     descricao:
       'Criadouro de aves aquáticas ornamentais. Plantel de matrizes nascidas e criadas em São Paulo, com fotos reais de cada variedade.',
   },
