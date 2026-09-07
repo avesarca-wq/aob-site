@@ -20,6 +20,9 @@ export const Criadores: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ on
           {CRIADORES.map((c) => {
             return (
               <div key={c.id} className="card p-7">
+                <div className="inline-flex items-center gap-2 bg-[#1F3B2E] text-[#F6F1E6] font-sans text-[0.6rem] uppercase tracking-[1.6px] font-bold px-3 py-1.5 rounded-full mb-4">
+                  <img src="/simbolo-creme.svg" alt="" className="w-3.5 h-3.5" /> Membro fundador
+                </div>
                 <div className="h-36 mb-5 flex items-center justify-center rounded-xl bg-white border border-[#E1DCCF] px-5 py-3 overflow-hidden">
                   {c.logo
                     ? <img src={c.logo} alt={`Logotipo ${c.nome}`} className="max-h-full max-w-full w-auto h-auto object-contain" style={c.logoEscala ? { transform: `scale(${c.logoEscala})` } : undefined} loading="lazy" />
