@@ -151,9 +151,9 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
       </section>
 
       <section className="section" style={{ paddingTop: 32 }}>
-        <div className="wrap grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-8 items-start">
+        <div className="wrap grid grid-cols-1 lg:grid-cols-[0.86fr_1.14fr] gap-8 items-start">
           {/* ITENS */}
-          <div>
+          <div className="lg:sticky lg:top-24">
             <h2 className="text-[1.5rem] text-[#1F3B2E] m-0 mb-4 flex items-center gap-2"><ShoppingBasket className="w-5 h-5 text-[#D2A93C]" /> Aves escolhidas</h2>
             {itens.length === 0 ? (
               <div className="note">
@@ -208,13 +208,15 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
             <p className="hidden"><label>Não preencher: <input name="bot-field" /></label></p>
             <h2 className="text-[1.5rem] text-[#1F3B2E] m-0 mb-5">Seus dados</h2>
             <div className="grid gap-4">
-              <div>
-                <label className="rotulo" htmlFor="nome">Nome</label>
-                <input id="nome" className="campo" required value={dados.nome} onChange={(e) => set('nome', e.target.value)} placeholder="Como quer ser chamado" />
-              </div>
-              <div>
-                <label className="rotulo" htmlFor="whatsapp">Telefone (WhatsApp)</label>
-                <input id="whatsapp" className="campo" required inputMode="tel" value={dados.whatsapp} onChange={(e) => set('whatsapp', mascaraWhats(e.target.value))} placeholder="(11) 90000-0000" />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="rotulo" htmlFor="nome">Nome</label>
+                  <input id="nome" className="campo" required value={dados.nome} onChange={(e) => set('nome', e.target.value)} placeholder="Como quer ser chamado" />
+                </div>
+                <div>
+                  <label className="rotulo" htmlFor="whatsapp">Telefone (WhatsApp)</label>
+                  <input id="whatsapp" className="campo" required inputMode="tel" value={dados.whatsapp} onChange={(e) => set('whatsapp', mascaraWhats(e.target.value))} placeholder="(11) 90000-0000" />
+                </div>
               </div>
               <div>
                 <label className="rotulo">Cidade</label>
@@ -224,15 +226,21 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
                 <label className="rotulo">Como quer receber</label>
                 <div className="grid gap-2">
                   {[
-                    { v: 'rota', t: 'Entrega na rota da minha região', d: (entrega ? entrega.zona.n === 4 : dados.cidade_uf.trim().length >= 3) ? 'Sua cidade está fora das rotas atuais; combinamos pelo WhatsApp' : entrega?.prox ? `${entrega.rota?.nome} · próxima saída ${dataCurta(entrega.prox.saida)}` : entrega?.rota ? `${entrega.rota.nome} · você diz a data que precisa, a gente confirma no WhatsApp` : 'A gente confirma a data no WhatsApp' },
-                    { v: 'retirada', t: `Retirada em ${CONSTANTS.RETIRADA}`, d: 'Sem frete · dia e hora combinados' },
-                    { v: 'combinar', t: 'Prefiro combinar no WhatsApp', d: 'Entrega individual ou outra opção' },
+                    { v: 'rota', t: 'Entrega na rota da minha região', d: (entrega ? entrega.zona.n === 4 : dados.cidade_uf.trim().length >= 3) ? 'Sua cidade está fora das rotas atuais; combinamos pelo WhatsApp' : entrega?.prox ? `${entrega.rota?.nome} · próxima saída ${dataCurta(entrega.prox.saida)}` : entrega?.rota ? `${entrega.rota.nome} · você diz a data que precisa, a gente confirma no WhatsApp` : 'A gente confirma a data no WhatsApp', f: entrega ? (entrega.zona.n === 4 ? 'a combinar' : entrega.zona.tarifaTexto) : 'pela sua cidade' },
+                    { v: 'retirada', t: `Retirada em ${CONSTANTS.RETIRADA}`, d: 'Dia e hora combinados', f: 'R$ 0' },
+                    { v: 'combinar', t: 'Prefiro combinar no WhatsApp', d: 'Entrega individual ou outra opção', f: 'a combinar' },
                   ].map((o) => (
                     <label key={o.v} className={`flex items-start gap-3 rounded-xl border px-4 py-3 cursor-pointer ${dados.recebimento === o.v ? 'border-[#D2A93C] bg-[#F6F1E6]' : 'border-[#E1DCCF]'}`}>
                       <input type="radio" name="recebimento" value={o.v} checked={dados.recebimento === o.v} onChange={() => set('recebimento', o.v)} className="mt-1" />
-                      <span>
-                        <span className="block font-sans text-[0.9rem] font-semibold text-[#1F3B2E]">{o.t}</span>
-                        <span className="block font-sans text-[0.74rem] text-[#5B6B5B]">{o.d}</span>
+                      <span className="flex-1 flex items-start justify-between gap-3">
+                        <span>
+                          <span className="block font-sans text-[0.9rem] font-semibold text-[#1F3B2E]">{o.t}</span>
+                          <span className="block font-sans text-[0.74rem] text-[#5B6B5B]">{o.d}</span>
+                        </span>
+                        <span className="text-right whitespace-nowrap">
+                          <span className="block font-sans text-[0.58rem] uppercase tracking-[1px] text-[#9AA59A] font-bold">frete</span>
+                          <span className="block font-sans text-[0.88rem] font-bold text-[#1F3B2E]">{o.f}</span>
+                        </span>
                       </span>
                     </label>
                   ))}
@@ -242,7 +250,7 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
                     <div className="font-sans text-[0.62rem] uppercase tracking-[1.6px] text-[#B99034] font-bold mb-2">
                       {entrega?.rota ? 'Sua rota — confirme ou escolha outra' : 'Escolha a rota'}
                     </div>
-                    <div className="grid gap-1.5">
+                    <div className="grid gap-1.5 sm:grid-cols-2">
                       {ROTAS.map((r) => {
                         const saidas = saidasAbertas(r.datas, r.fechaDiasAntes);
                         const prox = saidas[0];
