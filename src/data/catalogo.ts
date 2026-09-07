@@ -1,5 +1,5 @@
 // src/data/catalogo.ts — categorias, criadores, rotas e constantes da AOB.
-import { Categoria, CategoriaId, Criador, CriadorId } from '../types';
+import { Categoria, CategoriaId, Consultor, Criador, CriadorId } from '../types';
 
 export const CONSTANTS = {
   MARCA: 'Aves Ornamentais Brasil',
@@ -89,6 +89,36 @@ export interface Rota {
 }
 
 /** Calendário de rotas do ciclo set–nov/2026 (05.29, rodada 1 do Meta). Saída de São Paulo. */
+export const CONSULTORES: Consultor[] = [
+  {
+    id: 'coexistir',
+    nome: 'Coexistir',
+    responsavel: 'Higor Marota',
+    profissao: 'Biólogo e educador ambiental',
+    chamada: 'Mais importante que existir, é coexistir.',
+    descricao:
+      'Consultoria em criação de aves ornamentais com olhar de biólogo: como a espécie vive na natureza é o que dita o recinto, a água, o refúgio e a companhia certa. Ajuda quem está montando o primeiro viveiro a acertar antes de comprar — e quem já cria a entender por que uma ave não se adapta.',
+    frentes: ['Comportamento e bem-estar', 'Recinto e ambientação', 'Educação ambiental', 'Escolha da espécie certa'],
+    instagram: 'https://www.instagram.com/coexistir1/',
+    arroba: '@coexistir1',
+    logo: '/consultoria/coexistir.webp',
+  },
+  {
+    id: 'volare',
+    nome: 'Volare',
+    responsavel: 'Consultoria Volare',
+    profissao: 'Zootecnia',
+    chamada: 'Solucionando problemas, desenvolvendo criadores.',
+    descricao:
+      'Consultoria especializada em aves, com a zootecnia aplicada ao plantel: ração e suplementação, rotina de manejo, sanidade e formação de casais. É o apoio para quem quer sair da criação por tentativa e erro e passar a reproduzir com resultado previsível.',
+    frentes: ['Nutrição', 'Manejo', 'Saúde', 'Seleção e aprimoramento genético'],
+    instagram: 'https://www.instagram.com/volare_aves/',
+    arroba: '@volare_aves',
+    logo: '/consultoria/volare.webp',
+    logoEscala: 1.18,
+  },
+];
+
 export const ROTAS: Rota[] = [
   {
     regiao: 'Entrega rápida (Grande São Paulo)',
