@@ -4,11 +4,11 @@ import { Ave } from '../types';
 import { brl, CRIADOR_ROTULO, UNIDADE_ROTULO, UNIDADE_PLURAL, CATEGORIA } from '../data/catalogo';
 import { useCart, estoqueDaUnidade } from '../cart/CartContext';
 
-/** Texto de estoque: fêmeas à esquerda, machos à direita — "2F · 4M". */
+/** Texto de estoque: machos à esquerda, fêmeas à direita — "4M · 2F". */
 export const estoqueTexto = (a: Ave) => {
   const p: string[] = [];
-  if (a.femeas) p.push(`${a.femeas}F`);
   if (a.machos) p.push(`${a.machos}M`);
+  if (a.femeas) p.push(`${a.femeas}F`);
   return p.join(' · ');
 };
 
