@@ -24,9 +24,9 @@ export const Criadores: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ on
             const aves = lotes.reduce((s, a) => s + a.machos + a.femeas, 0);
             return (
               <div key={c.id} className="card p-7">
-                <div className="h-20 mb-5 flex items-center justify-center rounded-xl bg-white border border-[#E1DCCF] px-4">
+                <div className="h-28 mb-5 flex items-center justify-center rounded-xl bg-white border border-[#E1DCCF] px-4">
                   {c.logo
-                    ? <img src={c.logo} alt={`Logotipo ${c.nome}`} className="max-h-14 w-auto max-w-full object-contain" loading="lazy" />
+                    ? <img src={c.logo} alt={`Logotipo ${c.nome}`} className="max-h-24 w-auto max-w-full object-contain" loading="lazy" />
                     : <span className="font-sans text-[0.7rem] uppercase tracking-[1.5px] text-[#9AA59A] font-bold border border-dashed border-[#C9D2C9] rounded-lg px-3 py-2">Logotipo em breve</span>}
                 </div>
                 <div className="eyebrow" style={{ marginBottom: 6 }}>{c.responsavel}</div>
