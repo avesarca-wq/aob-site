@@ -13,7 +13,7 @@ export const Criadores: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ on
           <div className="eyebrow">Quem cria</div>
           <h1 className="sec-title" style={{ fontSize: '2.4rem' }}>Criadouros parceiros</h1>
           <p className="sec-sub" style={{ marginBottom: 0 }}>
-            A Aves Ornamentais Brasil reúne numa lista só o que três criadouros de São Paulo têm pronto para entregar. Cada ave sai do plantel de origem e viaja na mesma rota.
+            A parceria de três criadouros de São Paulo numa lista só. Você escolhe aves de plantéis diferentes no mesmo pedido e elas viajam até você na mesma rota: uma viagem só para as aves, um frete só para você. Juntos, o que nenhum deles tem sozinho.
           </p>
         </div>
       </section>
