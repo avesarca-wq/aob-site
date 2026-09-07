@@ -65,7 +65,7 @@ export const CRIADORES: Criador[] = [
     especialidade: 'Faisões, pavões e perdizes ornamentais.',
     whatsapp: '5511974643823',
     logo: '/criadouros/alianca.webp',
-    descricao: 'Especialista em galiformes para quem está montando o primeiro viveiro. Faisões, pavões e perdizes ornamentais de plantel selecionado em Jundiaí, incluindo as linhagens mais rústicas.',
+    descricao: 'Especialista em galiformes para quem está montando o primeiro viveiro. Faisões, pavões e perdizes ornamentais raras de plantel selecionado em Jundiaí, incluindo as linhagens mais rústicas.',
   },
 ];
 
