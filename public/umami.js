@@ -1,10 +1,17 @@
 // Umami Cloud — mesma propriedade que o avesarca.com.br usa
 // (website b7a2b87a-78a4-4392-93cc-ee6f658328ae, conta avesarca@gmail.com).
 //
-// Por que o mesmo ID e nao um proprio: o plano atual do Umami permite um site
-// so. Como o Umami grava o hostname em todo evento, os dois dominios caem no
-// mesmo painel e ficam comparaveis lado a lado — que era justamente o objetivo.
-// Para separar, e so filtrar por hostname no painel.
+// ATENCAO — este arquivo esta INATIVO (a tag foi comentada no index.html).
+//
+// A ideia era reaproveitar o website id da Arca, ja que o plano atual permite
+// um site so. Nao funciona: o Umami Cloud amarra o website ao dominio
+// configurado e ignora eventos de outro hostname. Testado em 07/09 — na Arca o
+// tracker envia para gateway.umami.is; neste dominio o proprio tracker quebra
+// internamente e nao envia nada.
+//
+// Para ligar de verdade: criar o site "Aves Ornamentais Brasil" no painel do
+// Umami (exige plano com mais de um site), trocar o id abaixo pelo novo e
+// descomentar a tag no index.html. A CSP ja esta liberada.
 //
 // Arquivo externo em vez de inline para respeitar a CSP do site, igual ao
 // meta-pixel.js. defer para nao atrasar a primeira renderizacao.
