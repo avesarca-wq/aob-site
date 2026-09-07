@@ -43,7 +43,7 @@ export const CRIADORES: Criador[] = [
     logo: '/criadouros/aves-arca.webp',
     logoEscala: 1.22,
     descricao:
-      'Criadouro de aves aquáticas ornamentais. Plantel de matrizes nascidas e criadas em São Paulo, com fotos reais de cada variedade.',
+      'Especialista em anatídeos ornamentais. Plantel de matrizes nascidas e criadas em São Paulo, com foto real de cada variedade e documentação de origem em todas as aves.',
   },
   {
     id: 'stima',
@@ -54,7 +54,7 @@ export const CRIADORES: Criador[] = [
     especialidade: 'Pavões, faisões, perdizes, pombas, psitacídeos e aves exóticas.',
     whatsapp: '5511943007375',
     logo: '/criadouros/stima.webp',
-    descricao: 'Criadouro parceiro com foco em galiformes ornamentais e aves exóticas de coleção.',
+    descricao: 'Plantel sob responsabilidade técnica de médico veterinário. Traz para a rede as aves de coleção: psitacídeos, turacos e pombas ornamentais, além de pavões e faisões.',
   },
   {
     id: 'alianca',
@@ -65,7 +65,7 @@ export const CRIADORES: Criador[] = [
     especialidade: 'Faisões, pavões e perdizes ornamentais.',
     whatsapp: '5511974643823',
     logo: '/criadouros/alianca.webp',
-    descricao: 'Criadouro parceiro que completa a lista com galiformes e aves de coleção.',
+    descricao: 'Especialista em galiformes. Faisões, pavões e perdizes ornamentais de plantel selecionado, criados em Jundiaí.',
   },
 ];
 
