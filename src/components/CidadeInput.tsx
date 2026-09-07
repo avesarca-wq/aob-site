@@ -99,7 +99,13 @@ export const CidadeInput: React.FC<Props> = ({ value, onChange, mostrarResumo = 
         </ul>
       )}
 
-      {mostrarResumo && info && (
+      {mostrarResumo && info && info.zona.n === 4 && (
+        <p className="font-sans text-[0.72rem] text-[#5B6B5B] mt-1.5 mb-0 leading-snug">
+          Sua cidade está fora das rotas atuais; combinamos pelo WhatsApp. Pode enviar o pedido assim mesmo.
+        </p>
+      )}
+
+      {mostrarResumo && info && info.zona.n !== 4 && (
         <div className="mt-2 rounded-xl border border-[#E1DCCF] bg-[#F6F1E6] px-3.5 py-2.5">
           <p className="flex items-start gap-1.5 font-sans text-[0.74rem] text-[#1F3B2E] m-0 leading-snug">
             <MapPin className="w-3.5 h-3.5 flex-none mt-px text-[#B99034]" />
@@ -122,7 +128,7 @@ export const CidadeInput: React.FC<Props> = ({ value, onChange, mostrarResumo = 
 
       {mostrarResumo && foraDaMalha && (
         <p className="font-sans text-[0.72rem] text-[#5B6B5B] mt-1.5 mb-0 leading-snug">
-          Não encontramos sua cidade na malha de rotas. Pode enviar assim mesmo — a gente combina retirada em São Paulo ou uma entrega individual.
+          Sua cidade está fora das rotas atuais; combinamos pelo WhatsApp. Pode enviar o pedido assim mesmo.
         </p>
       )}
     </div>
