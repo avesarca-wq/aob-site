@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { CartLine } from '../types';
 import { AVES, aveDoId } from '../data/aves';
+import { medirAddToCart } from '../lib/medir';
 
 const STORAGE_KEY = 'aob:pedido:v1';
 const IDS = new Set(AVES.map((a) => a.id));
@@ -63,12 +64,17 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       totalUnidades,
       totalReferencia,
       quantidadeDe: (id) => linhas.find((l) => l.id === id)?.quantidade ?? 0,
-      adicionar: (id, quantidade = 1) =>
+      adicionar: (id, quantidade = 1) => {
+        // Medir aqui, e não em cada botão: toda página que adiciona ao pedido
+        // passa por este ponto, então nenhum caminho fica sem evento.
+        const a = aveDoId(id);
+        if (a) medirAddToCart({ nome: a.nome, detalhe: a.detalhe, preco: a.preco, quantidade: limitar(id, quantidade) });
         setLinhas((atual) => {
           const ex = atual.find((l) => l.id === id);
           if (ex) return atual.map((l) => (l.id === id ? { ...l, quantidade: limitar(id, l.quantidade + quantidade) } : l));
           return [...atual, { id, quantidade: limitar(id, quantidade) }];
-        }),
+        });
+      },
       alterar: (id, quantidade) =>
         setLinhas((atual) =>
           quantidade <= 0 ? atual.filter((l) => l.id !== id) : atual.map((l) => (l.id === id ? { ...l, quantidade: limitar(id, quantidade) } : l)),
