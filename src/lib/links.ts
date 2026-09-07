@@ -9,6 +9,7 @@ export const CAMINHOS: Record<PageRoute, string> = {
   pedido: '/pedido',
   rotas: '/rotas',
   criadores: '/criadores',
+  consultoria: '/consultoria',
   contato: '/contato',
   privacidade: '/privacidade',
 };
@@ -24,6 +25,7 @@ const MENSAGEM: Record<string, string> = {
   contato: 'Olá! Vim pela página de contato da Aves Ornamentais Brasil.',
   rotas: 'Olá! Vim pela página de rotas da Aves Ornamentais Brasil e quero saber da entrega na minha cidade.',
   criadores: 'Olá! Vim pela página dos criadouros da Aves Ornamentais Brasil.',
+  consultoria: 'Olá! Vim pela página de consultoria da Aves Ornamentais Brasil e quero falar com um consultor.',
 };
 const PADRAO = MENSAGEM.menu;
 
