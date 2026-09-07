@@ -23,7 +23,7 @@ export const Consultoria: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ 
       <div className="wrap grid grid-cols-1 md:grid-cols-2 gap-5 items-stretch">
         {CONSULTORES.map((c) => (
           <div key={c.id} className="card p-7 flex flex-col text-center h-full">
-            <div className="h-32 mb-5 flex items-center justify-center rounded-xl bg-white border border-[#E1DCCF] px-5 py-3 overflow-hidden">
+            <div className="h-44 mb-5 flex items-center justify-center rounded-xl bg-white border border-[#E1DCCF] px-5 py-3 overflow-hidden">
               <img
                 src={c.logo}
                 alt={`Logotipo ${c.nome}`}
