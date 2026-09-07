@@ -13,6 +13,8 @@
  *   CONFIRMA_CLIENTE opcional. "1" manda cópia de confirmação ao cliente (só com domínio verificado).
  */
 
+import { pegar, ChavePedido } from '../../src/lib/campos-pedido';
+
 const RESEND_API = 'https://api.resend.com/emails';
 const COR = { verde: '#1F3B2E', ouro: '#B99034', marfim: '#F6F1E6', ink: '#1E2A24', cinza: '#5B6B5B', borda: '#E1DCCF' };
 const WA = '5511995610741';
@@ -22,11 +24,19 @@ const esc = (s: unknown) =>
 const brl = (v: number) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 }).format(v);
 const soDigitos = (s: string) => (s || '').replace(/\D/g, '');
 
+/**
+ * Lê um campo da submissão. Os pedidos novos chegam com os rótulos legíveis
+ * ("Código", "Cidade"); os gravados antes de 07/09/2026 usam os nomes antigos
+ * ("codigo", "cidade_uf"). `pegar` tenta o novo e cai para o velho, então os
+ * dois continuam gerando o mesmo e-mail.
+ */
+const g = (d: Record<string, string>, chave: ChavePedido) => pegar(d, chave);
+
 interface Linha { nome?: string; detalhe?: string; criador?: string; unidade?: string; quantidade?: number; valorUnitario?: number }
 const UNID: Record<string, string> = { casal: 'casal', macho: 'macho', femea: 'fêmea' };
 
 function linhas(d: Record<string, string>): Linha[] {
-  try { const j = JSON.parse(d.pedido_json || '[]'); return Array.isArray(j) ? j : []; } catch { return []; }
+  try { const j = JSON.parse(g(d, 'pedido_json') || '[]'); return Array.isArray(j) ? j : []; } catch { return []; }
 }
 
 const campo = (rotulo: string, valor: string, destaque = false) => `
@@ -37,9 +47,9 @@ const campo = (rotulo: string, valor: string, destaque = false) => `
 
 function emailPedido(d: Record<string, string>) {
   const ls = linhas(d);
-  const total = Number(d.total_referencia) || ls.reduce((s, l) => s + (l.quantidade || 0) * (l.valorUnitario || 0), 0);
-  const wa = soDigitos(d.whatsapp);
-  const waCliente = wa ? `https://wa.me/${wa.startsWith('55') ? wa : '55' + wa}?text=${encodeURIComponent(`Olá, ${d.nome}! Recebemos seu pedido ${d.codigo} na Aves Ornamentais Brasil.`)}` : '';
+  const total = Number(g(d, 'total_referencia')) || ls.reduce((s, l) => s + (l.quantidade || 0) * (l.valorUnitario || 0), 0);
+  const wa = soDigitos(g(d, 'whatsapp'));
+  const waCliente = wa ? `https://wa.me/${wa.startsWith('55') ? wa : '55' + wa}?text=${encodeURIComponent(`Olá, ${g(d, 'nome')}! Recebemos seu pedido ${g(d, 'codigo')} na Aves Ornamentais Brasil.`)}` : '';
 
   const tabela = ls.length
     ? ls.map((l) => `
@@ -51,25 +61,25 @@ function emailPedido(d: Record<string, string>) {
   </td>
   <td align="right" style="padding:10px 0 10px 8px;border-bottom:1px solid ${COR.borda};font-family:Helvetica,Arial,sans-serif;font-size:15px;font-weight:bold;color:${COR.ink};white-space:nowrap;vertical-align:top;">${brl((l.quantidade || 0) * (l.valorUnitario || 0))}</td>
 </tr>`).join('')
-    : `<tr><td style="font-family:Helvetica,Arial,sans-serif;font-size:14px;color:${COR.ink};white-space:pre-wrap;">${esc(d.pedido_resumo)}</td></tr>`;
+    : `<tr><td style="font-family:Helvetica,Arial,sans-serif;font-size:14px;color:${COR.ink};white-space:pre-wrap;">${esc(g(d, 'pedido_resumo'))}</td></tr>`;
 
   const html = `<!doctype html><html lang="pt-BR"><body style="margin:0;background:${COR.marfim};padding:24px 12px;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center">
 <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;background:#fff;border-radius:16px;overflow:hidden;border:1px solid ${COR.borda};">
   <tr><td style="background:${COR.verde};padding:22px 28px;">
     <div style="font-family:Helvetica,Arial,sans-serif;font-size:11px;letter-spacing:.3em;color:${COR.ouro};text-transform:uppercase;">Aves Ornamentais Brasil</div>
-    <div style="font-family:Georgia,serif;font-size:26px;color:${COR.marfim};margin-top:6px;">Pedido novo · ${esc(d.codigo)}</div>
-    <div style="font-family:Helvetica,Arial,sans-serif;font-size:13px;color:#C9D2C9;margin-top:4px;">${esc(d.rota)}${d.proxima_saida ? ` · próxima saída ${esc(d.proxima_saida)}` : ''}</div>
+    <div style="font-family:Georgia,serif;font-size:26px;color:${COR.marfim};margin-top:6px;">Pedido novo · ${esc(g(d, 'codigo'))}</div>
+    <div style="font-family:Helvetica,Arial,sans-serif;font-size:13px;color:#C9D2C9;margin-top:4px;">${esc(g(d, 'rota'))}${g(d, 'proxima_saida') ? ` · próxima saída ${esc(g(d, 'proxima_saida'))}` : ''}</div>
   </td></tr>
   <tr><td style="padding:22px 28px 6px;">
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-      ${campo('Cliente', esc(d.nome), true)}
-      ${campo('WhatsApp', waCliente ? `<a href="${waCliente}" style="color:${COR.verde};font-weight:bold;">${esc(d.whatsapp)}</a>` : esc(d.whatsapp))}
+      ${campo('Cliente', esc(g(d, 'nome')), true)}
+      ${campo('WhatsApp', waCliente ? `<a href="${waCliente}" style="color:${COR.verde};font-weight:bold;">${esc(g(d, 'whatsapp'))}</a>` : esc(g(d, 'whatsapp')))}
       ${d.email ? campo('E-mail', `<a href="mailto:${esc(d.email)}" style="color:${COR.verde};">${esc(d.email)}</a>`) : ''}
-      ${campo('Cidade', esc(d.cidade_uf))}
-      ${campo('Recebimento', esc(d.recebimento))}
-      ${campo('Frete', `${esc(d.frete_zona)} · ${/^\d+$/.test(d.frete_valor || '') ? brl(Number(d.frete_valor)) : esc(d.frete_valor)}`)}
-      ${d.observacoes ? campo('Observações', esc(d.observacoes)) : ''}
+      ${campo('Cidade', esc(g(d, 'cidade_uf')))}
+      ${campo('Recebimento', esc(g(d, 'recebimento')))}
+      ${campo('Frete', `${esc(g(d, 'frete_zona'))} · ${/^\d+$/.test(g(d, 'frete_valor') || '') ? brl(Number(g(d, 'frete_valor'))) : esc(g(d, 'frete_valor'))}`)}
+      ${g(d, 'observacoes') ? campo('Observações', esc(g(d, 'observacoes'))) : ''}
     </table>
   </td></tr>
   <tr><td style="padding:10px 28px 8px;">
@@ -81,17 +91,17 @@ function emailPedido(d: Record<string, string>) {
   </td></tr>
   <tr><td style="padding:18px 28px 26px;">
     ${waCliente ? `<a href="${waCliente}" style="display:inline-block;background:#1E8E5A;color:#fff;text-decoration:none;font-family:Helvetica,Arial,sans-serif;font-weight:bold;font-size:14px;padding:12px 22px;border-radius:999px;">Responder no WhatsApp</a>` : ''}
-    <div style="font-family:Helvetica,Arial,sans-serif;font-size:11px;color:${COR.cinza};margin-top:16px;">Origem: ${esc(d.origem)} · ${esc(d.pagina_entrada)}</div>
+    <div style="font-family:Helvetica,Arial,sans-serif;font-size:11px;color:${COR.cinza};margin-top:16px;">Origem: ${esc(g(d, 'origem'))} · ${esc(g(d, 'pagina_entrada'))}</div>
   </td></tr>
 </table></td></tr></table></body></html>`;
 
-  const texto = `Pedido ${d.codigo} · ${d.nome} · ${d.whatsapp}\n${d.cidade_uf} · ${d.rota}${d.proxima_saida ? ` · ${d.proxima_saida}` : ''}\nRecebimento: ${d.recebimento} · Frete: ${d.frete_zona} ${d.frete_valor}\n\n${d.pedido_resumo}\n\nTotal de referência: ${brl(total)}\n${d.observacoes ? `Obs.: ${d.observacoes}\n` : ''}`;
-  return { assunto: d.subject || `Pedido ${d.codigo} · ${d.nome} · ${brl(total)}`, html, texto, respostaPara: d.email || undefined };
+  const texto = `Pedido ${g(d, 'codigo')} · ${g(d, 'nome')} · ${g(d, 'whatsapp')}\n${g(d, 'cidade_uf')} · ${g(d, 'rota')}${g(d, 'proxima_saida') ? ` · ${g(d, 'proxima_saida')}` : ''}\nRecebimento: ${g(d, 'recebimento')} · Frete: ${g(d, 'frete_zona')} ${g(d, 'frete_valor')}\n\n${g(d, 'pedido_resumo')}\n\nTotal de referência: ${brl(total)}\n${g(d, 'observacoes') ? `Obs.: ${g(d, 'observacoes')}\n` : ''}`;
+  return { assunto: d.subject || `Pedido ${g(d, 'codigo')} · ${g(d, 'nome')} · ${brl(total)}`, html, texto, respostaPara: d.email || undefined };
 }
 
 function emailCliente(d: Record<string, string>) {
-  const texto = `Olá, ${d.nome}!\n\nRecebemos seu pedido ${d.codigo} na Aves Ornamentais Brasil.\n\n${d.pedido_resumo}\n\nRota: ${d.rota}${d.proxima_saida ? ` · próxima saída ${d.proxima_saida}` : ''}\nRecebimento: ${d.recebimento}\n\nA confirmação de estoque e da data vem pelo WhatsApp. Pagamento só na entrega.\n\nWhatsApp: https://wa.me/${WA}`;
-  return { assunto: `Recebemos seu pedido ${d.codigo} — Aves Ornamentais Brasil`, html: `<pre style="font-family:Georgia,serif;font-size:15px;white-space:pre-wrap;">${esc(texto)}</pre>`, texto };
+  const texto = `Olá, ${g(d, 'nome')}!\n\nRecebemos seu pedido ${g(d, 'codigo')} na Aves Ornamentais Brasil.\n\n${g(d, 'pedido_resumo')}\n\nRota: ${g(d, 'rota')}${g(d, 'proxima_saida') ? ` · próxima saída ${g(d, 'proxima_saida')}` : ''}\nRecebimento: ${g(d, 'recebimento')}\n\nA confirmação de estoque e da data vem pelo WhatsApp. Pagamento só na entrega.\n\nWhatsApp: https://wa.me/${WA}`;
+  return { assunto: `Recebemos seu pedido ${g(d, 'codigo')} — Aves Ornamentais Brasil`, html: `<pre style="font-family:Georgia,serif;font-size:15px;white-space:pre-wrap;">${esc(texto)}</pre>`, texto };
 }
 
 async function enviar(para: string[], peca: { assunto: string; html: string; texto: string; respostaPara?: string }) {
