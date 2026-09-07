@@ -51,27 +51,32 @@
   </head>
   <body>
     <!-- Formulário estático oculto: a Netlify só reconhece formulários presentes no HTML do deploy.
-         O envio real é feito pelo React (POST url-encoded para "/" com form-name=pedido). -->
+         O envio real é feito pelo React (POST url-encoded para "/" com form-name=pedido).
+
+         Os names são os rótulos de src/lib/campos-pedido.ts, e não nomes de variável.
+         Motivo: a notificação automática da Netlify não tem template — ela imprime
+         cada campo usando o próprio name como título. Com "cidade_uf" o e-mail saía
+         "Cidade Uf". Mexeu aqui, mexa lá também: a lista precisa bater. -->
     <form name="pedido" data-netlify="true" data-netlify-honeypot="bot-field" hidden>
       <input type="hidden" name="form-name" value="pedido" />
       <input type="text" name="subject" />
-      <input type="text" name="codigo" />
-      <input type="text" name="nome" />
-      <input type="tel" name="whatsapp" />
-      <input type="text" name="cidade_uf" />
-      <input type="text" name="regiao" />
-      <input type="text" name="rota" />
-      <input type="text" name="rota_escolhida" />
-      <input type="text" name="proxima_saida" />
-      <input type="text" name="frete_zona" />
-      <input type="text" name="frete_valor" />
-      <input type="text" name="recebimento" />
-      <textarea name="observacoes"></textarea>
-      <textarea name="pedido_resumo"></textarea>
-      <textarea name="pedido_json"></textarea>
-      <input type="text" name="total_referencia" />
-      <input type="text" name="origem" />
-      <input type="text" name="pagina_entrada" />
+      <input type="text" name="Código" />
+      <input type="text" name="Cliente" />
+      <input type="tel" name="WhatsApp" />
+      <input type="text" name="Cidade" />
+      <input type="text" name="Região" />
+      <input type="text" name="Rota" />
+      <input type="text" name="Rota Escolhida" />
+      <input type="text" name="Próxima Saída" />
+      <input type="text" name="Zona" />
+      <input type="text" name="Frete" />
+      <input type="text" name="Recebimento" />
+      <textarea name="Observações"></textarea>
+      <textarea name="Pedido"></textarea>
+      <input type="text" name="Total" />
+      <input type="text" name="Origem" />
+      <input type="text" name="Página" />
+      <textarea name="Itens JSON"></textarea>
       <input type="text" name="bot-field" />
     </form>
     <div id="root"></div>
