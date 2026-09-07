@@ -13,6 +13,7 @@ import { Tabela } from './pages/Tabela';
 import { Pedido } from './pages/Pedido';
 import { Rotas } from './pages/Rotas';
 import { Criadores } from './pages/Criadores';
+import { Consultoria } from './pages/Consultoria';
 import { Contato } from './pages/Contato';
 import { Privacidade } from './pages/Privacidade';
 
@@ -24,6 +25,7 @@ const META: Record<PageRoute, { titulo: string; descricao: string }> = {
   pedido: { titulo: `Meu pedido — ${M}`, descricao: 'Feche seu pedido de aves ornamentais: cidade, rota de entrega e confirmação pelo WhatsApp. Sem pagamento antecipado.' },
   rotas: { titulo: `Rotas de entrega — ${M}`, descricao: 'Calendário das rotas de entrega por região, cidades atendidas e frete por saída a partir de São Paulo.' },
   criadores: { titulo: `Criadouros parceiros — ${M}`, descricao: 'Aves Arca, Stima Aves e Criadouro Aliança: quem cria as aves da lista.' },
+  consultoria: { titulo: `Consultoria técnica — ${M}`, descricao: 'Biólogo e zootecnista parceiros da rede: recinto, manejo, nutrição, sanidade e formação de casais para quem cria aves ornamentais.' },
   contato: { titulo: `Contato — ${M}`, descricao: 'WhatsApp, e-mail e Instagram da Aves Ornamentais Brasil.' },
   privacidade: { titulo: `Privacidade — ${M}`, descricao: 'Como tratamos os dados de quem faz um pedido.' },
 };
@@ -107,6 +109,7 @@ export default function App() {
               {pagina === 'pedido' && <Pedido onNavigate={navegar} />}
               {pagina === 'rotas' && <Rotas onNavigate={navegar} />}
               {pagina === 'criadores' && <Criadores onNavigate={navegar} />}
+              {pagina === 'consultoria' && <Consultoria onNavigate={navegar} />}
               {pagina === 'contato' && <Contato onNavigate={navegar} />}
               {pagina === 'privacidade' && <Privacidade />}
             </>

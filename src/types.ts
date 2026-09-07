@@ -87,5 +87,21 @@ export type PageRoute =
   | 'pedido'
   | 'rotas'
   | 'criadores'
+  | 'consultoria'
   | 'contato'
   | 'privacidade';
+
+/** Consultor técnico da rede — apoio a quem cria, antes e depois da compra. */
+export interface Consultor {
+  id: string;
+  nome: string;
+  responsavel: string;
+  profissao: string;
+  chamada: string;
+  descricao: string;
+  frentes: string[];
+  instagram: string;
+  arroba: string;
+  logo: string;
+  logoEscala?: number;
+}
