@@ -119,7 +119,7 @@ export const CONSULTORES: Consultor[] = [
     whatsapp: '5521981645422',
     whatsappDisplay: '(21) 98164-5422',
     logo: '/consultoria/volare.webp',
-    logoEscala: 1.18,
+    logoEscala: 1.4,
   },
 ];
 
