@@ -60,6 +60,8 @@ export interface Criador {
   descricao: string;
   /** Caminho em public/. Sem logo = espaço "em breve". */
   logo?: string;
+  /** Fator de escala da logo dentro da caixa (1 = natural). Artes altas ficam pequenas na caixa larga. */
+  logoEscala?: number;
 }
 
 /** Uma linha do pedido. A quantidade é de UNIDADES (casais, machos ou fêmeas). */
