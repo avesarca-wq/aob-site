@@ -30,6 +30,7 @@
     X-Frame-Options = "SAMEORIGIN"
     # CSP: próprio site + fontes do Google + Meta Pixel (06/09) + Umami (07/09).
     # O Umami precisa de duas liberações: script-src para carregar o script.js
-    # e connect-src para o beacon de cada evento. Sem a segunda, o script carrega
-    # e nada é registrado — falha silenciosa.
-    Content-Security-Policy = "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self'; script-src 'self' https://connect.facebook.net https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https://www.facebook.com; connect-src 'self' https://www.facebook.com https://connect.facebook.net https://cloud.umami.is https://api.umami.is; upgrade-insecure-requests"
+    # e connect-src para o beacon de cada evento, que sai para gateway.umami.is
+    # (e não para cloud.umami.is — verificado no site da Arca em 07/09).
+    # Já liberado para quando o Umami do AOB for ligado.
+    Content-Security-Policy = "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self'; script-src 'self' https://connect.facebook.net https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https://www.facebook.com; connect-src 'self' https://www.facebook.com https://connect.facebook.net https://cloud.umami.is https://gateway.umami.is; upgrade-insecure-requests"
