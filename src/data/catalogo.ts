@@ -37,13 +37,13 @@ export const CRIADORES: Criador[] = [
     nome: 'Aves Arca',
     responsavel: 'Ricardo Dutra',
     profissao: 'Diretor Industrial',
-    cidade: 'Diadema – SP',
+    cidade: 'São Paulo – Capital',
     especialidade: 'Anatídeos ornamentais: patos, marrecos, gansos, cisnes, tadornas e mergulhões.',
     whatsapp: '5511995610741',
     logo: '/criadouros/aves-arca.webp',
     logoEscala: 1.22,
     descricao:
-      'Especialista em anatídeos ornamentais. Plantel de matrizes nascidas e criadas em São Paulo, com foto real de cada variedade e documentação de origem em todas as aves.',
+      'Especialista em anatídeos ornamentais para quem está começando e para quem já coleciona. Plantel de matrizes criadas em São Paulo – Capital, do marreco de entrada às espécies raras, com foto real de cada variedade.',
   },
   {
     id: 'stima',
@@ -54,7 +54,7 @@ export const CRIADORES: Criador[] = [
     especialidade: 'Pavões, faisões, perdizes, pombas, psitacídeos e aves exóticas.',
     whatsapp: '5511943007375',
     logo: '/criadouros/stima.webp',
-    descricao: 'Plantel sob responsabilidade técnica de médico veterinário. Traz para a rede as aves de coleção: psitacídeos, turacos e pombas ornamentais, além de pavões e faisões.',
+    descricao: 'Especialista em aves de coleção, com plantel sob responsabilidade técnica de médico veterinário — a orientação de sanidade e manejo que todo criador deveria ouvir antes de comprar.',
   },
   {
     id: 'alianca',
@@ -65,7 +65,7 @@ export const CRIADORES: Criador[] = [
     especialidade: 'Faisões, pavões e perdizes ornamentais.',
     whatsapp: '5511974643823',
     logo: '/criadouros/alianca.webp',
-    descricao: 'Especialista em galiformes. Faisões, pavões e perdizes ornamentais de plantel selecionado, criados em Jundiaí.',
+    descricao: 'Especialista em galiformes para quem está montando o primeiro viveiro. Faisões, pavões e perdizes ornamentais de plantel selecionado em Jundiaí, incluindo as linhagens mais rústicas.',
   },
 ];
 
