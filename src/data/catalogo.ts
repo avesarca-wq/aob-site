@@ -39,7 +39,7 @@ export const CRIADORES: Criador[] = [
     cidade: 'Diadema – SP',
     especialidade: 'Anatídeos ornamentais: patos, marrecos, gansos, tadornas e mergulhões.',
     whatsapp: '5511995610741',
-    logo: '/criadouros/aves-arca.svg',
+    logo: '/criadouros/aves-arca.webp',
     descricao:
       'Criadouro de aves aquáticas ornamentais. Plantel de matrizes nascidas e criadas em São Paulo, com fotos reais de cada variedade.',
   },
