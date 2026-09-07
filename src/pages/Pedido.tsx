@@ -1,13 +1,24 @@
 import React, { useMemo, useState } from 'react';
-import { Trash2, MessageCircle, CheckCircle2, ArrowLeft, ShoppingBasket } from 'lucide-react';
+import { Trash2, MessageCircle, CheckCircle2, ArrowLeft, ShoppingBasket, CalendarDays, Truck, MapPin, ArrowRight } from 'lucide-react';
 import { DadosCliente, PageRoute } from '../types';
 import { aveDoId } from '../data/aves';
-import { brl, CONSTANTS, CRIADOR_ROTULO, UNIDADE_ROTULO, UNIDADE_PLURAL, dataCurta } from '../data/catalogo';
+import { brl, CONSTANTS, CRIADOR_ROTULO, UNIDADE_ROTULO, UNIDADE_PLURAL, dataCurta, dataLonga } from '../data/catalogo';
 import { useCart } from '../cart/CartContext';
 import { CidadeInput, entregaDaCidade } from '../components/CidadeInput';
 import { waComTexto } from '../lib/links';
 
 const NOME_FORM = 'pedido';
+
+/** Saídas ainda abertas para pedido, em ordem. */
+const saidasAbertas = (datas: string[], fechaDiasAntes: number) => {
+  const hoje = new Date(); hoje.setHours(0, 0, 0, 0);
+  return datas
+    .map((iso) => {
+      const saida = new Date(iso + 'T12:00:00-03:00');
+      return { saida, fecha: new Date(saida.getTime() - fechaDiasAntes * 86400000) };
+    })
+    .filter((d) => d.fecha.getTime() >= hoje.getTime());
+};
 
 /** Código do pedido: AOB-DDMM-NNN (sequencial por navegador, só para a conversa ter referência). */
 const gerarCodigo = () => {
@@ -204,7 +215,7 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
                 <label className="rotulo">Como quer receber</label>
                 <div className="grid gap-2">
                   {[
-                    { v: 'rota', t: 'Entrega na rota da minha região', d: (entrega ? entrega.zona.n === 4 : dados.cidade_uf.trim().length >= 3) ? 'Sua cidade está fora das rotas atuais; combinamos pelo WhatsApp' : entrega?.prox ? `Próxima saída ${dataCurta(entrega.prox.saida)}` : 'A gente confirma a data no WhatsApp' },
+                    { v: 'rota', t: 'Entrega na rota da minha região', d: (entrega ? entrega.zona.n === 4 : dados.cidade_uf.trim().length >= 3) ? 'Sua cidade está fora das rotas atuais; combinamos pelo WhatsApp' : entrega?.prox ? `${entrega.rota?.nome} · próxima saída ${dataCurta(entrega.prox.saida)}` : entrega?.rota ? `${entrega.rota.nome} · a gente confirma a data no WhatsApp` : 'A gente confirma a data no WhatsApp' },
                     { v: 'retirada', t: `Retirada em ${CONSTANTS.RETIRADA}`, d: 'Sem frete · dia e hora combinados' },
                     { v: 'combinar', t: 'Prefiro combinar no WhatsApp', d: 'Entrega individual ou outra opção' },
                   ].map((o) => (
@@ -217,6 +228,62 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
                     </label>
                   ))}
                 </div>
+                {dados.recebimento === 'rota' && entrega && entrega.rota && entrega.zona.n !== 4 && (() => {
+                  const saidas = saidasAbertas(entrega.rota.datas, entrega.rota.fechaDiasAntes);
+                  const prox = saidas[0];
+                  return (
+                    <div className="mt-3 rounded-xl border border-[#D2A93C] bg-[#F6F1E6] p-4">
+                      <div className="font-sans text-[0.62rem] uppercase tracking-[1.6px] text-[#B99034] font-bold">Sua rota</div>
+                      <div className="font-serif text-[1.15rem] text-[#1F3B2E] leading-tight mt-0.5">{entrega.rota.nome}</div>
+
+                      {prox ? (
+                        <>
+                          <div className="mt-3 flex items-start gap-2">
+                            <CalendarDays className="w-4 h-4 flex-none mt-0.5 text-[#1E8E5A]" />
+                            <div>
+                              <div className="font-sans text-[0.9rem] font-semibold text-[#1F3B2E] leading-tight">Próxima saída: {dataLonga(prox.saida)}</div>
+                              <div className="font-sans text-[0.74rem] text-[#5B6B5B]">Pedidos até <b>{dataCurta(prox.fecha)}</b> para entrar nessa viagem</div>
+                            </div>
+                          </div>
+                          {saidas.length > 1 && (
+                            <div className="mt-2.5 flex flex-wrap items-center gap-1.5">
+                              <span className="font-sans text-[0.72rem] text-[#5B6B5B]">Depois dessa:</span>
+                              {saidas.slice(1, 4).map((d) => (
+                                <span key={d.saida.toISOString()} className="font-sans text-[0.72rem] font-semibold text-[#1F3B2E] bg-white border border-[#E1DCCF] rounded-full px-2.5 py-0.5">{dataCurta(d.saida)}</span>
+                              ))}
+                            </div>
+                          )}
+                        </>
+                      ) : (
+                        <div className="mt-3 flex items-start gap-2">
+                          <CalendarDays className="w-4 h-4 flex-none mt-0.5 text-[#B99034]" />
+                          <div className="font-sans text-[0.8rem] text-[#1E2A24] leading-snug">
+                            {entrega.zona.n === 1
+                              ? 'Data combinada direto pelo WhatsApp, sem esperar a rota fechar.'
+                              : 'Rota em formação: seu pedido entra na lista e a gente avisa assim que a data fechar.'}
+                          </div>
+                        </div>
+                      )}
+
+                      <div className="mt-3 pt-3 border-t border-[#E1DCCF] grid gap-1.5">
+                        <div className="flex items-start gap-2 font-sans text-[0.76rem] text-[#1E2A24]">
+                          <Truck className="w-3.5 h-3.5 flex-none mt-0.5 text-[#B99034]" />
+                          <span>Frete <b>{entrega.zona.tarifaTexto}</b> · {entrega.zona.rotulo}</span>
+                        </div>
+                        {entrega.rota.nota && entrega.zona.n !== 1 && (
+                          <div className="flex items-start gap-2 font-sans text-[0.76rem] text-[#5B6B5B]">
+                            <MapPin className="w-3.5 h-3.5 flex-none mt-0.5 text-[#B99034]" />
+                            <span>{entrega.rota.nota}</span>
+                          </div>
+                        )}
+                      </div>
+
+                      <button type="button" onClick={() => onNavigate('rotas')} className="mt-3 inline-flex items-center gap-1 bg-transparent border-0 p-0 cursor-pointer font-sans text-[0.76rem] font-bold text-[#1F3B2E] underline">
+                        Ver o calendário completo <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  );
+                })()}
               </div>
               <div>
                 <label className="rotulo" htmlFor="obs">Observações <span className="normal-case tracking-normal font-normal">(opcional)</span></label>
