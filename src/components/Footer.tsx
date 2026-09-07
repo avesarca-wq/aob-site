@@ -35,6 +35,7 @@ export const Footer: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
               <L route="pedido" label="Meu pedido" />
               <L route="rotas" label="Rotas de entrega" />
               <L route="criadores" label="Criadouros parceiros" />
+              <L route="consultoria" label="Consultoria" />
               <L route="contato" label="Contato" />
               <L route="privacidade" label="Privacidade" />
               <a

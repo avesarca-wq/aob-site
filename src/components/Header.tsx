@@ -20,6 +20,7 @@ export const Header: React.FC<Props> = ({ currentPage, onNavigate }) => {
     { route: 'tabela', label: 'Tabela de valores' },
     { route: 'rotas', label: 'Rotas de entrega' },
     { route: 'criadores', label: 'Criadouros' },
+    { route: 'consultoria', label: 'Consultoria' },
     { route: 'contato', label: 'Contato' },
   ];
 
