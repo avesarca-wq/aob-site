@@ -58,6 +58,8 @@ export interface Criador {
   especialidade: string;
   whatsapp: string;
   descricao: string;
+  /** Caminho em public/. Sem logo = espaço "em breve". */
+  logo?: string;
 }
 
 /** Uma linha do pedido. A quantidade é de UNIDADES (casais, machos ou fêmeas). */
