@@ -6,6 +6,7 @@ import { brl, CONSTANTS, CRIADOR_ROTULO, ROTAS, UNIDADE_ROTULO, UNIDADE_PLURAL, 
 import { useCart } from '../cart/CartContext';
 import { CidadeInput, entregaDaCidade } from '../components/CidadeInput';
 import { waComTexto } from '../lib/links';
+import { medirInitiateCheckout, medirPedido, medirContato } from '../lib/medir';
 
 const NOME_FORM = 'pedido';
 
@@ -56,6 +57,17 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
   const frete = dados.recebimento === 'retirada' ? 0 : entrega?.zona.tarifa ?? null;
   // ao reconhecer a cidade, sugere a rota da região (o cliente pode trocar)
   useEffect(() => { if (entrega?.rota) setRotaSel(entrega.rota.regiao); }, [entrega?.rota?.regiao]);
+
+  // Chegou na pagina de pedido com itens: intencao de compra declarada.
+  // Roda uma vez por visita — a dependencia vazia evita repetir a cada
+  // mudanca do carrinho, o que inflaria o evento.
+  const [checkoutMedido, setCheckoutMedido] = useState(false);
+  useEffect(() => {
+    if (!checkoutMedido && totalUnidades > 0) {
+      medirInitiateCheckout(totalReferencia, totalUnidades);
+      setCheckoutMedido(true);
+    }
+  }, [checkoutMedido, totalUnidades, totalReferencia]);
   const rota = useMemo(() => ROTAS.find((r) => r.regiao === rotaSel) ?? entrega?.rota ?? null, [rotaSel, entrega]);
 
 
@@ -115,6 +127,7 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
       // O formulário falhar não pode travar o pedido: o WhatsApp é o canal principal.
       console.warn('Falha ao registrar o formulário', err);
     }
+    medirPedido({ codigo: cod, total: totalReferencia, unidades: totalUnidades, rota: rotaTxt });
     setMsgWhats(texto);
     setCodigo(cod);
     esvaziar();
@@ -130,7 +143,7 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
           <div className="eyebrow">Pedido registrado</div>
           <h1 className="sec-title center" style={{ fontSize: '2.2rem' }}>Código {codigo}</h1>
           <p className="sec-sub">Agora é só mandar o pedido no WhatsApp para a gente confirmar a rota e o estoque. O botão abaixo já leva a mensagem pronta.</p>
-          <a href={waComTexto(msgWhats)} target="_blank" rel="noopener noreferrer" className="btn btn-wa text-[1rem] !px-8 !py-3.5">
+          <a href={waComTexto(msgWhats)} onClick={() => medirContato('pedido-confirmado')} target="_blank" rel="noopener noreferrer" className="btn btn-wa text-[1rem] !px-8 !py-3.5">
             <MessageCircle className="w-5 h-5" /> Enviar pedido no WhatsApp
           </a>
           <pre className="text-left whitespace-pre-wrap font-sans text-[0.82rem] text-[#5B6B5B] bg-[#F6F1E6] border border-[#E1DCCF] rounded-xl p-4 mt-8">{msgWhats}</pre>
