@@ -54,6 +54,8 @@ export interface Criador {
   id: CriadorId;
   nome: string;
   responsavel: string;
+  /** Formação/cargo do responsável — credencial mostrada no card. */
+  profissao: string;
   cidade: string;
   especialidade: string;
   whatsapp: string;
