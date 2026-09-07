@@ -23,16 +23,18 @@
  * Mudou um rótulo aqui? O index.html (formulário estático oculto que a Netlify
  * lê no deploy) precisa da MESMA lista de names, senão o campo não é gravado.
  *
- * Os rótulos são escolhidos para sobreviver ao title-case da Netlify: ela põe
- * maiúscula em toda palavra. "Total de referência" viraria "Total De
- * Referência"; por isso os nomes são de uma palavra ou já vêm capitalizados.
+ * Os rótulos são escolhidos para sobreviver ao humanize da Netlify, que põe
+ * maiúscula em toda palavra E quebra camelCase. "Total de referência" viraria
+ * "Total De Referência" e "WhatsApp" virou "Whats App" no teste de 07/09 —
+ * por isso os nomes são de uma palavra só ou já vêm capitalizados palavra a
+ * palavra, e nenhum tem maiúscula no meio.
  */
 
 /** interno → rótulo que aparece como título no e-mail cru da Netlify. */
 export const ROTULOS = {
   codigo: 'Código',
   nome: 'Cliente',
-  whatsapp: 'WhatsApp',
+  whatsapp: 'Whatsapp',
   cidade_uf: 'Cidade',
   regiao: 'Região',
   rota: 'Rota',
