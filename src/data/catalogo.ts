@@ -101,6 +101,8 @@ export const CONSULTORES: Consultor[] = [
     frentes: ['Comportamento e bem-estar', 'Recinto e ambientação', 'Educação ambiental', 'Escolha da espécie certa'],
     instagram: 'https://www.instagram.com/coexistir1/',
     arroba: '@coexistir1',
+    whatsapp: '556593388188',
+    whatsappDisplay: '(65) 9338-8188',
     logo: '/consultoria/coexistir.webp',
   },
   {
@@ -114,6 +116,8 @@ export const CONSULTORES: Consultor[] = [
     frentes: ['Nutrição', 'Manejo', 'Saúde', 'Seleção e aprimoramento genético'],
     instagram: 'https://www.instagram.com/volare_aves/',
     arroba: '@volare_aves',
+    whatsapp: '5521981645422',
+    whatsappDisplay: '(21) 98164-5422',
     logo: '/consultoria/volare.webp',
     logoEscala: 1.18,
   },
