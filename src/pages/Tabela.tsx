@@ -65,7 +65,7 @@ export const Tabela: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
               <thead>
                 <tr>
                   <th className="w-[38%]">Ave</th>
-                  <th>Estoque</th>
+                  <th>Estoque <span className="normal-case tracking-normal font-normal text-[0.68rem] text-[#9AA59A]">F · M</span></th>
                   <th>Criadouro</th>
                   <th>Unid.</th>
                   <th className="text-right">Preço</th>
@@ -94,7 +94,12 @@ export const Tabela: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
                             </div>
                             <div className="text-[0.72rem] italic text-[#5B6B5B]">{a.cientifico}</div>
                           </td>
-                          <td className="whitespace-nowrap text-[0.82rem]">{estoqueTexto(a)}</td>
+                          <td className="whitespace-nowrap text-[0.82rem]">
+                            <span className="inline-grid grid-cols-2 gap-x-3 tabular-nums">
+                              <span className={`text-right ${a.femeas ? 'text-[#1E2A24]' : 'text-[#C9D2C9]'}`}>{a.femeas}<span className="text-[0.72rem] ml-0.5">F</span></span>
+                              <span className={`text-right ${a.machos ? 'text-[#1E2A24]' : 'text-[#C9D2C9]'}`}>{a.machos}<span className="text-[0.72rem] ml-0.5">M</span></span>
+                            </span>
+                          </td>
                           <td className="text-[0.74rem] text-[#5B6B5B]">{CRIADOR_ROTULO[a.criador]}</td>
                           <td className="text-[0.8rem]">{UNIDADE_ROTULO[a.unidade]}</td>
                           <td className="text-right whitespace-nowrap">
@@ -161,7 +166,7 @@ export const Tabela: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
           </div>
 
           <p className="font-sans text-[0.74rem] text-[#5B6B5B] mt-4">
-            Estoque como na lista de {LISTA_DATA}: M = machos, F = fêmeas. Retirada em {CONSTANTS.RETIRADA} ou entrega em rota. Não achou o que procura? A encomenda continua no <a href={CONSTANTS.PRE_RESERVA_URL} target="_blank" rel="noopener noreferrer" className="text-[#1F3B2E] underline">avesarca.com.br</a>.
+            Estoque como na lista de {LISTA_DATA}: F = fêmeas, M = machos; 0 quando não há disponibilidade daquele sexo. Retirada em {CONSTANTS.RETIRADA} ou entrega em rota. Não achou o que procura? A encomenda continua no <a href={CONSTANTS.PRE_RESERVA_URL} target="_blank" rel="noopener noreferrer" className="text-[#1F3B2E] underline">avesarca.com.br</a>.
           </p>
         </div>
       </section>
