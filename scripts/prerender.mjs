@@ -60,6 +60,10 @@ async function carregarSeo() {
     bundle: true,
     format: 'esm',
     platform: 'node',
+    // src/marcas.ts lê import.meta.env.VITE_MARCA, que só existe dentro do Vite.
+    // Aqui o Node importa o bundle direto, então o valor entra por define —
+    // a mesma variável que a Netlify usa no build de cada marca.
+    define: { 'import.meta.env': JSON.stringify({ VITE_MARCA: process.env.VITE_MARCA ?? 'aob' }) },
     outfile: saida,
     logLevel: 'silent',
   });
@@ -140,6 +144,10 @@ async function carregarCaminhos() {
     bundle: true,
     format: 'esm',
     platform: 'node',
+    // src/marcas.ts lê import.meta.env.VITE_MARCA, que só existe dentro do Vite.
+    // Aqui o Node importa o bundle direto, então o valor entra por define —
+    // a mesma variável que a Netlify usa no build de cada marca.
+    define: { 'import.meta.env': JSON.stringify({ VITE_MARCA: process.env.VITE_MARCA ?? 'aob' }) },
     outfile: saida,
     logLevel: 'silent',
   });
