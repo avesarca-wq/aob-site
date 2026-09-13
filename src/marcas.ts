@@ -60,7 +60,7 @@ export const MARCAS: Record<MarcaId, Marca> = {
     whatsappDisplay: '(11) 94300-7375',
     whatsappLink: 'https://wa.me/5511943007375',
     email: 'avesornamentaisbrasil@gmail.com', // até a Stima ter e-mail próprio
-    instagram: 'https://www.instagram.com/avesarca', // até existir @stimaaves
+    instagram: 'https://www.instagram.com/stima.aves',
     umami: '508779ed-8e55-4b82-b18d-384c124a0a92',
     frase: 'Aves de coleção com responsabilidade técnica de médico veterinário.',
   },
@@ -73,7 +73,7 @@ export const MARCAS: Record<MarcaId, Marca> = {
     whatsappDisplay: '(11) 97464-3823',
     whatsappLink: 'https://wa.me/5511974643823',
     email: 'avesornamentaisbrasil@gmail.com', // até a Aliança ter e-mail próprio
-    instagram: 'https://www.instagram.com/avesarca', // até existir @criadouroalianca
+    instagram: 'https://www.instagram.com/criadouroalianca',
     umami: 'a9007209-5e1b-44f5-a310-b960fda693bb',
     frase: 'Faisões, pavões e perdizes ornamentais de plantel selecionado em Jundiaí.',
   },
