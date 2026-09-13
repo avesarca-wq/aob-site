@@ -1,17 +1,12 @@
-// Umami Cloud — mesma propriedade que o avesarca.com.br usa
-// (website b7a2b87a-78a4-4392-93cc-ee6f658328ae, conta avesarca@gmail.com).
+// Umami Cloud — site "Aves Ornamentais Brasil"
+// (website 60547214-1e23-4b1b-894a-9b2ab0807191, conta avesarca@gmail.com, plano Pro desde 12/09).
 //
-// ATENCAO — este arquivo esta INATIVO (a tag foi comentada no index.html).
-//
-// A ideia era reaproveitar o website id da Arca, ja que o plano atual permite
-// um site so. Nao funciona: o Umami Cloud amarra o website ao dominio
-// configurado e ignora eventos de outro hostname. Testado em 07/09 — na Arca o
-// tracker envia para gateway.umami.is; neste dominio o proprio tracker quebra
-// internamente e nao envia nada.
-//
-// Para ligar de verdade: criar o site "Aves Ornamentais Brasil" no painel do
-// Umami (exige plano com mais de um site), trocar o id abaixo pelo novo e
-// descomentar a tag no index.html. A CSP ja esta liberada.
+// Historico: ate 12/09 este arquivo estava INATIVO. A ideia inicial era
+// reaproveitar o website id da Arca (b7a2b87a-...), mas o Umami Cloud amarra
+// o website ao dominio configurado e ignora eventos de outro hostname —
+// testado em 07/09. Com o plano Pro o AOB ganhou id proprio e a tag foi
+// religada no index.html. A CSP do netlify.toml ja libera cloud.umami.is
+// (script) e gateway.umami.is (beacon).
 //
 // Arquivo externo em vez de inline para respeitar a CSP do site, igual ao
 // meta-pixel.js. defer para nao atrasar a primeira renderizacao.
@@ -19,7 +14,7 @@
   var s = document.createElement('script');
   s.src = 'https://cloud.umami.is/script.js';
   s.defer = true;
-  s.setAttribute('data-website-id', 'b7a2b87a-78a4-4392-93cc-ee6f658328ae');
+  s.setAttribute('data-website-id', '60547214-1e23-4b1b-894a-9b2ab0807191');
   // O site e uma aplicacao de pagina unica: sem isto o Umami contaria so a
   // primeira pagina da visita e perderia a navegacao entre Aves, Tabela e Pedido.
   s.setAttribute('data-auto-track', 'true');
