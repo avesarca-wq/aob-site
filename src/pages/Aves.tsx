@@ -95,7 +95,8 @@ export const Aves: React.FC<{ categoriaInicial?: string; onNavigate: (p: PageRou
             <select className="campo" value={criador} onChange={(e) => setCriador(e.target.value as any)} aria-label="Criadouro">
               <option value="todos">Todos os criadouros</option>
               <option value="aves-arca">{CRIADOR_ROTULO['aves-arca']}</option>
-              <option value="parceiros">{CRIADOR_ROTULO.parceiros}</option>
+              <option value="stima">{CRIADOR_ROTULO.stima}</option>
+              <option value="alianca">{CRIADOR_ROTULO.alianca}</option>
             </select>
             <select className="campo" value={unidade} onChange={(e) => setUnidade(e.target.value as any)} aria-label="Unidade">
               <option value="todas">Casal, macho ou fêmea</option>
