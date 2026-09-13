@@ -1,1 +1,9 @@
+# Apelidos com os mesmos nomes que o avesarca.com.br usa, para o mesmo link
+# funcionar nos dois sites (resposta rapida do WhatsApp, anuncio, legenda).
+/catalogo      /aves     301
+/catalogo/*    /aves     301
+/pre-reserva   /pedido   301
+/pre-reserva/* /pedido   301
+
+# Aplicacao de pagina unica: qualquer outro caminho cai no index.html
 /*  /index.html  200
