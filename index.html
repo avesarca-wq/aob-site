@@ -1,12 +1,13 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-umami="%VITE_UMAMI_ID%">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="facebook-domain-verification" content="shhe2cjx08emtt4g1vl03cyp2h18bs" />
     <script src="/meta-pixel.js" defer></script>
-    <!-- Umami: ligado em 12/09 com website id proprio (plano Pro). O id fica em
-         public/umami.js; a CSP do netlify.toml ja libera cloud e gateway.umami.is. -->
+    <!-- Umami: ligado em 12/09 (plano Pro). O website id vem de VITE_UMAMI_ID no
+         atributo data-umami do <html> (Vite troca %VITE_UMAMI_ID% no build); sem a
+         variavel, public/umami.js usa o id do AOB. CSP ja libera cloud e gateway. -->
     <script src="/umami.js" defer></script>
     <title>Aves Ornamentais Brasil — aves ornamentais à pronta entrega</title>
     <meta name="description" content="Aves ornamentais à pronta entrega de três criadouros parceiros: aquáticas, faisões, pavões, perdizes e mais. Rota de entrega marcada, pagamento na entrega." />
