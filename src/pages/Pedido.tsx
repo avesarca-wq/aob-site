@@ -124,7 +124,7 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
     // do e-mail): mantêm o nome técnico, não entram no mapa de rótulos.
     const campos: Record<string, string> = {
       'form-name': NOME_FORM,
-      subject: `Pedido ${cod} · ${dados.nome} · ${brl(totalReferencia)} · ${rotaTxt}`,
+      subject: `[${CONSTANTS.MARCA}] Pedido ${cod} · ${dados.nome} · ${brl(totalReferencia)} · ${rotaTxt}`,
     };
     for (const chave of ORDEM) campos[ROTULOS[chave]] = valores[chave];
     try {
