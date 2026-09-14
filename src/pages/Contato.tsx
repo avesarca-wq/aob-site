@@ -31,7 +31,7 @@ export const Contato: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNa
         <a href={CONSTANTS.INSTAGRAM} target="_blank" rel="noopener noreferrer" className="card p-7 no-underline">
           <Instagram className="w-8 h-8 text-[var(--ouro2)] mb-3" />
           <h2 className="text-[1.3rem] text-[var(--verde)] m-0">Instagram</h2>
-          <p className="font-sans text-[1rem] text-[var(--ink)] mt-1 mb-1">@avesarca</p>
+          <p className="font-sans text-[1rem] text-[var(--ink)] mt-1 mb-1">@{CONSTANTS.INSTAGRAM.replace(/.*instagram\.com\//, '').replace(/\/$/, '')}</p>
           <p className="font-serif text-[0.9rem] text-[var(--muted)] m-0">Fotos e vídeos do plantel e das rotas.</p>
         </a>
       </div>
