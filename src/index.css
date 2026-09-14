@@ -15,9 +15,44 @@
     --ink: #1E2A24;
     --muted: #5B6B5B;
     --line: #E1DCCF;
+    --claro-2: #C9D2C9;
+    --claro-3: #9FB3A5;
+    --muted-2: #9AA59A;
+    --muted-3: #8FA08F;
+    --verde-hover: #3a6650;
     --sans: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     --serif: 'EB Garamond', Georgia, 'Times New Roman', serif;
+    --peso-titulo: 600;
   }
+
+  /* Stima Aves (Atibaia): branco, azul-marinho e verde-pavão, com ar de clínica.
+     Os nomes das variáveis são os da AOB (--verde = cor forte, --ouro = destaque);
+     aqui só o valor muda — o código das páginas é o mesmo para as quatro marcas. */
+  :root[data-marca="stima"] {
+    --verde: #28306F;
+    --verde-2: #1E2455;
+    --verde-claro: #3A4390;
+    --verde-hover: #4A54A8;
+    --ouro: #3E9A5A;
+    --ouro2: #2F7D48;
+    --marfim: #FFFFFF;
+    --areia: #F7F9FC;
+    --paper: #FFFFFF;
+    --ink: #1E2430;
+    --muted: #5B6578;
+    --line: #E1E6EF;
+    --claro-2: #C7CDE8;
+    --claro-3: #AEB6D6;
+    --muted-2: #9AA3B8;
+    --muted-3: #8E97B5;
+    --sans: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --serif: 'Poppins', 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    --peso-titulo: 700;
+  }
+  :root[data-marca="stima"] body { font-family: var(--sans); font-size: 1.02rem; }
+  /* Na Stima o texto corrido é sans; só título leva a Poppins. */
+  :root[data-marca="stima"] .font-serif:not(h1):not(h2):not(h3):not(h4) { font-family: var(--sans) !important; font-style: normal; }
+  :root[data-marca="stima"] h1, :root[data-marca="stima"] h2, :root[data-marca="stima"] h3, :root[data-marca="stima"] h4 { letter-spacing: -0.01em; }
 
   body {
     margin: 0;
@@ -31,7 +66,7 @@
 
   h1, h2, h3, h4, .font-serif {
     font-family: var(--serif);
-    font-weight: 600;
+    font-weight: var(--peso-titulo);
     letter-spacing: 0.2px;
   }
   .font-sans { font-family: var(--sans); }
@@ -84,7 +119,7 @@ header.nav-bar::after { content: ""; display: block; height: 3px; background: va
 .text-center .sec-sub { margin-left: auto; margin-right: auto; }
 .sec-escura { background: var(--verde); color: var(--marfim); }
 .sec-escura .sec-title { color: var(--marfim); }
-.sec-escura .sec-sub { color: #C9D2C9; }
+.sec-escura .sec-sub { color: var(--claro-2); }
 .sec-escura .eyebrow { color: var(--ouro); }
 
 /* CARDS */
@@ -134,11 +169,19 @@ header.nav-bar::after { content: ""; display: block; height: 3px; background: va
 .qtd span { min-width: 30px; text-align: center; font-family: var(--sans); font-weight: 700; font-size: .9rem; }
 
 .stat b { display: block; font-family: var(--serif); font-weight: 600; font-size: 2.6rem; color: var(--marfim); line-height: 1; }
-.stat span { font-family: var(--sans); font-size: .78rem; letter-spacing: 1px; text-transform: uppercase; color: #C9D2C9; }
+.stat span { font-family: var(--sans); font-size: .78rem; letter-spacing: 1px; text-transform: uppercase; color: var(--claro-2); }
 .stat b::after { content: ""; display: block; width: 26px; height: 2px; background: var(--ouro); margin: 10px auto 12px; }
 
 .tabela { width: 100%; border-collapse: collapse; font-family: var(--sans); font-size: .9rem; }
 .tabela th { text-align: left; font-size: .7rem; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); padding: 8px 6px; border-bottom: 2px solid var(--line); }
 .tabela td { padding: 10px 6px; border-bottom: 1px solid var(--line); vertical-align: middle; }
 
+}
+
+/* Crédito da foto ilustrativa (acervo livre), enquanto não chega a foto do plantel. */
+.foto-credito {
+  position: absolute; right: 0; bottom: 0;
+  font-family: var(--sans); font-size: .6rem; letter-spacing: .3px;
+  color: rgba(255,255,255,.85); background: rgba(0,0,0,.45);
+  padding: 3px 8px; border-top-left-radius: 6px;
 }

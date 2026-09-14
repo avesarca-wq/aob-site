@@ -3,6 +3,8 @@ import { Bird, Check, Plus } from 'lucide-react';
 import { Ave } from '../types';
 import { brl, CRIADOR_ROTULO, UNIDADE_ROTULO, UNIDADE_PLURAL, CATEGORIA } from '../data/catalogo';
 import { useCart, estoqueDaUnidade } from '../cart/CartContext';
+import { waSobConsulta } from '../lib/links';
+import { EH_REDE } from '../marcas';
 
 /** Texto de estoque: machos à esquerda, fêmeas à direita — "4M · 2F". */
 export const estoqueTexto = (a: Ave) => {
@@ -23,6 +25,8 @@ export const AveCard: React.FC<{ ave: Ave; onVerPedido?: () => void }> = ({ ave,
   const { quantidadeDe, adicionar, alterar } = useCart();
   const q = quantidadeDe(ave.id);
   const max = estoqueDaUnidade(ave.id);
+  /** Variedade do plantel sem lote na semana ou sem preço fechado: vira conversa. */
+  const sobConsulta = ave.preco === null || ave.machos + ave.femeas === 0;
 
   return (
     <article className="card">
@@ -30,27 +34,32 @@ export const AveCard: React.FC<{ ave: Ave; onVerPedido?: () => void }> = ({ ave,
         {ave.foto ? <img src={ave.foto} alt={ave.nome} loading="lazy" /> : <Moldura ave={ave} />}
         <div className="absolute top-3 left-3 flex gap-1.5 flex-wrap">
           {ave.preco_de && <span className="chip chip-promo">Promoção</span>}
-          <span className="chip chip-claro">{estoqueTexto(ave)}</span>
+          {sobConsulta ? <span className="chip chip-claro">Sob consulta</span> : <span className="chip chip-claro">{estoqueTexto(ave)}</span>}
         </div>
+        {ave.foto && ave.foto_credito && <span className="foto-credito">{ave.foto_credito}</span>}
       </div>
       <div className="p-5 flex flex-col flex-1">
-        <div className="font-sans text-[0.64rem] tracking-[1.5px] uppercase text-[#B99034] font-bold mb-1">
-          {ave.grupo} · {CRIADOR_ROTULO[ave.criador]}
+        <div className="font-sans text-[0.64rem] tracking-[1.5px] uppercase text-[var(--ouro2)] font-bold mb-1">
+          {ave.grupo}{EH_REDE && <> · {CRIADOR_ROTULO[ave.criador]}</>}
         </div>
-        <h3 className="text-[1.3rem] leading-tight text-[#1F3B2E] m-0">
+        <h3 className="text-[1.3rem] leading-tight text-[var(--verde)] m-0">
           {ave.nome}
-          {ave.detalhe && <span className="block font-serif italic font-normal text-[0.95rem] text-[#5B6B5B]">{ave.detalhe}</span>}
+          {ave.detalhe && <span className="block font-serif italic font-normal text-[0.95rem] text-[var(--muted)]">{ave.detalhe}</span>}
         </h3>
-        <p className="font-serif italic text-[0.88rem] text-[#5B6B5B] mt-0.5 mb-3">{ave.cientifico}</p>
+        <p className="font-serif italic text-[0.88rem] text-[var(--muted)] mt-0.5 mb-3">{ave.cientifico}</p>
 
         <div className="mt-auto">
           <div className="flex items-baseline gap-2 mb-3">
-            <span className="font-sans text-[0.68rem] uppercase tracking-[1px] text-[#5B6B5B]">{UNIDADE_ROTULO[ave.unidade]}</span>
-            {ave.preco_de && <s className="font-sans text-[0.85rem] text-[#9AA59A]">{brl(ave.preco_de)}</s>}
-            <b className="font-serif text-[1.45rem] text-[#1F3B2E]">{brl(ave.preco)}</b>
+            {ave.preco !== null && <span className="font-sans text-[0.68rem] uppercase tracking-[1px] text-[var(--muted)]">{UNIDADE_ROTULO[ave.unidade]}</span>}
+            {ave.preco_de && <s className="font-sans text-[0.85rem] text-[var(--muted-2)]">{brl(ave.preco_de)}</s>}
+            <b className="font-serif text-[1.45rem] text-[var(--verde)]">{brl(ave.preco)}</b>
           </div>
 
-          {q === 0 ? (
+          {sobConsulta ? (
+            <a href={waSobConsulta(ave.nome)} target="_blank" rel="noopener" className="btn btn-verde w-full">
+              Perguntar no WhatsApp
+            </a>
+          ) : q === 0 ? (
             <button onClick={() => adicionar(ave.id, 1)} className="btn btn-verde w-full" type="button">
               <Plus className="w-4 h-4" /> Adicionar ao pedido
             </button>
@@ -67,7 +76,7 @@ export const AveCard: React.FC<{ ave: Ave; onVerPedido?: () => void }> = ({ ave,
             </div>
           )}
           {q >= max && q > 0 && (
-            <p className="font-sans text-[0.68rem] text-[#5B6B5B] mt-1.5 mb-0">Estoque disponível: {max} {max === 1 ? UNIDADE_ROTULO[ave.unidade] : UNIDADE_PLURAL[ave.unidade]}.</p>
+            <p className="font-sans text-[0.68rem] text-[var(--muted)] mt-1.5 mb-0">Estoque disponível: {max} {max === 1 ? UNIDADE_ROTULO[ave.unidade] : UNIDADE_PLURAL[ave.unidade]}.</p>
           )}
         </div>
       </div>

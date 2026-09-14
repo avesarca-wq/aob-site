@@ -77,7 +77,7 @@ export const CidadeInput: React.FC<Props> = ({ value, onChange, mostrarResumo = 
       />
 
       {aberto && sugestoes.length > 0 && (
-        <ul className="absolute z-20 left-0 right-0 mt-1 bg-white border border-[#E1DCCF] rounded-xl shadow-lg max-h-64 overflow-auto list-none p-1 m-0">
+        <ul className="absolute z-20 left-0 right-0 mt-1 bg-white border border-[var(--line)] rounded-xl shadow-lg max-h-64 overflow-auto list-none p-1 m-0">
           {sugestoes.map((c) => (
             <li key={`${c.c}-${c.uf}`}>
               <button
@@ -87,12 +87,12 @@ export const CidadeInput: React.FC<Props> = ({ value, onChange, mostrarResumo = 
                   if (fechando.current) window.clearTimeout(fechando.current);
                   escolher(c);
                 }}
-                className="w-full text-left px-3 py-2 rounded-lg hover:bg-[#F6F1E6] cursor-pointer bg-transparent border-0"
+                className="w-full text-left px-3 py-2 rounded-lg hover:bg-[var(--marfim)] cursor-pointer bg-transparent border-0"
               >
-                <span className="font-sans text-sm text-[#1E2A24]">
+                <span className="font-sans text-sm text-[var(--ink)]">
                   {c.c} — {c.uf}
                 </span>
-                <span className="block font-sans text-[0.68rem] text-[#5B6B5B]">{c.r}</span>
+                <span className="block font-sans text-[0.68rem] text-[var(--muted)]">{c.r}</span>
               </button>
             </li>
           ))}
@@ -100,21 +100,21 @@ export const CidadeInput: React.FC<Props> = ({ value, onChange, mostrarResumo = 
       )}
 
       {mostrarResumo && info && info.zona.n === 4 && (
-        <p className="font-sans text-[0.72rem] text-[#5B6B5B] mt-1.5 mb-0 leading-snug">
+        <p className="font-sans text-[0.72rem] text-[var(--muted)] mt-1.5 mb-0 leading-snug">
           Sua cidade está fora das rotas atuais; combinamos pelo WhatsApp. Pode enviar o pedido assim mesmo.
         </p>
       )}
 
       {mostrarResumo && info && info.zona.n !== 4 && (
-        <div className="mt-2 rounded-xl border border-[#E1DCCF] bg-[#F6F1E6] px-3.5 py-2.5">
-          <p className="flex items-start gap-1.5 font-sans text-[0.74rem] text-[#1F3B2E] m-0 leading-snug">
-            <MapPin className="w-3.5 h-3.5 flex-none mt-px text-[#B99034]" />
+        <div className="mt-2 rounded-xl border border-[var(--line)] bg-[var(--marfim)] px-3.5 py-2.5">
+          <p className="flex items-start gap-1.5 font-sans text-[0.74rem] text-[var(--verde)] m-0 leading-snug">
+            <MapPin className="w-3.5 h-3.5 flex-none mt-px text-[var(--ouro2)]" />
             <span>
               <strong>{info.rota?.nome ?? info.cidade.r}</strong> · frete <strong>{info.zona.tarifaTexto}</strong>
             </span>
           </p>
-          <p className="flex items-start gap-1.5 font-sans text-[0.74rem] text-[#1E2A24] mt-1.5 mb-0 leading-snug">
-            <Truck className="w-3.5 h-3.5 flex-none mt-px text-[#B99034]" />
+          <p className="flex items-start gap-1.5 font-sans text-[0.74rem] text-[var(--ink)] mt-1.5 mb-0 leading-snug">
+            <Truck className="w-3.5 h-3.5 flex-none mt-px text-[var(--ouro2)]" />
             <span>
               {info.prox
                 ? <>Próxima saída <strong>{dataCurta(info.prox.saida)}</strong> · pedidos até {dataCurta(info.prox.fecha)}</>
@@ -127,7 +127,7 @@ export const CidadeInput: React.FC<Props> = ({ value, onChange, mostrarResumo = 
       )}
 
       {mostrarResumo && foraDaMalha && (
-        <p className="font-sans text-[0.72rem] text-[#5B6B5B] mt-1.5 mb-0 leading-snug">
+        <p className="font-sans text-[0.72rem] text-[var(--muted)] mt-1.5 mb-0 leading-snug">
           Sua cidade está fora das rotas atuais; combinamos pelo WhatsApp. Pode enviar o pedido assim mesmo.
         </p>
       )}

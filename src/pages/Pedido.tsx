@@ -156,7 +156,7 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
           <a href={waComTexto(msgWhats)} onClick={() => medirContato('pedido-confirmado')} target="_blank" rel="noopener noreferrer" className="btn btn-wa text-[1rem] !px-8 !py-3.5">
             <MessageCircle className="w-5 h-5" /> Enviar pedido no WhatsApp
           </a>
-          <pre className="text-left whitespace-pre-wrap font-sans text-[0.82rem] text-[#5B6B5B] bg-[#F6F1E6] border border-[#E1DCCF] rounded-xl p-4 mt-8">{msgWhats}</pre>
+          <pre className="text-left whitespace-pre-wrap font-sans text-[0.82rem] text-[var(--muted)] bg-[var(--marfim)] border border-[var(--line)] rounded-xl p-4 mt-8">{msgWhats}</pre>
           <button onClick={() => onNavigate('aves')} className="btn btn-ghost mt-4">Voltar para a lista</button>
         </div>
       </section>
@@ -175,42 +175,42 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
 
           {/* AVES ESCOLHIDAS — dentro do bloco verde */}
           <div className="rounded-2xl border border-[#3B5B4A] bg-[#1A3327] p-5 sm:p-6">
-            <h2 className="text-[1.15rem] text-[#F6F1E6] m-0 mb-3 flex items-center gap-2"><ShoppingBasket className="w-4.5 h-4.5 text-[#D2A93C]" /> Aves escolhidas</h2>
+            <h2 className="text-[1.15rem] text-[var(--marfim)] m-0 mb-3 flex items-center gap-2"><ShoppingBasket className="w-4.5 h-4.5 text-[var(--ouro)]" /> Aves escolhidas</h2>
             {itens.length === 0 ? (
-              <p className="font-sans text-[0.85rem] text-[#C9D2C9] m-0">
+              <p className="font-sans text-[0.85rem] text-[var(--claro-2)] m-0">
                 Seu pedido está vazio.{' '}
-                <button onClick={() => onNavigate('aves')} className="underline bg-transparent border-0 cursor-pointer text-[#D2A93C] font-sans text-[0.85rem] font-bold p-0">Ver as aves disponíveis</button>.
+                <button onClick={() => onNavigate('aves')} className="underline bg-transparent border-0 cursor-pointer text-[var(--ouro)] font-sans text-[0.85rem] font-bold p-0">Ver as aves disponíveis</button>.
               </p>
             ) : (
               <div className="grid gap-2">
                 {itens.map(({ l, a }) => (
                   <div key={a.id} className="flex items-start gap-3 rounded-xl bg-[#22412F] px-3.5 py-2.5">
                     <div className="min-w-0 flex-1">
-                      <div className="font-serif text-[1rem] text-[#F6F1E6] leading-tight">{a.nome}{a.detalhe ? <span className="italic text-[#C9D2C9]"> · {a.detalhe}</span> : ''}</div>
-                      <div className="font-sans text-[0.68rem] text-[#9FB3A5] mt-0.5">{CRIADOR_ROTULO[a.criador]} · {brl(a.preco)}/{UNIDADE_ROTULO[a.unidade]}</div>
+                      <div className="font-serif text-[1rem] text-[var(--marfim)] leading-tight">{a.nome}{a.detalhe ? <span className="italic text-[var(--claro-2)]"> · {a.detalhe}</span> : ''}</div>
+                      <div className="font-sans text-[0.68rem] text-[var(--claro-3)] mt-0.5">{CRIADOR_ROTULO[a.criador]} · {brl(a.preco)}/{UNIDADE_ROTULO[a.unidade]}</div>
                     </div>
                     <div className="flex items-center gap-1 flex-none">
-                      <button type="button" onClick={() => alterar(a.id, l.quantidade - 1)} aria-label="Menos" className="w-6 h-6 rounded-md border border-[#3B5B4A] bg-transparent text-[#F6F1E6] cursor-pointer leading-none">−</button>
-                      <span className="w-6 text-center font-sans text-[0.85rem] font-bold text-[#F6F1E6]">{l.quantidade}</span>
-                      <button type="button" onClick={() => alterar(a.id, l.quantidade + 1)} aria-label="Mais" className="w-6 h-6 rounded-md border border-[#3B5B4A] bg-transparent text-[#F6F1E6] cursor-pointer leading-none">+</button>
+                      <button type="button" onClick={() => alterar(a.id, l.quantidade - 1)} aria-label="Menos" className="w-6 h-6 rounded-md border border-[#3B5B4A] bg-transparent text-[var(--marfim)] cursor-pointer leading-none">−</button>
+                      <span className="w-6 text-center font-sans text-[0.85rem] font-bold text-[var(--marfim)]">{l.quantidade}</span>
+                      <button type="button" onClick={() => alterar(a.id, l.quantidade + 1)} aria-label="Mais" className="w-6 h-6 rounded-md border border-[#3B5B4A] bg-transparent text-[var(--marfim)] cursor-pointer leading-none">+</button>
                     </div>
-                    <div className="text-right flex-none w-20 font-sans text-[0.85rem] font-bold text-[#F6F1E6]">{brl(a.preco * l.quantidade)}</div>
+                    <div className="text-right flex-none w-20 font-sans text-[0.85rem] font-bold text-[var(--marfim)]">{brl(a.preco * l.quantidade)}</div>
                     <button type="button" onClick={() => remover(a.id)} className="flex-none bg-transparent border-0 cursor-pointer text-[#7E9587] hover:text-[#E08463] p-0" aria-label="Remover"><Trash2 className="w-4 h-4" /></button>
                   </div>
                 ))}
                 <div className="mt-1 pt-3 border-t border-[#3B5B4A] flex items-baseline justify-between gap-3">
-                  <span className="font-sans text-[0.78rem] text-[#C9D2C9]">{totalUnidades} {totalUnidades === 1 ? 'unidade' : 'unidades'} · valores de referência</span>
-                  <span className="font-serif text-[1.4rem] text-[#F6F1E6]">{brl(totalReferencia)}</span>
+                  <span className="font-sans text-[0.78rem] text-[var(--claro-2)]">{totalUnidades} {totalUnidades === 1 ? 'unidade' : 'unidades'} · valores de referência</span>
+                  <span className="font-serif text-[1.4rem] text-[var(--marfim)]">{brl(totalReferencia)}</span>
                 </div>
                 {frete !== null && dados.cidade_uf && (
                   <div className="flex items-baseline justify-between gap-3">
-                    <span className="font-sans text-[0.78rem] text-[#C9D2C9]">Frete ({dados.recebimento === 'retirada' ? 'retirada' : entrega?.zona.rotulo})</span>
-                    <span className="font-sans text-[0.85rem] font-bold text-[#F6F1E6]">{frete === 0 ? 'R$ 0' : brl(frete)}</span>
+                    <span className="font-sans text-[0.78rem] text-[var(--claro-2)]">Frete ({dados.recebimento === 'retirada' ? 'retirada' : entrega?.zona.rotulo})</span>
+                    <span className="font-sans text-[0.85rem] font-bold text-[var(--marfim)]">{frete === 0 ? 'R$ 0' : brl(frete)}</span>
                   </div>
                 )}
               </div>
             )}
-            <button onClick={() => onNavigate('aves')} className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-[#3B5B4A] bg-transparent px-4 py-2 cursor-pointer font-sans text-[0.8rem] font-bold text-[#F6F1E6]"><ArrowLeft className="w-4 h-4" /> Adicionar mais aves</button>
+            <button onClick={() => onNavigate('aves')} className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-[#3B5B4A] bg-transparent px-4 py-2 cursor-pointer font-sans text-[0.8rem] font-bold text-[var(--marfim)]"><ArrowLeft className="w-4 h-4" /> Adicionar mais aves</button>
           </div>
         </div>
       </section>
@@ -221,7 +221,7 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
           <form onSubmit={enviar} name={NOME_FORM} className="card p-6 sm:p-8">
             <input type="hidden" name="form-name" value={NOME_FORM} />
             <p className="hidden"><label>Não preencher: <input name="bot-field" /></label></p>
-            <h2 className="text-[1.5rem] text-[#1F3B2E] m-0 mb-5">Seus dados</h2>
+            <h2 className="text-[1.5rem] text-[var(--verde)] m-0 mb-5">Seus dados</h2>
             <div className="grid gap-x-8 gap-y-4 lg:grid-cols-2 lg:items-start">
               <div className="grid gap-4 content-start">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -253,24 +253,24 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
                     { v: 'retirada', t: `Retirada em ${CONSTANTS.RETIRADA}`, d: 'Dia e hora combinados', f: 'R$ 0' },
                     { v: 'combinar', t: 'Prefiro combinar no WhatsApp', d: 'Entrega individual ou outra opção', f: 'a combinar' },
                   ].map((o) => (
-                    <label key={o.v} className={`flex items-start gap-3 rounded-xl border px-4 py-3 cursor-pointer ${dados.recebimento === o.v ? 'border-[#D2A93C] bg-[#F6F1E6]' : 'border-[#E1DCCF]'}`}>
+                    <label key={o.v} className={`flex items-start gap-3 rounded-xl border px-4 py-3 cursor-pointer ${dados.recebimento === o.v ? 'border-[var(--ouro)] bg-[var(--marfim)]' : 'border-[var(--line)]'}`}>
                       <input type="radio" name="recebimento" value={o.v} checked={dados.recebimento === o.v} onChange={() => set('recebimento', o.v)} className="mt-1" />
                       <span className="flex-1 flex items-start justify-between gap-3">
                         <span>
-                          <span className="block font-sans text-[0.9rem] font-semibold text-[#1F3B2E]">{o.t}</span>
-                          <span className="block font-sans text-[0.74rem] text-[#5B6B5B]">{o.d}</span>
+                          <span className="block font-sans text-[0.9rem] font-semibold text-[var(--verde)]">{o.t}</span>
+                          <span className="block font-sans text-[0.74rem] text-[var(--muted)]">{o.d}</span>
                         </span>
                         <span className="text-right whitespace-nowrap">
-                          <span className="block font-sans text-[0.58rem] uppercase tracking-[1px] text-[#9AA59A] font-bold">frete</span>
-                          <span className="block font-sans text-[0.88rem] font-bold text-[#1F3B2E]">{o.f}</span>
+                          <span className="block font-sans text-[0.58rem] uppercase tracking-[1px] text-[var(--muted-2)] font-bold">frete</span>
+                          <span className="block font-sans text-[0.88rem] font-bold text-[var(--verde)]">{o.f}</span>
                         </span>
                       </span>
                     </label>
                   ))}
                 </div>
                 {dados.recebimento === 'rota' && (
-                  <div className="mt-3 rounded-xl border border-[#D2A93C] bg-[#F6F1E6] p-4">
-                    <div className="font-sans text-[0.62rem] uppercase tracking-[1.6px] text-[#B99034] font-bold mb-2">
+                  <div className="mt-3 rounded-xl border border-[var(--ouro)] bg-[var(--marfim)] p-4">
+                    <div className="font-sans text-[0.62rem] uppercase tracking-[1.6px] text-[var(--ouro2)] font-bold mb-2">
                       {entrega?.rota ? 'Sua rota — confirme ou escolha outra' : 'Escolha a rota'}
                     </div>
                     <div className="grid gap-1.5 sm:grid-cols-2">
@@ -280,16 +280,16 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
                         const sugerida = entrega?.rota?.regiao === r.regiao;
                         const sel = rotaSel === r.regiao;
                         return (
-                          <label key={r.regiao} className={`flex items-start gap-2.5 rounded-lg border px-3 py-2.5 cursor-pointer bg-white ${sel ? 'border-[#1F3B2E] ring-1 ring-[#1F3B2E]' : 'border-[#E1DCCF]'}`}>
+                          <label key={r.regiao} className={`flex items-start gap-2.5 rounded-lg border px-3 py-2.5 cursor-pointer bg-white ${sel ? 'border-[var(--verde)] ring-1 ring-[var(--verde)]' : 'border-[var(--line)]'}`}>
                             <input type="radio" name="rota_escolhida" value={r.regiao} checked={sel} onChange={() => setRotaSel(r.regiao)} className="mt-1" />
                             <span className="min-w-0 flex-1">
                               <span className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-                                <span className="font-sans text-[0.85rem] font-semibold text-[#1F3B2E]">{r.nome}</span>
+                                <span className="font-sans text-[0.85rem] font-semibold text-[var(--verde)]">{r.nome}</span>
                                 {sugerida && <span className="font-sans text-[0.6rem] uppercase tracking-[1px] font-bold text-[#1E8E5A]">sua região</span>}
                               </span>
-                              <span className="block font-sans text-[0.72rem] text-[#5B6B5B] mt-0.5">
+                              <span className="block font-sans text-[0.72rem] text-[var(--muted)] mt-0.5">
                                 {prox
-                                  ? <>Próxima saída <b className="text-[#1F3B2E]">{dataCurta(prox.saida)}</b> · pedidos até {dataCurta(prox.fecha)}</>
+                                  ? <>Próxima saída <b className="text-[var(--verde)]">{dataCurta(prox.saida)}</b> · pedidos até {dataCurta(prox.fecha)}</>
                                   : r.datas.length === 0 && r.fechaDiasAntes === 0
                                     ? 'Data combinada direto, sem esperar rota fechar'
                                     : 'Em formação — você diz a data que precisa'}
@@ -303,29 +303,29 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
                     {rota && (() => {
                       const saidas = saidasAbertas(rota.datas, rota.fechaDiasAntes);
                       return (
-                        <div className="mt-3 pt-3 border-t border-[#E1DCCF] grid gap-1.5">
+                        <div className="mt-3 pt-3 border-t border-[var(--line)] grid gap-1.5">
                           {saidas.length > 1 && (
                             <div className="flex flex-wrap items-center gap-1.5">
-                              <CalendarDays className="w-3.5 h-3.5 flex-none text-[#B99034]" />
-                              <span className="font-sans text-[0.72rem] text-[#5B6B5B]">Saídas de {rota.nome}:</span>
+                              <CalendarDays className="w-3.5 h-3.5 flex-none text-[var(--ouro2)]" />
+                              <span className="font-sans text-[0.72rem] text-[var(--muted)]">Saídas de {rota.nome}:</span>
                               {saidas.slice(0, 4).map((d, i) => (
-                                <span key={d.saida.toISOString()} className={`font-sans text-[0.72rem] font-semibold rounded-full px-2.5 py-0.5 border ${i === 0 ? 'bg-[#D2A93C] border-[#D2A93C] text-[#1F3B2E]' : 'bg-white border-[#E1DCCF] text-[#1F3B2E]'}`}>{dataCurta(d.saida)}</span>
+                                <span key={d.saida.toISOString()} className={`font-sans text-[0.72rem] font-semibold rounded-full px-2.5 py-0.5 border ${i === 0 ? 'bg-[var(--ouro)] border-[var(--ouro)] text-[var(--verde)]' : 'bg-white border-[var(--line)] text-[var(--verde)]'}`}>{dataCurta(d.saida)}</span>
                               ))}
                             </div>
                           )}
                           {entrega && entrega.zona.n !== 4 && (
-                            <div className="flex items-start gap-2 font-sans text-[0.76rem] text-[#1E2A24]">
-                              <Truck className="w-3.5 h-3.5 flex-none mt-0.5 text-[#B99034]" />
+                            <div className="flex items-start gap-2 font-sans text-[0.76rem] text-[var(--ink)]">
+                              <Truck className="w-3.5 h-3.5 flex-none mt-0.5 text-[var(--ouro2)]" />
                               <span>Frete <b>{entrega.zona.tarifaTexto}</b> · {entrega.zona.rotulo}</span>
                             </div>
                           )}
                           {rota.nota && (
-                            <div className="flex items-start gap-2 font-sans text-[0.76rem] text-[#5B6B5B]">
-                              <MapPin className="w-3.5 h-3.5 flex-none mt-0.5 text-[#B99034]" />
+                            <div className="flex items-start gap-2 font-sans text-[0.76rem] text-[var(--muted)]">
+                              <MapPin className="w-3.5 h-3.5 flex-none mt-0.5 text-[var(--ouro2)]" />
                               <span>{rota.nota}</span>
                             </div>
                           )}
-                          <button type="button" onClick={() => onNavigate('rotas')} className="justify-self-start mt-1 inline-flex items-center gap-1 bg-transparent border-0 p-0 cursor-pointer font-sans text-[0.76rem] font-bold text-[#1F3B2E] underline">
+                          <button type="button" onClick={() => onNavigate('rotas')} className="justify-self-start mt-1 inline-flex items-center gap-1 bg-transparent border-0 p-0 cursor-pointer font-sans text-[0.76rem] font-bold text-[var(--verde)] underline">
                             Ver o calendário completo <ArrowRight className="w-3.5 h-3.5" />
                           </button>
                         </div>
@@ -341,7 +341,7 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
                 <button type="submit" className="btn btn-wa w-full text-[1rem] !py-3.5" disabled={enviando || itens.length === 0}>
                   <MessageCircle className="w-5 h-5" /> {enviando ? 'Registrando…' : 'Enviar pedido pelo WhatsApp'}
                 </button>
-                <p className="font-sans text-[0.72rem] text-[#5B6B5B] m-0 leading-relaxed text-center">
+                <p className="font-sans text-[0.72rem] text-[var(--muted)] m-0 leading-relaxed text-center">
                   O pedido é registrado e a mensagem já sai montada para o WhatsApp {CONSTANTS.WHATSAPP_DISPLAY}. Os valores são de referência até a confirmação de estoque. Sem pagamento antecipado.
                 </p>
               </div>

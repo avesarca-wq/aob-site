@@ -48,16 +48,16 @@ export const Tabela: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
         <div className="wrap">
           <div className="flex flex-wrap items-center gap-3 mb-4">
             <div className="relative flex-1 min-w-[220px]">
-              <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#5B6B5B]" />
+              <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--muted)]" />
               <input className="campo !pl-10 !py-2.5" placeholder="Buscar na tabela…" value={busca} onChange={(e) => setBusca(e.target.value)} aria-label="Buscar" />
             </div>
-            <label className="flex items-center gap-2 font-sans text-[0.82rem] text-[#5B6B5B] cursor-pointer">
+            <label className="flex items-center gap-2 font-sans text-[0.82rem] text-[var(--muted)] cursor-pointer">
               <input type="checkbox" checked={soPromo} onChange={(e) => setSoPromo(e.target.checked)} /> Só promoções
             </label>
             <a href="/lista-aves-disponiveis.pdf" target="_blank" rel="noopener noreferrer" className="btn btn-ghost !py-2 !px-4 text-[0.8rem]">
               <FileDown className="w-4 h-4" /> PDF
             </a>
-            <span className="font-sans text-[0.78rem] text-[#5B6B5B] ml-auto">{totalMostrado} lotes</span>
+            <span className="font-sans text-[0.78rem] text-[var(--muted)] ml-auto">{totalMostrado} lotes</span>
           </div>
 
           <div className="card overflow-x-auto hidden md:block">
@@ -65,7 +65,7 @@ export const Tabela: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
               <thead>
                 <tr>
                   <th className="w-[38%]">Ave</th>
-                  <th>Estoque <span className="normal-case tracking-normal font-normal text-[0.68rem] text-[#9AA59A]">M · F</span></th>
+                  <th>Estoque <span className="normal-case tracking-normal font-normal text-[0.68rem] text-[var(--muted-2)]">M · F</span></th>
                   <th>Criadouro</th>
                   <th>Unid.</th>
                   <th className="text-right">Preço</th>
@@ -76,9 +76,9 @@ export const Tabela: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
                 {grupos.map(([g, aves]) => (
                   <React.Fragment key={g}>
                     <tr>
-                      <td colSpan={6} className="!py-2 bg-[#F6F1E6]">
-                        <span className="font-serif text-[1.05rem] text-[#1F3B2E] font-semibold">{g}</span>
-                        <span className="font-sans text-[0.62rem] tracking-[1.5px] uppercase text-[#B99034] ml-3">{CATEGORIA[aves[0].categoria].nome}</span>
+                      <td colSpan={6} className="!py-2 bg-[var(--marfim)]">
+                        <span className="font-serif text-[1.05rem] text-[var(--verde)] font-semibold">{g}</span>
+                        <span className="font-sans text-[0.62rem] tracking-[1.5px] uppercase text-[var(--ouro2)] ml-3">{CATEGORIA[aves[0].categoria].nome}</span>
                       </td>
                     </tr>
                     {aves.map((a) => {
@@ -87,24 +87,24 @@ export const Tabela: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
                       return (
                         <tr key={a.id} className={q > 0 ? 'bg-[#FFF8E6]' : ''}>
                           <td>
-                            <div className="font-serif text-[1.02rem] text-[#1F3B2E] leading-tight">
+                            <div className="font-serif text-[1.02rem] text-[var(--verde)] leading-tight">
                               {a.nome}
-                              {a.detalhe && <span className="italic text-[#5B6B5B] text-[0.9rem]"> · {a.detalhe}</span>}
+                              {a.detalhe && <span className="italic text-[var(--muted)] text-[0.9rem]"> · {a.detalhe}</span>}
                               {a.preco_de && <span className="chip chip-promo !text-[0.55rem] !py-0.5 !px-2 ml-2 align-middle">Promo</span>}
                             </div>
-                            <div className="text-[0.72rem] italic text-[#5B6B5B]">{a.cientifico}</div>
+                            <div className="text-[0.72rem] italic text-[var(--muted)]">{a.cientifico}</div>
                           </td>
                           <td className="whitespace-nowrap text-[0.82rem]">
                             <span className="inline-grid grid-cols-2 gap-x-3 tabular-nums">
-                              <span className={`text-right ${a.machos ? 'text-[#1E2A24]' : 'text-[#C9D2C9]'}`}>{String(a.machos).padStart(2, '0')}<span className="text-[0.72rem] ml-0.5">M</span></span>
-                              <span className={`text-right ${a.femeas ? 'text-[#1E2A24]' : 'text-[#C9D2C9]'}`}>{String(a.femeas).padStart(2, '0')}<span className="text-[0.72rem] ml-0.5">F</span></span>
+                              <span className={`text-right ${a.machos ? 'text-[var(--ink)]' : 'text-[var(--claro-2)]'}`}>{String(a.machos).padStart(2, '0')}<span className="text-[0.72rem] ml-0.5">M</span></span>
+                              <span className={`text-right ${a.femeas ? 'text-[var(--ink)]' : 'text-[var(--claro-2)]'}`}>{String(a.femeas).padStart(2, '0')}<span className="text-[0.72rem] ml-0.5">F</span></span>
                             </span>
                           </td>
-                          <td className="text-[0.74rem] text-[#5B6B5B]">{CRIADOR_ROTULO[a.criador]}</td>
+                          <td className="text-[0.74rem] text-[var(--muted)]">{CRIADOR_ROTULO[a.criador]}</td>
                           <td className="text-[0.8rem]">{UNIDADE_ROTULO[a.unidade]}</td>
                           <td className="text-right whitespace-nowrap">
-                            {a.preco_de && <s className="text-[0.75rem] text-[#9AA59A] mr-1.5">{brl(a.preco_de)}</s>}
-                            <b className="text-[#1F3B2E]">{brl(a.preco)}</b>
+                            {a.preco_de && <s className="text-[0.75rem] text-[var(--muted-2)] mr-1.5">{brl(a.preco_de)}</s>}
+                            <b className="text-[var(--verde)]">{brl(a.preco)}</b>
                           </td>
                           <td className="text-center">
                             <div className="qtd">
@@ -119,7 +119,7 @@ export const Tabela: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
                   </React.Fragment>
                 ))}
                 {totalMostrado === 0 && (
-                  <tr><td colSpan={6} className="text-center text-[#5B6B5B] py-8">Nenhuma ave com esse filtro.</td></tr>
+                  <tr><td colSpan={6} className="text-center text-[var(--muted)] py-8">Nenhuma ave com esse filtro.</td></tr>
                 )}
               </tbody>
             </table>
@@ -129,25 +129,25 @@ export const Tabela: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
           <div className="md:hidden">
             {grupos.map(([g, aves]) => (
               <div key={g} className="mb-5">
-                <div className="font-serif text-[1.05rem] text-[#1F3B2E] font-semibold px-1 mb-1.5">
-                  {g} <span className="font-sans text-[0.6rem] tracking-[1.5px] uppercase text-[#B99034] ml-2">{CATEGORIA[aves[0].categoria].nome}</span>
+                <div className="font-serif text-[1.05rem] text-[var(--verde)] font-semibold px-1 mb-1.5">
+                  {g} <span className="font-sans text-[0.6rem] tracking-[1.5px] uppercase text-[var(--ouro2)] ml-2">{CATEGORIA[aves[0].categoria].nome}</span>
                 </div>
                 <div className="card">
                   {aves.map((a) => {
                     const q = quantidadeDe(a.id);
                     const max = estoqueDaUnidade(a.id);
                     return (
-                      <div key={a.id} className={`flex items-center gap-3 px-3.5 py-2.5 border-b border-[#E1DCCF] last:border-b-0 ${q > 0 ? 'bg-[#FFF8E6]' : ''}`}>
+                      <div key={a.id} className={`flex items-center gap-3 px-3.5 py-2.5 border-b border-[var(--line)] last:border-b-0 ${q > 0 ? 'bg-[#FFF8E6]' : ''}`}>
                         <div className="flex-1 min-w-0">
-                          <div className="font-serif text-[1rem] text-[#1F3B2E] leading-tight">
-                            {a.nome}{a.detalhe && <span className="italic text-[#5B6B5B] text-[0.85rem]"> · {a.detalhe}</span>}
+                          <div className="font-serif text-[1rem] text-[var(--verde)] leading-tight">
+                            {a.nome}{a.detalhe && <span className="italic text-[var(--muted)] text-[0.85rem]"> · {a.detalhe}</span>}
                           </div>
-                          <div className="font-sans text-[0.7rem] text-[#5B6B5B]">
+                          <div className="font-sans text-[0.7rem] text-[var(--muted)]">
                             {estoqueTexto(a)} · {UNIDADE_ROTULO[a.unidade]} · {CRIADOR_ROTULO[a.criador]}
                           </div>
                           <div className="font-sans text-[0.92rem] whitespace-nowrap">
-                            {a.preco_de && <s className="text-[0.72rem] text-[#9AA59A] mr-1.5">{brl(a.preco_de)}</s>}
-                            <b className="text-[#1F3B2E]">{brl(a.preco)}</b>
+                            {a.preco_de && <s className="text-[0.72rem] text-[var(--muted-2)] mr-1.5">{brl(a.preco_de)}</s>}
+                            <b className="text-[var(--verde)]">{brl(a.preco)}</b>
                             {a.preco_de && <span className="chip chip-promo !text-[0.5rem] !py-0 !px-1.5 ml-2 align-middle">Promo</span>}
                           </div>
                         </div>
@@ -165,19 +165,19 @@ export const Tabela: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
             {totalMostrado === 0 && <div className="note text-center">Nenhuma ave com esse filtro.</div>}
           </div>
 
-          <p className="font-sans text-[0.74rem] text-[#5B6B5B] mt-4">
-            Estoque como na lista de {LISTA_DATA}: M = machos, F = fêmeas; 00 quando não há disponibilidade daquele sexo. Retirada em {CONSTANTS.RETIRADA} ou entrega em rota. Não achou o que procura? A encomenda continua no <a href={CONSTANTS.PRE_RESERVA_URL} target="_blank" rel="noopener noreferrer" className="text-[#1F3B2E] underline">avesarca.com.br</a>.
+          <p className="font-sans text-[0.74rem] text-[var(--muted)] mt-4">
+            Estoque como na lista de {LISTA_DATA}: M = machos, F = fêmeas; 00 quando não há disponibilidade daquele sexo. Retirada em {CONSTANTS.RETIRADA} ou entrega em rota. Não achou o que procura? A encomenda continua no <a href={CONSTANTS.PRE_RESERVA_URL} target="_blank" rel="noopener noreferrer" className="text-[var(--verde)] underline">avesarca.com.br</a>.
           </p>
         </div>
       </section>
 
       {/* Barra fixa do pedido */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 bg-[#1F3B2E] text-[#F6F1E6] border-t-[3px] border-[#D2A93C] shadow-[0_-6px_20px_rgba(0,0,0,.2)]">
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-[var(--verde)] text-[var(--marfim)] border-t-[3px] border-[var(--ouro)] shadow-[0_-6px_20px_rgba(0,0,0,.2)]">
         <div className="wrap py-3 flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <ShoppingBasket className="w-5 h-5 text-[#D2A93C]" />
+            <ShoppingBasket className="w-5 h-5 text-[var(--ouro)]" />
             <div>
-              <div className="font-sans text-[0.68rem] uppercase tracking-[1.5px] text-[#C9D2C9]">Seu pedido</div>
+              <div className="font-sans text-[0.68rem] uppercase tracking-[1.5px] text-[var(--claro-2)]">Seu pedido</div>
               <div className="font-serif text-[1.15rem] leading-tight">
                 {totalUnidades === 0 ? 'Marque as quantidades na tabela' : `${totalLinhas} ${totalLinhas === 1 ? 'variedade' : 'variedades'} · ${totalUnidades} ${totalUnidades === 1 ? 'unidade' : 'unidades'} · ${brl(totalReferencia)}`}
               </div>

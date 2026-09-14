@@ -1,8 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Search, SlidersHorizontal, FileDown } from 'lucide-react';
 import { CategoriaId, CriadorId, PageRoute, Unidade } from '../types';
-import { AVES, LISTA_DATA, TOTAL_AVES, TOTAL_LOTES } from '../data/aves';
-import { CATEGORIAS, CRIADOR_ROTULO, CONSTANTS } from '../data/catalogo';
+import { AVES, LISTA_DATA, TOTAL_AVES, TOTAL_LOTES, TOTAL_VARIEDADES } from '../data/aves';
+import { CATEGORIAS, CRIADOR_ROTULO, CONSTANTS, brl, precoOrd } from '../data/catalogo';
+import { EH_REDE, MARCA_ATUAL } from '../marcas';
 import { AveCard } from '../components/AveCard';
 import { useCart } from '../cart/CartContext';
 
@@ -15,6 +16,16 @@ const FAIXAS: { id: string; rotulo: string; min: number; max: number }[] = [
   { id: 'acima6000', rotulo: 'acima de R$ 6.000', min: 6000, max: Infinity },
 ];
 
+/** "de R$ 800 a R$ 4.500" — a distância entre os dois números é o argumento. */
+const faixaDoGrupo = (aves: { preco: number | null; machos: number; femeas: number }[]) => {
+  const p = aves.map((a) => a.preco).filter((x): x is number => x !== null);
+  const prontas = aves.filter((a) => a.machos + a.femeas > 0).length;
+  if (!p.length) return 'sob consulta';
+  const mn = Math.min(...p), mx = Math.max(...p);
+  const faixa = mn === mx ? brl(mn) : `de ${brl(mn)} a ${brl(mx)}`;
+  return prontas ? `${faixa} · ${prontas} ${prontas === 1 ? 'pronta' : 'prontas'}` : faixa;
+};
+
 const normaliza = (t: string) => t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
 
 export const Aves: React.FC<{ categoriaInicial?: string; onNavigate: (p: PageRoute) => void }> = ({ categoriaInicial, onNavigate }) => {
@@ -25,6 +36,7 @@ export const Aves: React.FC<{ categoriaInicial?: string; onNavigate: (p: PageRou
   const [busca, setBusca] = useState('');
   const [ordem, setOrdem] = useState<Ordem>('nome');
   const [soPromo, setSoPromo] = useState(false);
+  const [soEstoque, setSoEstoque] = useState(false);
   const { totalUnidades } = useCart();
 
   useEffect(() => {
@@ -39,15 +51,19 @@ export const Aves: React.FC<{ categoriaInicial?: string; onNavigate: (p: PageRou
         (categoria === 'todas' || a.categoria === categoria) &&
         (criador === 'todos' || a.criador === criador) &&
         (unidade === 'todas' || a.unidade === unidade) &&
-        a.preco >= f.min && a.preco <= f.max &&
+        (a.preco === null || (a.preco >= f.min && a.preco <= f.max)) &&
         (!soPromo || a.preco_de) &&
+        (!soEstoque || a.machos + a.femeas > 0) &&
         (!q || normaliza(`${a.nome} ${a.cientifico} ${a.grupo} ${a.detalhe}`).includes(q)),
     );
-    if (ordem === 'preco-asc') r = [...r].sort((a, b) => a.preco - b.preco);
-    else if (ordem === 'preco-desc') r = [...r].sort((a, b) => b.preco - a.preco);
-    else r = [...r].sort((a, b) => (a.preco - b.preco)); // dentro do grupo, como no PDF: do mais barato ao mais caro
+    if (ordem === 'preco-asc') r = [...r].sort((a, b) => precoOrd(a.preco) - precoOrd(b.preco));
+    else if (ordem === 'preco-desc') r = [...r].sort((a, b) => precoOrd(b.preco) - precoOrd(a.preco));
+    // Dentro do grupo: na rede, do mais barato ao mais caro (como no PDF). No site de
+    // criadouro, a ave-âncora abre a aba — a mais cara primeiro, sem preço por último.
+    else if (EH_REDE) r = [...r].sort((a, b) => precoOrd(a.preco) - precoOrd(b.preco));
+    else r = [...r].sort((a, b) => (a.preco === null ? 1 : b.preco === null ? -1 : b.preco - a.preco));
     return r;
-  }, [categoria, criador, unidade, faixa, busca, ordem, soPromo]);
+  }, [categoria, criador, unidade, faixa, busca, ordem, soPromo, soEstoque]);
 
   // Agrupa por subgrupo quando a ordem é por nome (lista parecida com o PDF)
   const grupos = useMemo(() => {
@@ -66,10 +82,12 @@ export const Aves: React.FC<{ categoriaInicial?: string; onNavigate: (p: PageRou
     <>
       <section className="sec-escura">
         <div className="wrap py-10 sm:py-14">
-          <div className="eyebrow">Lista de {LISTA_DATA} · estoque sujeito a alteração</div>
-          <h1 className="sec-title" style={{ fontSize: '2.4rem' }}>Aves disponíveis</h1>
+          <div className="eyebrow">{EH_REDE ? `Lista de ${LISTA_DATA} · estoque sujeito a alteração` : `Criação em ${MARCA_ATUAL.cidade} · estoque de ${LISTA_DATA}`}</div>
+          <h1 className="sec-title" style={{ fontSize: '2.4rem' }}>{EH_REDE ? 'Aves disponíveis' : 'O plantel'}</h1>
           <p className="sec-sub" style={{ marginBottom: 0 }}>
-            {TOTAL_AVES} aves em {TOTAL_LOTES} lotes. Preço de casal = macho + fêmea. Pagamento na entrega, em rota ou retirada em {CONSTANTS.RETIRADA}.
+            {EH_REDE
+              ? `${TOTAL_AVES} aves em ${TOTAL_LOTES} lotes. Preço de casal = macho + fêmea. Pagamento na entrega, em rota ou retirada em ${CONSTANTS.RETIRADA}.`
+              : `${TOTAL_VARIEDADES} variedades criadas no mesmo plantel; ${TOTAL_AVES} aves prontas nesta semana. O que não tem lote pronto aparece como “sob consulta” — é só perguntar. Preço de casal = macho + fêmea. Pagamento na entrega, em rota ou retirada em ${CONSTANTS.RETIRADA}.`}
           </p>
         </div>
       </section>
@@ -89,15 +107,22 @@ export const Aves: React.FC<{ categoriaInicial?: string; onNavigate: (p: PageRou
           {/* Demais filtros */}
           <div className="grid grid-cols-1 md:grid-cols-[1.4fr_1fr_1fr_1fr_1fr] gap-3 mb-3">
             <div className="relative">
-              <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#5B6B5B]" />
+              <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--muted)]" />
               <input className="campo !pl-10" placeholder="Buscar variedade…" value={busca} onChange={(e) => setBusca(e.target.value)} aria-label="Buscar" />
             </div>
-            <select className="campo" value={criador} onChange={(e) => setCriador(e.target.value as any)} aria-label="Criadouro">
-              <option value="todos">Todos os criadouros</option>
-              <option value="aves-arca">{CRIADOR_ROTULO['aves-arca']}</option>
-              <option value="stima">{CRIADOR_ROTULO.stima}</option>
-              <option value="alianca">{CRIADOR_ROTULO.alianca}</option>
-            </select>
+            {EH_REDE ? (
+              <select className="campo" value={criador} onChange={(e) => setCriador(e.target.value as any)} aria-label="Criadouro">
+                <option value="todos">Todos os criadouros</option>
+                <option value="aves-arca">{CRIADOR_ROTULO['aves-arca']}</option>
+                <option value="stima">{CRIADOR_ROTULO.stima}</option>
+                <option value="alianca">{CRIADOR_ROTULO.alianca}</option>
+              </select>
+            ) : (
+              <select className="campo" value={soEstoque ? 'estoque' : 'tudo'} onChange={(e) => setSoEstoque(e.target.value === 'estoque')} aria-label="Disponibilidade">
+                <option value="tudo">Toda a criação</option>
+                <option value="estoque">Só o que tem pronto</option>
+              </select>
+            )}
             <select className="campo" value={unidade} onChange={(e) => setUnidade(e.target.value as any)} aria-label="Unidade">
               <option value="todas">Casal, macho ou fêmea</option>
               <option value="casal">Só casais</option>
@@ -114,11 +139,13 @@ export const Aves: React.FC<{ categoriaInicial?: string; onNavigate: (p: PageRou
             </select>
           </div>
           <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
-            <label className="flex items-center gap-2 font-sans text-[0.82rem] text-[#5B6B5B] cursor-pointer">
-              <input type="checkbox" checked={soPromo} onChange={(e) => setSoPromo(e.target.checked)} /> Só promoções de setembro
-            </label>
-            <span className="font-sans text-[0.8rem] text-[#5B6B5B] flex items-center gap-1.5">
-              <SlidersHorizontal className="w-3.5 h-3.5" /> {lista.length} {lista.length === 1 ? 'lote' : 'lotes'} · {totalFiltrado} aves
+            {EH_REDE ? (
+              <label className="flex items-center gap-2 font-sans text-[0.82rem] text-[var(--muted)] cursor-pointer">
+                <input type="checkbox" checked={soPromo} onChange={(e) => setSoPromo(e.target.checked)} /> Só promoções de setembro
+              </label>
+            ) : <span />}
+            <span className="font-sans text-[0.8rem] text-[var(--muted)] flex items-center gap-1.5">
+              <SlidersHorizontal className="w-3.5 h-3.5" /> {EH_REDE ? `${lista.length} ${lista.length === 1 ? 'lote' : 'lotes'} · ${totalFiltrado} aves` : `${lista.length} ${lista.length === 1 ? 'ficha' : 'fichas'} · ${totalFiltrado} aves prontas`}
             </span>
           </div>
 
@@ -129,8 +156,8 @@ export const Aves: React.FC<{ categoriaInicial?: string; onNavigate: (p: PageRou
           {grupos ? (
             grupos.map(([g, aves]) => (
               <div key={g} className="mb-10">
-                <h2 className="text-[1.5rem] text-[#1F3B2E] m-0 mb-4 flex items-baseline gap-3">
-                  {g} <span className="font-sans text-[0.7rem] tracking-[1px] uppercase text-[#B99034]">{aves.length} {aves.length === 1 ? 'lote' : 'lotes'}</span>
+                <h2 className="text-[1.5rem] text-[var(--verde)] m-0 mb-4 flex items-baseline gap-3 flex-wrap">
+                  {g} <span className="font-sans text-[0.7rem] tracking-[1px] uppercase text-[var(--ouro2)]">{EH_REDE ? `${aves.length} ${aves.length === 1 ? 'lote' : 'lotes'}` : faixaDoGrupo(aves)}</span>
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                   {aves.map((a) => <AveCard key={a.id} ave={a} onVerPedido={() => onNavigate('pedido')} />)}

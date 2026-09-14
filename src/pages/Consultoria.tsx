@@ -23,7 +23,7 @@ export const Consultoria: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ 
       <div className="wrap grid grid-cols-1 md:grid-cols-2 gap-5 items-stretch">
         {CONSULTORES.map((c) => (
           <div key={c.id} className="card p-7 flex flex-col text-center h-full">
-            <div className="h-44 mb-5 flex items-center justify-center rounded-xl bg-white border border-[#E1DCCF] px-5 py-3 overflow-hidden">
+            <div className="h-44 mb-5 flex items-center justify-center rounded-xl bg-white border border-[var(--line)] px-5 py-3 overflow-hidden">
               <img
                 src={c.logo}
                 alt={`Logotipo ${c.nome}`}
@@ -33,22 +33,22 @@ export const Consultoria: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ 
               />
             </div>
 
-            <h2 className="text-[1.6rem] text-[#1F3B2E] m-0">{c.nome}</h2>
-            <p className="font-sans text-[0.78rem] text-[#5B6B5B] mt-1 mb-4 flex items-center justify-center gap-1.5">
-              <UserRound className="w-3.5 h-3.5 text-[#B99034]" />
+            <h2 className="text-[1.6rem] text-[var(--verde)] m-0">{c.nome}</h2>
+            <p className="font-sans text-[0.78rem] text-[var(--muted)] mt-1 mb-4 flex items-center justify-center gap-1.5">
+              <UserRound className="w-3.5 h-3.5 text-[var(--ouro2)]" />
               <span>
-                <b className="text-[#1F3B2E] font-semibold">{c.responsavel}</b> · {c.profissao}
+                <b className="text-[var(--verde)] font-semibold">{c.responsavel}</b> · {c.profissao}
               </span>
             </p>
 
-            <p className="font-serif italic text-[1rem] text-[#B99034] m-0 mb-3">“{c.chamada}”</p>
-            <p lang="pt-BR" className="font-serif text-[1rem] text-[#1E2A24] m-0 mb-4 text-justify hyphens-auto">
+            <p className="font-serif italic text-[1rem] text-[var(--ouro2)] m-0 mb-3">“{c.chamada}”</p>
+            <p lang="pt-BR" className="font-serif text-[1rem] text-[var(--ink)] m-0 mb-4 text-justify hyphens-auto">
               {c.descricao}
             </p>
 
-            <div className="mt-auto pt-4 border-t border-[#E1DCCF]">
-              <p className="font-serif text-[0.92rem] text-[#5B6B5B] m-0 mb-4 flex items-start justify-center gap-1.5 text-left">
-                <Sprout className="w-4 h-4 flex-none mt-1 text-[#B99034]" />
+            <div className="mt-auto pt-4 border-t border-[var(--line)]">
+              <p className="font-serif text-[0.92rem] text-[var(--muted)] m-0 mb-4 flex items-start justify-center gap-1.5 text-left">
+                <Sprout className="w-4 h-4 flex-none mt-1 text-[var(--ouro2)]" />
                 <span>{c.frentes.join(' · ')}</span>
               </p>
               <div className="flex flex-wrap items-center justify-center gap-2">
@@ -80,8 +80,8 @@ export const Consultoria: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ 
         <div className="card p-8 grid grid-cols-1 md:grid-cols-[1.4fr_0.6fr] gap-5 items-center">
           <div>
             <div className="eyebrow">Como funciona</div>
-            <h2 className="text-[1.5rem] text-[#1F3B2E] m-0 mb-2">A consultoria é contratada direto com cada um.</h2>
-            <p lang="pt-BR" className="font-serif text-[1rem] text-[#5B6B5B] m-0 text-justify hyphens-auto">
+            <h2 className="text-[1.5rem] text-[var(--verde)] m-0 mb-2">A consultoria é contratada direto com cada um.</h2>
+            <p lang="pt-BR" className="font-serif text-[1rem] text-[var(--muted)] m-0 text-justify hyphens-auto">
               A AOB não intermedeia nem cobra por isso: são profissionais independentes que a rede
               indica porque confia no trabalho. Fale direto com eles pelo WhatsApp ou pelo Instagram. Se
               não souber por onde começar, chame no nosso WhatsApp {CONSTANTS.WHATSAPP_DISPLAY} que a gente aponta o

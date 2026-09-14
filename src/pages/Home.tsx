@@ -19,10 +19,10 @@ export const Home: React.FC<{ onNavigate: (p: PageRoute, extra?: string) => void
         <div className="wrap py-16 sm:py-24 grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr] gap-12 items-center">
           <div>
             <div className="eyebrow">Lista de {LISTA_DATA} · três criadouros, uma lista</div>
-            <h1 className="font-serif text-[2.5rem] sm:text-[3.4rem] leading-[1.05] m-0 text-[#F6F1E6]">
-              Aves ornamentais à <em className="not-italic text-[#D2A93C]">pronta entrega</em>, com rota marcada.
+            <h1 className="font-serif text-[2.5rem] sm:text-[3.4rem] leading-[1.05] m-0 text-[var(--marfim)]">
+              Aves ornamentais à <em className="not-italic text-[var(--ouro)]">pronta entrega</em>, com rota marcada.
             </h1>
-            <p className="font-serif text-[1.15rem] text-[#C9D2C9] mt-5 mb-8 max-w-[52ch]">
+            <p className="font-serif text-[1.15rem] text-[var(--claro-2)] mt-5 mb-8 max-w-[52ch]">
               {TOTAL_AVES} aves em {TOTAL_LOTES} lotes de {CRIADORES.length} criadouros parceiros. Você escolhe, monta o pedido, a gente confirma a rota da sua região — e você paga só na entrega, com a ave na mão.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
@@ -38,7 +38,7 @@ export const Home: React.FC<{ onNavigate: (p: PageRoute, extra?: string) => void
             <img src="/logo-selo.png" alt="" className="w-[460px] max-w-full" />
           </div>
         </div>
-        <div className="border-t border-[#2E5240]">
+        <div className="border-t border-[var(--verde-claro)]">
           <div className="wrap py-7 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             <div className="stat"><b>{TOTAL_AVES}</b><span>aves disponíveis</span></div>
             <div className="stat"><b>{TOTAL_LOTES}</b><span>variedades / lotes</span></div>
@@ -66,11 +66,11 @@ export const Home: React.FC<{ onNavigate: (p: PageRoute, extra?: string) => void
                   onClick={(e) => { e.preventDefault(); if (!vazio) onNavigate('aves', c.id); }}
                   className={`card p-5 no-underline ${vazio ? 'opacity-60 cursor-default' : ''}`}
                 >
-                  <div className="font-sans text-[0.64rem] tracking-[1.5px] uppercase text-[#B99034] font-bold">
+                  <div className="font-sans text-[0.64rem] tracking-[1.5px] uppercase text-[var(--ouro2)] font-bold">
                     {vazio ? 'em formação' : `${n.length} ${n.length === 1 ? 'lote' : 'lotes'} · ${aves} aves`}
                   </div>
-                  <h3 className="text-[1.25rem] text-[#1F3B2E] mt-1 mb-1">{c.nome}</h3>
-                  <p className="font-serif text-[0.9rem] text-[#5B6B5B] m-0">{c.descricao}</p>
+                  <h3 className="text-[1.25rem] text-[var(--verde)] mt-1 mb-1">{c.nome}</h3>
+                  <p className="font-serif text-[0.9rem] text-[var(--muted)] m-0">{c.descricao}</p>
                 </a>
               );
             })}
@@ -79,7 +79,7 @@ export const Home: React.FC<{ onNavigate: (p: PageRoute, extra?: string) => void
       </section>
 
       {/* DESTAQUES */}
-      <section className="section bg-[#F6F1E6] border-y border-[#E1DCCF]">
+      <section className="section bg-[var(--marfim)] border-y border-[var(--line)]">
         <div className="wrap">
           <div className="flex flex-wrap items-end justify-between gap-4 mb-2">
             <div>
@@ -117,9 +117,9 @@ export const Home: React.FC<{ onNavigate: (p: PageRoute, extra?: string) => void
               { i: HandCoins, t: '3. Pague na entrega', d: 'Você confere a ave e paga na hora, em Pix ou dinheiro. Sem sinal, sem depósito antecipado.' },
             ].map((p) => (
               <div key={p.t} className="card p-7">
-                <p.i className="w-8 h-8 text-[#D2A93C] mb-3" strokeWidth={1.6} />
-                <h3 className="text-[1.3rem] text-[#1F3B2E] m-0 mb-2">{p.t}</h3>
-                <p className="font-serif text-[1rem] text-[#5B6B5B] m-0">{p.d}</p>
+                <p.i className="w-8 h-8 text-[var(--ouro)] mb-3" strokeWidth={1.6} />
+                <h3 className="text-[1.3rem] text-[var(--verde)] m-0 mb-2">{p.t}</h3>
+                <p className="font-serif text-[1rem] text-[var(--muted)] m-0">{p.d}</p>
               </div>
             ))}
           </div>
@@ -139,20 +139,20 @@ export const Home: React.FC<{ onNavigate: (p: PageRoute, extra?: string) => void
           </div>
           <div className="grid gap-3">
             {rotasComData.map(({ r, p }) => (
-              <div key={r.regiao} className="rounded-2xl border border-[#2E5240] bg-[#162B21] p-5 flex flex-wrap justify-between gap-3 items-center">
+              <div key={r.regiao} className="rounded-2xl border border-[var(--verde-claro)] bg-[var(--verde-2)] p-5 flex flex-wrap justify-between gap-3 items-center">
                 <div>
-                  <div className="font-serif text-[1.2rem] text-[#F6F1E6]">{r.nome}</div>
-                  <div className="font-sans text-[0.78rem] text-[#C9D2C9]">{r.nota}</div>
+                  <div className="font-serif text-[1.2rem] text-[var(--marfim)]">{r.nome}</div>
+                  <div className="font-sans text-[0.78rem] text-[var(--claro-2)]">{r.nota}</div>
                 </div>
                 <div className="text-right">
-                  <div className="font-serif text-[1.6rem] text-[#D2A93C] leading-none">{dataCurta(p!.saida)}</div>
-                  <div className="font-sans text-[0.7rem] uppercase tracking-[1px] text-[#C9D2C9]">pedidos até {dataCurta(p!.fecha)}</div>
+                  <div className="font-serif text-[1.6rem] text-[var(--ouro)] leading-none">{dataCurta(p!.saida)}</div>
+                  <div className="font-sans text-[0.7rem] uppercase tracking-[1px] text-[var(--claro-2)]">pedidos até {dataCurta(p!.fecha)}</div>
                 </div>
               </div>
             ))}
-            <div className="rounded-2xl border border-dashed border-[#2E5240] p-5">
-              <div className="font-serif text-[1.2rem] text-[#F6F1E6]">Grande São Paulo e raio de 150 km</div>
-              <div className="font-sans text-[0.78rem] text-[#C9D2C9]">Data combinada direto pelo WhatsApp · retirada em {CONSTANTS.RETIRADA}</div>
+            <div className="rounded-2xl border border-dashed border-[var(--verde-claro)] p-5">
+              <div className="font-serif text-[1.2rem] text-[var(--marfim)]">Grande São Paulo e raio de 150 km</div>
+              <div className="font-sans text-[0.78rem] text-[var(--claro-2)]">Data combinada direto pelo WhatsApp · retirada em {CONSTANTS.RETIRADA}</div>
             </div>
           </div>
         </div>
@@ -164,8 +164,8 @@ export const Home: React.FC<{ onNavigate: (p: PageRoute, extra?: string) => void
           <div className="card p-8 md:p-10 grid grid-cols-1 md:grid-cols-[1.4fr_0.6fr] gap-6 items-center">
             <div>
               <div className="eyebrow">Não achou o que procura?</div>
-              <h2 className="text-[1.7rem] text-[#1F3B2E] m-0 mb-2">Aqui é só o que está pronto para sair.</h2>
-              <p className="font-serif text-[1rem] text-[#5B6B5B] m-0">
+              <h2 className="text-[1.7rem] text-[var(--verde)] m-0 mb-2">Aqui é só o que está pronto para sair.</h2>
+              <p className="font-serif text-[1rem] text-[var(--muted)] m-0">
                 Variedade que ainda vai nascer, ou que não está na lista de hoje, é encomenda: a pré-reserva sem pagamento antecipado continua no site da Aves Arca.
               </p>
             </div>

@@ -5,6 +5,7 @@
 // `preco_de` = preço anterior quando há promoção de setembro (só Aves Arca).
 import { Ave, CriadorId } from '../types';
 import { MARCA_ATUAL } from '../marcas';
+import { PLANTEL_STIMA, Variedade } from './plantel-stima';
 
 export const AVES_TODAS: Ave[] = [
   { id: "ganso-do-egito-branco", nome: "Ganso do Egito Branco", cientifico: "Alopochen aegyptiaca", categoria: "aquaticas", grupo: "Gansos", criador: "aves-arca", machos: 14, femeas: 14, unidade: "casal", preco: 1250, preco_de: 1500, preco_casal: 1500, preco_macho: 975, preco_femea: 750, foto: "/aves/ganso-do-egito-branco.webp", detalhe: "", resumo: "Seleção de plumagem branca do ganso-do-Egito. Tecnicamente uma tadorna ganso-símile africana, é um dos anseriformes ornamentais mais difundidos em coleções do mundo — belo, rústico e de fácil manejo. Muito territorial, com esporões nas asas: pede espaço e separação no período reprodutivo." },
@@ -37,28 +38,28 @@ export const AVES_TODAS: Ave[] = [
   { id: "netta-rufino", nome: "Netta Rufino", cientifico: "Netta rufina", categoria: "aquaticas", grupo: "Mergulhões", criador: "aves-arca", machos: 3, femeas: 10, unidade: "casal", preco: 1300, preco_de: 1500, preco_casal: 1300, preco_macho: 650, preco_femea: 650, foto: "/aves/netta-rufino.webp", detalhe: "", resumo: "Pato mergulhador de médio a grande porte: o macho tem cabeça arredondada laranja-ferrugínea e bico vermelho vivo, de alto contraste nupcial. Alimenta-se sob a água e pede lâmina d'água mais profunda — um mergulhador de forte apelo ornamental." },
   { id: "nyroca", nome: "Nyroca", cientifico: "Aythya nyroca", categoria: "aquaticas", grupo: "Mergulhões", criador: "aves-arca", machos: 3, femeas: 1, unidade: "casal", preco: 4500, preco_de: 5000, preco_casal: 5000, preco_macho: 2500, preco_femea: 2500, foto: "/aves/nyroca.webp", detalhe: "", resumo: "Pato mergulhador elegante, de plumagem castanho-avermelhada intensa, ventre branco e um característico olho branco no macho. Status de conservação sensível (Quase Ameaçado) soma apelo ornamental e valor conservacionista; exige água com profundidade para mergulho." },
   { id: "mergus-cuculatus", nome: "Mergus Cuculatus", cientifico: "Lophodytes cucullatus", categoria: "aquaticas", grupo: "Mergulhões", criador: "aves-arca", machos: 2, femeas: 0, unidade: "macho", preco: 3000, preco_de: 4000, preco_casal: 6000, preco_macho: 3000, preco_femea: 3000, foto: "/aves/mergus-cuculatus.webp", detalhe: "", resumo: "O merganso-capuchinho é um mergulhador piscívoro de bico fino serrilhado, inconfundível pela crista do macho — um leque branco orlado de negro que ele ergue em exibição. Predador de peixes, exige água limpa e profunda e caixas-ninho elevadas." },
-  { id: "pavao-azul-casal-jovem", nome: "Pavão Azul", cientifico: "Pavo cristatus", categoria: "pavoes", grupo: "Pavões", criador: "stima", machos: 2, femeas: 1, unidade: "casal", preco: 800, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "casal jovem · 2M 1F", resumo: "" },
-  { id: "pavao-azul-adulto-casal-10-casais", nome: "Pavão Azul adulto", cientifico: "Pavo cristatus", categoria: "pavoes", grupo: "Pavões", criador: "stima", machos: 10, femeas: 10, unidade: "casal", preco: 1600, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "casal · 10 casais", resumo: "" },
-  { id: "pavao-arlequim-casal-jovem", nome: "Pavão Arlequim", cientifico: "Pavo cristatus (mut.)", categoria: "pavoes", grupo: "Pavões", criador: "stima", machos: 1, femeas: 1, unidade: "casal", preco: 1200, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "casal jovem · 1M 1F", resumo: "" },
-  { id: "pavao-branco-casal-jovem", nome: "Pavão Branco", cientifico: "Pavo cristatus (mut.)", categoria: "pavoes", grupo: "Pavões", criador: "stima", machos: 3, femeas: 4, unidade: "casal", preco: 1200, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "casal jovem · 3M 4F", resumo: "" },
-  { id: "pavao-branco-casal-adulto", nome: "Pavão Branco", cientifico: "Pavo cristatus (mut.)", categoria: "pavoes", grupo: "Pavões", criador: "stima", machos: 1, femeas: 1, unidade: "casal", preco: 3000, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "casal adulto", resumo: "" },
-  { id: "pavao-purple-femea-arlequim", nome: "Pavão Purple", cientifico: "Pavo cristatus (mut.)", categoria: "pavoes", grupo: "Pavões", criador: "stima", machos: 0, femeas: 1, unidade: "femea", preco: 4500, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "fêmea arlequim · 1F", resumo: "" },
-  { id: "faisao-canario-casal-jovem", nome: "Faisão Canário", cientifico: "Chrysolophus pictus (mut.)", categoria: "faisoes", grupo: "Faisões", criador: "stima", machos: 1, femeas: 1, unidade: "casal", preco: 800, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "casal jovem", resumo: "" },
-  { id: "faisao-prata-casal-jovem", nome: "Faisão Prata", cientifico: "Lophura nycthemera", categoria: "faisoes", grupo: "Faisões", criador: "stima", machos: 1, femeas: 1, unidade: "casal", preco: 800, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "casal jovem", resumo: "" },
-  { id: "faisao-lady-amherst-macho-1m", nome: "Faisão Lady Amherst", cientifico: "Chrysolophus amherstiae", categoria: "faisoes", grupo: "Faisões", criador: "stima", machos: 1, femeas: 0, unidade: "macho", preco: 400, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "macho · 1M", resumo: "" },
-  { id: "faisao-prelatus-casal-adulto", nome: "Faisão Prelatus", cientifico: "Lophura diardi", categoria: "faisoes", grupo: "Faisões", criador: "stima", machos: 1, femeas: 1, unidade: "casal", preco: 3800, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "casal adulto · 1 casal", resumo: "" },
-  { id: "perdiz-california-casal-2m-2f", nome: "Perdiz Califórnia", cientifico: "Callipepla californica", categoria: "perdizes", grupo: "Perdizes, francolim e sandgrouse", criador: "stima", machos: 2, femeas: 2, unidade: "casal", preco: 1500, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "casal · 2M 2F", resumo: "" },
-  { id: "pomba-guine-femea", nome: "Pomba Guiné", cientifico: "Columba guinea", categoria: "pombas", grupo: "Pombas", criador: "stima", machos: 0, femeas: 1, unidade: "femea", preco: 250, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "fêmea · 1F", resumo: "" },
-  { id: "pomba-lofote-casal", nome: "Pomba Lofote", cientifico: "Ocyphaps lophotes", categoria: "pombas", grupo: "Pombas", criador: "stima", machos: 2, femeas: 2, unidade: "casal", preco: 750, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "casal · 2 casais", resumo: "" },
-  { id: "pomba-senegal-casal-1-casal", nome: "Pomba Senegal", cientifico: "Streptopelia senegalensis", categoria: "pombas", grupo: "Pombas", criador: "stima", machos: 1, femeas: 1, unidade: "casal", preco: 800, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "casal · 1 casal", resumo: "" },
-  { id: "pomba-asa-verde-casal-1-casal", nome: "Pomba Asa Verde", cientifico: "Treron sp.", categoria: "pombas", grupo: "Pombas", criador: "stima", machos: 1, femeas: 1, unidade: "casal", preco: 1500, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "casal · 1 casal", resumo: "" },
-  { id: "marreco-cayuga-casal-3-casais", nome: "Marreco Cayuga", cientifico: "Anas platyrhynchos (Cayuga)", categoria: "aquaticas", grupo: "Marrecos de superfície", criador: "stima", machos: 3, femeas: 3, unidade: "casal", preco: 350, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "casal · 3 casais", resumo: "" },
-  { id: "marreco-de-pompom-casal-4m-2f", nome: "Marreco de Pompom", cientifico: "Anas platyrhynchos dom.", categoria: "aquaticas", grupo: "Marrecos de superfície", criador: "stima", machos: 4, femeas: 2, unidade: "casal", preco: 350, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "casal · 4M 2F", resumo: "" },
-  { id: "ring-neck-lutino-casal-adulto", nome: "Ring Neck Lutino", cientifico: "Psittacula krameri (mut.)", categoria: "psitacideos", grupo: "Psitacídeos", criador: "stima", machos: 1, femeas: 2, unidade: "casal", preco: 3500, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "casal adulto · 1M 2F", resumo: "" },
-  { id: "loris-molucanos-casal-adulto", nome: "Lóris Molucanos", cientifico: "Eos bornea", categoria: "psitacideos", grupo: "Psitacídeos", criador: "stima", machos: 1, femeas: 1, unidade: "casal", preco: 6000, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "casal adulto", resumo: "" },
-  { id: "turaco-leucotis-femea", nome: "Turaco Leucotis", cientifico: "Tauraco leucotis", categoria: "turacos", grupo: "Turacos", criador: "stima", machos: 0, femeas: 1, unidade: "femea", preco: 4000, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "fêmea", resumo: "" },
-  { id: "turaco-violeta-casal", nome: "Turaco Violeta", cientifico: "Musophaga violacea", categoria: "turacos", grupo: "Turacos", criador: "stima", machos: 1, femeas: 1, unidade: "casal", preco: 9000, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "casal", resumo: "" },
-  { id: "turaco-persa-casal", nome: "Turaco Persa", cientifico: "Tauraco persa", categoria: "turacos", grupo: "Turacos", criador: "stima", machos: 1, femeas: 1, unidade: "casal", preco: 15000, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "casal", resumo: "" },
+  { id: "pavao-azul-casal-jovem", nome: "Pavão Azul", cientifico: "Pavo cristatus", categoria: "pavoes", grupo: "Pavões", criador: "stima", machos: 2, femeas: 1, unidade: "casal", preco: 800, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "casal jovem · 2M 1F", resumo: "", variedade: "pavao-azul" },
+  { id: "pavao-azul-adulto-casal-10-casais", nome: "Pavão Azul adulto", cientifico: "Pavo cristatus", categoria: "pavoes", grupo: "Pavões", criador: "stima", machos: 10, femeas: 10, unidade: "casal", preco: 1600, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "casal · 10 casais", resumo: "", variedade: "pavao-azul" },
+  { id: "pavao-arlequim-casal-jovem", nome: "Pavão Arlequim", cientifico: "Pavo cristatus (mut.)", categoria: "pavoes", grupo: "Pavões", criador: "stima", machos: 1, femeas: 1, unidade: "casal", preco: 1200, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "casal jovem · 1M 1F", resumo: "", variedade: "pavao-arlequim" },
+  { id: "pavao-branco-casal-jovem", nome: "Pavão Branco", cientifico: "Pavo cristatus (mut.)", categoria: "pavoes", grupo: "Pavões", criador: "stima", machos: 3, femeas: 4, unidade: "casal", preco: 1200, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "casal jovem · 3M 4F", resumo: "", variedade: "pavao-branco" },
+  { id: "pavao-branco-casal-adulto", nome: "Pavão Branco", cientifico: "Pavo cristatus (mut.)", categoria: "pavoes", grupo: "Pavões", criador: "stima", machos: 1, femeas: 1, unidade: "casal", preco: 3000, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "casal adulto", resumo: "", variedade: "pavao-branco" },
+  { id: "pavao-purple-femea-arlequim", nome: "Pavão Purple", cientifico: "Pavo cristatus (mut.)", categoria: "pavoes", grupo: "Pavões", criador: "stima", machos: 0, femeas: 1, unidade: "femea", preco: 4500, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "fêmea arlequim · 1F", resumo: "", variedade: "pavao-purple" },
+  { id: "faisao-canario-casal-jovem", nome: "Faisão Canário", cientifico: "Chrysolophus pictus (mut.)", categoria: "faisoes", grupo: "Faisões", criador: "stima", machos: 1, femeas: 1, unidade: "casal", preco: 800, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "casal jovem", resumo: "", variedade: "faisao-canario" },
+  { id: "faisao-prata-casal-jovem", nome: "Faisão Prata", cientifico: "Lophura nycthemera", categoria: "faisoes", grupo: "Faisões", criador: "stima", machos: 1, femeas: 1, unidade: "casal", preco: 800, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "casal jovem", resumo: "", variedade: "faisao-prata" },
+  { id: "faisao-lady-amherst-macho-1m", nome: "Faisão Lady Amherst", cientifico: "Chrysolophus amherstiae", categoria: "faisoes", grupo: "Faisões", criador: "stima", machos: 1, femeas: 0, unidade: "macho", preco: 400, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "macho · 1M", resumo: "", variedade: "faisao-lady-amherst" },
+  { id: "faisao-prelatus-casal-adulto", nome: "Faisão Prelado", cientifico: "Lophura diardi", categoria: "faisoes", grupo: "Faisões", criador: "stima", machos: 1, femeas: 1, unidade: "casal", preco: 3800, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "casal adulto · 1 casal", resumo: "", variedade: "faisao-prelado" },
+  { id: "perdiz-california-casal-2m-2f", nome: "Codorna Califórnia", cientifico: "Callipepla californica", categoria: "perdizes", grupo: "Perdizes, francolim e sandgrouse", criador: "stima", machos: 2, femeas: 2, unidade: "casal", preco: 1500, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "casal · 2M 2F", resumo: "", variedade: "codorna-california" },
+  { id: "pomba-guine-femea", nome: "Pomba Guiné", cientifico: "Columba guinea", categoria: "pombas", grupo: "Pombas", criador: "stima", machos: 0, femeas: 1, unidade: "femea", preco: 250, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "fêmea · 1F", resumo: "", variedade: "pomba-guine" },
+  { id: "pomba-lofote-casal", nome: "Pomba Lofote", cientifico: "Ocyphaps lophotes", categoria: "pombas", grupo: "Pombas", criador: "stima", machos: 2, femeas: 2, unidade: "casal", preco: 750, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "casal · 2 casais", resumo: "", variedade: "pomba-lofote" },
+  { id: "pomba-senegal-casal-1-casal", nome: "Pomba Senegal", cientifico: "Spilopelia senegalensis", categoria: "pombas", grupo: "Pombas", criador: "stima", machos: 1, femeas: 1, unidade: "casal", preco: 800, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "casal · 1 casal", resumo: "", variedade: "pomba-senegal" },
+  { id: "pomba-asa-verde-casal-1-casal", nome: "Pomba Asa Verde", cientifico: "Chalcophaps indica", categoria: "pombas", grupo: "Pombas", criador: "stima", machos: 1, femeas: 1, unidade: "casal", preco: 1500, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "casal · 1 casal", resumo: "", variedade: "pomba-asa-verde" },
+  { id: "marreco-cayuga-casal-3-casais", nome: "Marreco Cayuga", cientifico: "Anas platyrhynchos (Cayuga)", categoria: "aquaticas", grupo: "Marrecos de superfície", criador: "stima", machos: 3, femeas: 3, unidade: "casal", preco: 350, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "casal · 3 casais", resumo: "", variedade: "marreco-cayuga" },
+  { id: "marreco-de-pompom-casal-4m-2f", nome: "Marreco Topetudo", cientifico: "Anas platyrhynchos dom.", categoria: "aquaticas", grupo: "Marrecos de superfície", criador: "stima", machos: 4, femeas: 2, unidade: "casal", preco: 350, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "casal · 4M 2F", resumo: "", variedade: "marreco-topetudo" },
+  { id: "ring-neck-lutino-casal-adulto", nome: "Ring Neck Lutino", cientifico: "Psittacula krameri (mut.)", categoria: "psitacideos", grupo: "Psitacídeos", criador: "stima", machos: 1, femeas: 2, unidade: "casal", preco: 3500, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "casal adulto · 1M 2F", resumo: "", variedade: "ring-neck" },
+  { id: "loris-molucanos-casal-adulto", nome: "Lóris Molucano", cientifico: "Eos bornea", categoria: "psitacideos", grupo: "Psitacídeos", criador: "stima", machos: 1, femeas: 1, unidade: "casal", preco: 6000, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "casal adulto", resumo: "", variedade: "loris-molucano" },
+  { id: "turaco-leucotis-femea", nome: "Turaco Orelha-branca", cientifico: "Tauraco leucotis", categoria: "turacos", grupo: "Turacos", criador: "stima", machos: 0, femeas: 1, unidade: "femea", preco: 4000, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "fêmea", resumo: "", variedade: "turaco-orelha-branca" },
+  { id: "turaco-violeta-casal", nome: "Turaco Violeta", cientifico: "Musophaga violacea", categoria: "turacos", grupo: "Turacos", criador: "stima", machos: 1, femeas: 1, unidade: "casal", preco: 9000, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "casal", resumo: "", variedade: "turaco-violeta" },
+  { id: "turaco-persa-casal", nome: "Turaco Persa", cientifico: "Tauraco persa", categoria: "turacos", grupo: "Turacos", criador: "stima", machos: 1, femeas: 1, unidade: "casal", preco: 15000, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "casal", resumo: "", variedade: "turaco-persa" },
   { id: "pavao-purple-ombros-negros-casal", nome: "Pavão Purple ombros negros", cientifico: "Pavo cristatus (mut.)", categoria: "pavoes", grupo: "Pavões", criador: "alianca", machos: 1, femeas: 1, unidade: "casal", preco: 8000, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "casal", resumo: "" },
   { id: "pavao-opal-casal", nome: "Pavão Opal", cientifico: "Pavo cristatus (mut.)", categoria: "pavoes", grupo: "Pavões", criador: "alianca", machos: 1, femeas: 1, unidade: "casal", preco: 12000, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "casal", resumo: "" },
   { id: "faisao-swinhoe-casal-1-casal", nome: "Faisão Swinhoe", cientifico: "Lophura swinhoii", categoria: "faisoes", grupo: "Faisões", criador: "alianca", machos: 1, femeas: 1, unidade: "casal", preco: 1500, preco_de: null, preco_casal: null, preco_macho: null, preco_femea: null, foto: null, detalhe: "casal · 1 casal", resumo: "" },
@@ -78,10 +79,73 @@ export const LISTA_DATA = '13/09/2026';
  * mostra as aves dele (ver src/marcas.ts). Todo o resto do código lê AVES e
  * não precisa saber que existe mais de uma marca.
  */
-export const AVES: Ave[] =
+/**
+ * Catálogo-base de cada site de criadouro: a criação inteira, com ou sem lote na
+ * semana. A rede não tem — o AOB é lista semanal e mostra só o que tem estoque.
+ */
+const CATALOGO_BASE: Partial<Record<CriadorId, Variedade[]>> = { stima: PLANTEL_STIMA };
+
+const lotesDaMarca: Ave[] =
   MARCA_ATUAL.criadores === 'todos'
     ? AVES_TODAS
     : AVES_TODAS.filter((a) => (MARCA_ATUAL.criadores as CriadorId[]).includes(a.criador));
-export const TOTAL_AVES = AVES.reduce((s, a) => s + a.machos + a.femeas, 0);
-export const TOTAL_LOTES = AVES.length;
+
+/**
+ * Junta o catálogo-base com os lotes da semana. Variedade com lote vira o(s)
+ * lote(s), herdando foto e resumo da variedade quando o lote não tem os seus;
+ * variedade sem lote entra com estoque zero e vira "sob consulta" na vitrine.
+ */
+function juntar(base: Variedade[], lotes: Ave[], criador: CriadorId): Ave[] {
+  const porVariedade = new Map<string, Ave[]>();
+  lotes.forEach((l) => {
+    if (!l.variedade) return;
+    porVariedade.set(l.variedade, [...(porVariedade.get(l.variedade) ?? []), l]);
+  });
+  const usados = new Set<string>();
+  const saida: Ave[] = [];
+  base.forEach((v) => {
+    const ls = porVariedade.get(v.id);
+    if (ls && ls.length) {
+      ls.forEach((l) => {
+        usados.add(l.id);
+        saida.push({
+          ...l,
+          categoria: v.categoria,
+          grupo: v.grupo,
+          foto: l.foto ?? v.foto,
+          foto_credito: l.foto ? undefined : v.foto_credito,
+          resumo: l.resumo || v.resumo,
+        });
+      });
+    } else {
+      saida.push({
+        id: v.id, nome: v.nome, cientifico: v.cientifico, categoria: v.categoria, grupo: v.grupo,
+        criador, machos: 0, femeas: 0, unidade: 'casal', preco: v.preco, preco_de: null,
+        preco_casal: v.preco, preco_macho: null, preco_femea: null,
+        foto: v.foto, foto_credito: v.foto_credito, detalhe: v.detalhe ?? '', resumo: v.resumo, variedade: v.id,
+      });
+    }
+  });
+  // lote que não aponta para variedade nenhuma continua aparecendo
+  lotes.forEach((l) => { if (!usados.has(l.id) && !l.variedade) saida.push(l); });
+  return saida;
+}
+
+/**
+ * Catálogo desta marca. A rede (AOB) mostra os lotes de todos; o site de um
+ * criadouro mostra o catálogo-base dele com os lotes da semana por cima.
+ * Todo o resto do código lê AVES e não precisa saber que existe mais de uma marca.
+ */
+export const AVES: Ave[] = (() => {
+  if (MARCA_ATUAL.criadores === 'todos') return lotesDaMarca;
+  const dono = (MARCA_ATUAL.criadores as CriadorId[]).find((c) => CATALOGO_BASE[c]);
+  return dono ? juntar(CATALOGO_BASE[dono]!, lotesDaMarca, dono) : lotesDaMarca;
+})();
+
+/** Só o que tem estoque na semana — contagens e pedido. */
+export const AVES_EM_ESTOQUE: Ave[] = AVES.filter((a) => a.machos + a.femeas > 0);
+export const TOTAL_AVES = AVES_EM_ESTOQUE.reduce((s, a) => s + a.machos + a.femeas, 0);
+export const TOTAL_LOTES = AVES_EM_ESTOQUE.length;
+/** Variedades do catálogo — nos sites de criadouro inclui as sem estoque. */
+export const TOTAL_VARIEDADES = new Set(AVES.map((a) => a.variedade ?? a.id)).size;
 export const aveDoId = (id: string) => AVES.find((a) => a.id === id);

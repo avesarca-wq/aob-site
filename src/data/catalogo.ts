@@ -1,17 +1,18 @@
 // src/data/catalogo.ts — categorias, criadores, rotas e constantes da AOB.
 import { Categoria, CategoriaId, Consultor, Criador, CriadorId } from '../types';
+import { MARCA_ATUAL } from '../marcas';
 
 export const CONSTANTS = {
-  MARCA: 'Aves Ornamentais Brasil',
-  SIGLA: 'AOB',
-  DOMINIO: 'https://avesornamentaisbrasil.com.br',
-  /** WhatsApp central dos pedidos (decisão do Ricardo, 04/09/2026). */
-  WHATSAPP_DISPLAY: '(11) 99561-0741',
-  WHATSAPP_LINK: 'https://wa.me/5511995610741',
-  EMAIL: 'avesornamentaisbrasil@gmail.com',
-  INSTAGRAM: 'https://www.instagram.com/avesarca',
+  MARCA: MARCA_ATUAL.nome,
+  SIGLA: MARCA_ATUAL.sigla,
+  DOMINIO: MARCA_ATUAL.dominio,
+  /** WhatsApp da marca deste build (na rede, o central dos pedidos — decisão do Ricardo, 04/09/2026). */
+  WHATSAPP_DISPLAY: MARCA_ATUAL.whatsappDisplay,
+  WHATSAPP_LINK: MARCA_ATUAL.whatsappLink,
+  EMAIL: MARCA_ATUAL.email,
+  INSTAGRAM: MARCA_ATUAL.instagram,
   /** Ponto de retirada oficial. */
-  RETIRADA: 'São Paulo – Capital',
+  RETIRADA: MARCA_ATUAL.retirada,
   /** Site-irmão para encomenda do que não está à pronta entrega. */
   PRE_RESERVA_URL: 'https://avesarca.com.br/pre-reserva?utm_source=aob&utm_medium=site&utm_campaign=pre-reserva',
 };
@@ -25,6 +26,9 @@ export const CATEGORIAS: Categoria[] = [
   { id: 'pombas', nome: 'Pombas', descricao: 'Pombas ornamentais.' },
   { id: 'psitacideos', nome: 'Psitacídeos', descricao: 'Ring Necks e lóris.' },
   { id: 'turacos', nome: 'Turacos', descricao: 'Turacos Leucotis, Violeta e Persa.' },
+  { id: 'perus', nome: 'Perus', descricao: 'Peru doméstico em quatro cores.' },
+  { id: 'angolas', nome: 'Galinhas-d’angola', descricao: 'Chita, branca, azul, lilás e chocolate.' },
+  { id: 'emu', nome: 'Emu', descricao: 'Ratita de pasto, vendida por cabeça.' },
 ];
 
 export const CATEGORIA: Record<CategoriaId, Categoria> = Object.fromEntries(
@@ -185,8 +189,10 @@ export const dataCurta = (d: Date) =>
 export const dataLonga = (d: Date) =>
   d.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
 
-export const brl = (v: number) =>
-  new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 }).format(v);
+export const brl = (v: number | null) =>
+  v === null ? 'Sob consulta' : new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 }).format(v);
+/** Valor numérico para ordenar: sem preço vai para o fim. */
+export const precoOrd = (v: number | null) => (v === null ? Number.POSITIVE_INFINITY : v);
 
 export const UNIDADE_ROTULO = { casal: 'casal', macho: 'macho', femea: 'fêmea' } as const;
 export const UNIDADE_PLURAL = { casal: 'casais', macho: 'machos', femea: 'fêmeas' } as const;

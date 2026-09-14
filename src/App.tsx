@@ -17,6 +17,10 @@ import { Criadores } from './pages/Criadores';
 import { Consultoria } from './pages/Consultoria';
 import { Contato } from './pages/Contato';
 import { Privacidade } from './pages/Privacidade';
+import { HomeCriadouro } from './pages/HomeCriadouro';
+import { Criadouro } from './pages/Criadouro';
+import { Sanidade } from './pages/Sanidade';
+import { EH_REDE } from './marcas';
 
 
 export default function App() {
@@ -92,12 +96,13 @@ export default function App() {
             </section>
           ) : (
             <>
-              {pagina === 'home' && <Home onNavigate={navegar} />}
+              {pagina === 'home' && (EH_REDE ? <Home onNavigate={navegar} /> : <HomeCriadouro onNavigate={navegar} />)}
               {pagina === 'aves' && <Aves categoriaInicial={categoria} onNavigate={navegar} />}
               {pagina === 'tabela' && <Tabela onNavigate={navegar} />}
               {pagina === 'pedido' && <Pedido onNavigate={navegar} />}
               {pagina === 'rotas' && <Rotas onNavigate={navegar} />}
-              {pagina === 'criadores' && <Criadores onNavigate={navegar} />}
+              {pagina === 'criadores' && (EH_REDE ? <Criadores onNavigate={navegar} /> : <Criadouro onNavigate={navegar} />)}
+              {pagina === 'sanidade' && <Sanidade onNavigate={navegar} />}
               {pagina === 'consultoria' && <Consultoria onNavigate={navegar} />}
               {pagina === 'contato' && <Contato onNavigate={navegar} />}
               {pagina === 'privacidade' && <Privacidade />}

@@ -28,22 +28,22 @@ export const Rotas: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNavi
         <div className="wrap">
           <div className="card p-6 sm:p-8 mb-10 max-w-2xl">
             <div className="eyebrow">Encontre sua cidade</div>
-            <h2 className="text-[1.5rem] text-[#1F3B2E] m-0 mb-4">Quando a rota passa na sua cidade?</h2>
+            <h2 className="text-[1.5rem] text-[var(--verde)] m-0 mb-4">Quando a rota passa na sua cidade?</h2>
             <CidadeInput value={cidade} onChange={(c) => setCidade(c)} mostrarResumo={false} />
             {info && (
-              <div className="mt-4 rounded-2xl bg-[#1F3B2E] text-[#F6F1E6] p-5">
-                <div className="font-sans text-[0.68rem] uppercase tracking-[1.5px] text-[#D2A93C] font-bold mb-1">{info.cidade.c} — {info.cidade.uf}</div>
+              <div className="mt-4 rounded-2xl bg-[var(--verde)] text-[var(--marfim)] p-5">
+                <div className="font-sans text-[0.68rem] uppercase tracking-[1.5px] text-[var(--ouro)] font-bold mb-1">{info.cidade.c} — {info.cidade.uf}</div>
                 <div className="font-serif text-[1.4rem] leading-tight">{info.rota?.nome ?? info.cidade.r}</div>
-                <div className="font-sans text-[0.85rem] text-[#C9D2C9] mt-2">
+                <div className="font-sans text-[0.85rem] text-[var(--claro-2)] mt-2">
                   {info.prox
-                    ? <>Próxima saída <strong className="text-[#F6F1E6]">{dataLonga(info.prox.saida)}</strong> · pedidos até {dataCurta(info.prox.fecha)}</>
+                    ? <>Próxima saída <strong className="text-[var(--marfim)]">{dataLonga(info.prox.saida)}</strong> · pedidos até {dataCurta(info.prox.fecha)}</>
                     : info.zona.n === 4
                       ? 'Sua cidade está fora das rotas atuais; combinamos pelo WhatsApp.'
                       : info.zona.n === 1
                         ? 'Data combinada direto pelo WhatsApp — ou retirada em São Paulo.'
                         : 'Rota em formação: faça o pedido e a gente avisa quando fechar a data.'}
                 </div>
-                <div className="font-sans text-[0.85rem] text-[#C9D2C9] mt-1">Frete: <strong className="text-[#F6F1E6]">{info.zona.tarifaTexto}</strong> · {info.zona.rotulo}</div>
+                <div className="font-sans text-[0.85rem] text-[var(--claro-2)] mt-1">Frete: <strong className="text-[var(--marfim)]">{info.zona.tarifaTexto}</strong> · {info.zona.rotulo}</div>
                 <button onClick={() => onNavigate('aves')} className="btn btn-ouro mt-4 !py-2">Escolher as aves</button>
               </div>
             )}
@@ -59,13 +59,13 @@ export const Rotas: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNavi
                 <div key={r.regiao} className="card p-6">
                   <div className="flex items-start justify-between gap-3">
                     <div>
-                      <h3 className="text-[1.35rem] text-[#1F3B2E] m-0">{r.nome}</h3>
-                      <p className="font-serif text-[0.92rem] text-[#5B6B5B] mt-1 mb-0">{r.nota}</p>
+                      <h3 className="text-[1.35rem] text-[var(--verde)] m-0">{r.nome}</h3>
+                      <p className="font-serif text-[0.92rem] text-[var(--muted)] mt-1 mb-0">{r.nota}</p>
                     </div>
                     {p ? (
                       <div className="text-right flex-none">
-                        <div className="font-serif text-[1.7rem] text-[#B99034] leading-none">{dataCurta(p.saida)}</div>
-                        <div className="font-sans text-[0.62rem] uppercase tracking-[1px] text-[#5B6B5B]">próxima saída</div>
+                        <div className="font-serif text-[1.7rem] text-[var(--ouro2)] leading-none">{dataCurta(p.saida)}</div>
+                        <div className="font-sans text-[0.62rem] uppercase tracking-[1px] text-[var(--muted)]">próxima saída</div>
                       </div>
                     ) : (
                       <span className="chip chip-claro flex-none">{r.datas.length ? 'encerrada' : r.regiao.startsWith('Entrega rápida') ? 'a combinar' : 'em formação'}</span>
@@ -85,10 +85,10 @@ export const Rotas: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNavi
                     </div>
                   )}
                   <details className="mt-4">
-                    <summary className="font-sans text-[0.78rem] font-semibold text-[#1F3B2E] cursor-pointer flex items-center gap-1.5">
-                      <MapPin className="w-3.5 h-3.5 text-[#B99034]" /> {cidades.length} cidades atendidas
+                    <summary className="font-sans text-[0.78rem] font-semibold text-[var(--verde)] cursor-pointer flex items-center gap-1.5">
+                      <MapPin className="w-3.5 h-3.5 text-[var(--ouro2)]" /> {cidades.length} cidades atendidas
                     </summary>
-                    <p className="font-sans text-[0.78rem] text-[#5B6B5B] mt-2 mb-0 leading-relaxed">
+                    <p className="font-sans text-[0.78rem] text-[var(--muted)] mt-2 mb-0 leading-relaxed">
                       {cidades.slice(0, 40).map((c) => c.c).join(' · ')}{cidades.length > 40 ? ` · e mais ${cidades.length - 40}` : ''}
                     </p>
                   </details>
@@ -104,19 +104,19 @@ export const Rotas: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNavi
               {[ZONAS[1], ZONAS[2], ZONAS[3], ZONAS[5], ZONAS[4]].map((z) => (
                 <div key={z.n} className="card p-5">
                   <div className="flex items-baseline justify-between gap-2">
-                    <h3 className="text-[1.15rem] text-[#1F3B2E] m-0">{z.rotulo}</h3>
-                    <b className="font-serif text-[1.3rem] text-[#B99034]">{z.tarifaTexto}</b>
+                    <h3 className="text-[1.15rem] text-[var(--verde)] m-0">{z.rotulo}</h3>
+                    <b className="font-serif text-[1.3rem] text-[var(--ouro2)]">{z.tarifaTexto}</b>
                   </div>
-                  <p className="font-sans text-[0.78rem] text-[#5B6B5B] mt-1 mb-1">{z.prazo}.</p>
-                  <p className="font-serif text-[0.9rem] text-[#5B6B5B] m-0">{z.detalhe}</p>
+                  <p className="font-sans text-[0.78rem] text-[var(--muted)] mt-1 mb-1">{z.prazo}.</p>
+                  <p className="font-serif text-[0.9rem] text-[var(--muted)] m-0">{z.detalhe}</p>
                 </div>
               ))}
               <div className="card p-5 border-dashed">
                 <div className="flex items-baseline justify-between gap-2">
-                  <h3 className="text-[1.15rem] text-[#1F3B2E] m-0">Retirada em {CONSTANTS.RETIRADA}</h3>
-                  <b className="font-serif text-[1.3rem] text-[#B99034]">{brl(0)}</b>
+                  <h3 className="text-[1.15rem] text-[var(--verde)] m-0">Retirada em {CONSTANTS.RETIRADA}</h3>
+                  <b className="font-serif text-[1.3rem] text-[var(--ouro2)]">{brl(0)}</b>
                 </div>
-                <p className="font-serif text-[0.9rem] text-[#5B6B5B] mt-1 mb-0">Dia e hora combinados pelo WhatsApp. Você confere a ave e paga na hora.</p>
+                <p className="font-serif text-[0.9rem] text-[var(--muted)] mt-1 mb-0">Dia e hora combinados pelo WhatsApp. Você confere a ave e paga na hora.</p>
               </div>
             </div>
           </div>

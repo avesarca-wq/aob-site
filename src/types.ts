@@ -9,7 +9,10 @@ export type CategoriaId =
   | 'codornas'
   | 'pombas'
   | 'psitacideos'
-  | 'turacos';
+  | 'turacos'
+  | 'perus'
+  | 'angolas'
+  | 'emu';
 
 /** Quem tem a ave. 'parceiros' = Stima Aves + Criadouro Aliança (lista de 03/09 não distingue os lotes). */
 export type CriadorId = 'aves-arca' | 'stima' | 'alianca' | 'parceiros';
@@ -30,8 +33,8 @@ export interface Ave {
   femeas: number;
   /** Unidade de venda da linha como publicada na lista. */
   unidade: Unidade;
-  /** Preço vigente (R$) da unidade acima. */
-  preco: number;
+  /** Preço vigente (R$) da unidade acima. null = sob consulta (variedade do plantel sem preço fechado). */
+  preco: number | null;
   /** Preço anterior quando há promoção (R$). null = sem promoção. */
   preco_de: number | null;
   preco_casal: number | null;
@@ -42,6 +45,10 @@ export interface Ave {
   /** Detalhe do lote (ex.: "casal jovem", "fêmea · 1F"). */
   detalhe: string;
   resumo: string;
+  /** Variedade do catálogo-base a que este lote pertence (sites de criadouro). */
+  variedade?: string;
+  /** Crédito da foto quando ela é ilustrativa (acervo livre), não do plantel. */
+  foto_credito?: string;
 }
 
 export interface Categoria {
@@ -88,6 +95,7 @@ export type PageRoute =
   | 'rotas'
   | 'criadores'
   | 'consultoria'
+  | 'sanidade'
   | 'contato'
   | 'privacidade';
 

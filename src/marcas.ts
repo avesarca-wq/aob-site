@@ -35,6 +35,15 @@ export interface Marca {
   umami: string;
   /** Texto curto da marca, para o rodapé e o og:description. */
   frase: string;
+  /** Ponto de retirada oficial. */
+  retirada: string;
+  /** Logos em public/. */
+  logoHorizontal: string;
+  logoSelo: string;
+  /** Quem responde — aparece no hero e no rodapé dos sites de criadouro. */
+  responsavel: string;
+  credencial: string;
+  cidade: string;
 }
 
 export const MARCAS: Record<MarcaId, Marca> = {
@@ -50,6 +59,12 @@ export const MARCAS: Record<MarcaId, Marca> = {
     instagram: 'https://www.instagram.com/avesarca',
     umami: '60547214-1e23-4b1b-894a-9b2ab0807191',
     frase: 'Aves ornamentais à pronta entrega de três criadouros parceiros.',
+    retirada: 'São Paulo – Capital',
+    logoHorizontal: '/logo-horizontal.png',
+    logoSelo: '/logo-selo.png',
+    responsavel: 'Ricardo Dutra',
+    credencial: 'coordena as rotas da rede',
+    cidade: 'São Paulo – Capital',
   },
   stima: {
     id: 'stima',
@@ -59,10 +74,16 @@ export const MARCAS: Record<MarcaId, Marca> = {
     criadores: ['stima', 'parceiros'],
     whatsappDisplay: '(11) 94300-7375',
     whatsappLink: 'https://wa.me/5511943007375',
-    email: 'avesornamentaisbrasil@gmail.com', // até a Stima ter e-mail próprio
+    email: 'stimaaves@gmail.com',
     instagram: 'https://www.instagram.com/stima.aves',
     umami: '508779ed-8e55-4b82-b18d-384c124a0a92',
-    frase: 'Aves de coleção com responsabilidade técnica de médico veterinário.',
+    frase: 'A ave certa para o seu espaço, com a segurança que você merece.',
+    retirada: 'Atibaia – SP',
+    logoHorizontal: '/criadouros/stima.webp',
+    logoSelo: '/criadouros/stima.webp',
+    responsavel: 'Dr. Waldir Bellati',
+    credencial: 'médico veterinário desde 2002',
+    cidade: 'Atibaia – SP',
   },
   alianca: {
     id: 'alianca',
@@ -76,6 +97,12 @@ export const MARCAS: Record<MarcaId, Marca> = {
     instagram: 'https://www.instagram.com/criadouroalianca',
     umami: 'a9007209-5e1b-44f5-a310-b960fda693bb',
     frase: 'Faisões, pavões e perdizes ornamentais de plantel selecionado em Jundiaí.',
+    retirada: 'Jundiaí – SP',
+    logoHorizontal: '/criadouros/alianca.webp',
+    logoSelo: '/criadouros/alianca.webp',
+    responsavel: 'Felipe Caselato',
+    credencial: 'criador e palestrante de faisões',
+    cidade: 'Jundiaí – SP',
   },
 };
 
