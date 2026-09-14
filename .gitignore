@@ -6,3 +6,12 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# Ferramentas de medição rodadas à mão (Lighthouse, Playwright); não fazem parte do site.
+/contraste.mjs
+/farol.mjs
+/lcp.mjs
+/checar*.mjs
+/testa-*.mjs
+/verifica-*.mjs
+/diag.mjs
