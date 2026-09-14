@@ -10,11 +10,16 @@
 //
 // Arquivo externo em vez de inline para respeitar a CSP do site, igual ao
 // meta-pixel.js. defer para nao atrasar a primeira renderizacao.
+// A partir de 14/09 o id vem de src/marcas.ts: main.tsx cria a tag
+// <script src="/umami.js" data-website-id="..."> com o id da marca do build.
+// Sem o atributo (build antigo), cai no id do AOB.
 (function () {
+  var eu = document.currentScript;
+  var id = (eu && eu.getAttribute('data-website-id')) || '60547214-1e23-4b1b-894a-9b2ab0807191';
   var s = document.createElement('script');
   s.src = 'https://cloud.umami.is/script.js';
   s.defer = true;
-  s.setAttribute('data-website-id', '60547214-1e23-4b1b-894a-9b2ab0807191');
+  s.setAttribute('data-website-id', id);
   // O site e uma aplicacao de pagina unica: sem isto o Umami contaria so a
   // primeira pagina da visita e perderia a navegacao entre Aves, Tabela e Pedido.
   s.setAttribute('data-auto-track', 'true');
