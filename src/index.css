@@ -252,6 +252,19 @@ header.nav-bar::after { content: ""; display: block; height: 3px; background: va
    a 2,67:1; agora é a mesma pastilha com a cor discreta, e legível. */
 .chip-passado { background: var(--marfim); color: var(--muted); border: 1px solid var(--line); }
 
+/* Faixa de pastilhas que rola de lado no celular, sem barra à vista. O recuo
+   lateral negativo faz a primeira e a última encostarem na margem do conteúdo. */
+.faixa-rolante {
+  flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none;
+  margin-inline: -22px; padding-inline: 22px; scroll-padding-inline: 22px;
+}
+.faixa-rolante::-webkit-scrollbar { display: none; }
+.faixa-rolante > * { flex: 0 0 auto; }
+@media (min-width: 768px) {
+  .faixa-rolante { margin-inline: 0; padding-inline: 0; }
+  .faixa-rolante > * { flex: 0 1 auto; }
+}
+
 .filtro {
   font-family: var(--sans); font-size: .82rem; font-weight: 600; padding: 7px 14px; border-radius: 9999px;
   border: 1.5px solid var(--line); background: var(--paper); color: var(--muted); cursor: pointer; transition: background-color .15s, border-color .15s, color .15s;

@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Search, SlidersHorizontal, FileDown } from 'lucide-react';
+import { Search, SlidersHorizontal, FileDown, ChevronDown } from 'lucide-react';
 import { CategoriaId, CriadorId, PageRoute, Unidade } from '../types';
 import { AVES, LISTA_DATA, TOTAL_AVES, TOTAL_LOTES, TOTAL_VARIEDADES } from '../data/aves';
 import { CATEGORIAS, CRIADOR_ROTULO, CONSTANTS, brl, precoOrd } from '../data/catalogo';
@@ -58,11 +58,22 @@ export const Aves: React.FC<{ aveSlug?: string; categoriaInicial?: string; onNav
   const [ordem, setOrdem] = useState<Ordem>('nome');
   const [soPromo, setSoPromo] = useState(false);
   const [soEstoque, setSoEstoque] = useState(false);
+  // No celular a busca e os quatro selects empurravam a primeira ave para depois
+  // de ~500px de filtro; agora ficam atrás de um botão. A partir de 768px a
+  // barra aparece inteira, como sempre.
+  const [filtrosAbertos, setFiltrosAbertos] = useState(false);
+  // A rede abre com 62 cards de uma vez. Mostra 24 e vai ampliando.
+  const POR_VEZ = 24;
+  const [limite, setLimite] = useState(POR_VEZ);
   const { totalUnidades } = useCart();
 
   useEffect(() => {
     if (categoriaInicial) setCategoria(categoriaInicial as CategoriaId);
   }, [categoriaInicial]);
+
+  // Filtro novo, contagem do zero: senão a pessoa filtra e continua vendo o
+  // "carregar mais" de uma lista que já cabia inteira.
+  useEffect(() => { setLimite(POR_VEZ); }, [categoria, criador, unidade, faixa, busca, ordem, soPromo, soEstoque]);
 
   const lotesDaFicha = useMemo(
     () => (aveSlug ? AVES.filter((a) => slugDaAve(a) === aveSlug) : []),
@@ -94,15 +105,20 @@ export const Aves: React.FC<{ aveSlug?: string; categoriaInicial?: string; onNav
     return r;
   }, [ficha, categoria, criador, unidade, faixa, busca, ordem, soPromo, soEstoque]);
 
+  // Só a rede pagina: o site de criadouro tem catálogo curto e mostrar tudo é o
+  // que se espera de um plantel.
+  const pagina = EH_REDE && lista.length > limite;
+  const listaVisivel = useMemo(() => (pagina ? lista.slice(0, limite) : lista), [pagina, lista, limite]);
+
   // Agrupa por subgrupo quando a ordem é por nome (lista parecida com o PDF)
   const grupos = useMemo(() => {
     if (ficha || ordem !== 'nome') return null;
     // Ordem dos grupos = ordem da lista impressa (gansos, tadornas, marrecos…, pavões, faisões…)
     const ordemGrupos = [...new Set(AVES.map((a) => a.grupo))];
     const m = new Map<string, typeof lista>();
-    for (const a of lista) m.set(a.grupo, [...(m.get(a.grupo) || []), a]);
+    for (const a of listaVisivel) m.set(a.grupo, [...(m.get(a.grupo) || []), a]);
     return [...m.entries()].sort((x, y) => ordemGrupos.indexOf(x[0]) - ordemGrupos.indexOf(y[0]));
-  }, [ficha, lista, ordem]);
+  }, [ficha, listaVisivel, ordem]);
 
   const categoriasComAves = useMemo(
     () => (ficha ? [] : CATEGORIAS.filter((c) => AVES.some((a) => a.categoria === c.id))),
@@ -146,8 +162,9 @@ export const Aves: React.FC<{ aveSlug?: string; categoriaInicial?: string; onNav
             </>
           ) : (
             <>
-          {/* Categorias */}
-          <div className="flex flex-wrap gap-2 mb-4">
+          {/* Categorias. Com mais de 6 elas ocupavam três linhas no celular; viram
+              uma faixa que rola de lado, e voltam a quebrar linha a partir de 768px. */}
+          <div className={`flex gap-2 mb-4 ${categoriasComAves.length > 6 ? 'faixa-rolante md:flex-wrap md:overflow-visible' : 'flex-wrap'}`}>
             <button className={`filtro ${categoria === 'todas' ? 'ativo' : ''}`} onClick={() => setCategoria('todas')}>Todas</button>
             {categoriasComAves.map((c) => (
               <button key={c.id} className={`filtro ${categoria === c.id ? 'ativo' : ''}`} onClick={() => setCategoria(c.id)}>
@@ -157,7 +174,20 @@ export const Aves: React.FC<{ aveSlug?: string; categoriaInicial?: string; onNav
           </div>
 
           {/* Demais filtros */}
-          <div className="grid grid-cols-1 md:grid-cols-[1.4fr_1fr_1fr_1fr_1fr] gap-3 mb-3">
+          <button
+            type="button"
+            className="filtro md:hidden mb-3 flex items-center gap-2"
+            onClick={() => setFiltrosAbertos((v) => !v)}
+            aria-expanded={filtrosAbertos}
+            aria-controls="barra-de-filtros"
+          >
+            <SlidersHorizontal className="w-3.5 h-3.5" /> Filtros
+            <ChevronDown className={`w-3.5 h-3.5 transition-transform ${filtrosAbertos ? 'rotate-180' : ''}`} />
+          </button>
+          <div
+            id="barra-de-filtros"
+            className={`${filtrosAbertos ? 'grid' : 'hidden'} md:grid grid-cols-1 md:grid-cols-[1.4fr_1fr_1fr_1fr_1fr] gap-3 mb-3`}
+          >
             <div className="relative">
               <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--muted)]" />
               <input className="campo !pl-10" placeholder="Buscar variedade…" value={busca} onChange={(e) => setBusca(e.target.value)} aria-label="Buscar" />
@@ -218,10 +248,18 @@ export const Aves: React.FC<{ aveSlug?: string; categoriaInicial?: string; onNav
             ))
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {lista.map((a) => <AveCard key={a.id} ave={a} onVerPedido={() => onNavigate('pedido')} />)}
+              {listaVisivel.map((a) => <AveCard key={a.id} ave={a} onVerPedido={() => onNavigate('pedido')} />)}
             </div>
           )}
             </>
+          )}
+
+          {pagina && (
+            <div className="text-center mt-8">
+              <button type="button" onClick={() => setLimite((n) => n + POR_VEZ)} className="btn btn-ghost">
+                Ver mais aves · {listaVisivel.length} de {lista.length}
+              </button>
+            </div>
           )}
 
           <div className="note flex flex-wrap items-center justify-between gap-3 mt-8">

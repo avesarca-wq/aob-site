@@ -86,7 +86,10 @@ export const Header: React.FC<Props> = ({ currentPage, onNavigate }) => {
           >
             {EH_REDE
               ? <img {...imagem(MARCA_ATUAL.logoHorizontal)} sizes={sizesPorAltura(MARCA_ATUAL.logoHorizontal, 44, 52)} alt={CONSTANTS.MARCA} className="h-[44px] sm:h-[52px] w-auto" />
-              : <span className="flex items-center gap-2.5"><span className="bg-white rounded-md px-1.5 py-1 flex items-center"><img {...imagem(MARCA_ATUAL.logoHorizontal)} sizes={sizesPorAltura(MARCA_ATUAL.logoHorizontal, 36, 42)} alt="" className="h-[36px] sm:h-[42px] w-auto" /></span><span className="font-serif text-[1.15rem] sm:text-[1.3rem] font-semibold text-[var(--marfim)] leading-none">{CONSTANTS.MARCA}</span></span>}
+              : <span className="flex items-center gap-2.5"><span className="bg-white rounded-md px-1.5 py-1 flex items-center"><img {...imagem(MARCA_ATUAL.logoHorizontal)} sizes={sizesPorAltura(MARCA_ATUAL.logoHorizontal, 36, 42)} alt="" className="h-[36px] sm:h-[42px] w-auto" /></span>{/* O logotipo da marca já traz o nome escrito; no celular os dois juntos
+                    liam "Stima Stima Aves". O nome em texto volta a partir de 640px,
+                    onde cabe ao lado sem competir com o logotipo. */}
+                <span className="hidden sm:inline font-serif text-[1.3rem] font-semibold text-[var(--marfim)] leading-none">{CONSTANTS.MARCA}</span></span>}
           </a>
 
           <nav className="hidden lg:flex items-center gap-5 whitespace-nowrap" aria-label="Navegação principal">
