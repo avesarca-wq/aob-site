@@ -1,14 +1,12 @@
 <!doctype html>
-<html lang="pt-BR" data-umami="%VITE_UMAMI_ID%">
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="facebook-domain-verification" content="shhe2cjx08emtt4g1vl03cyp2h18bs" />
-    <script src="/meta-pixel.js" defer></script>
-    <!-- Umami: ligado em 12/09 (plano Pro). O website id vem de VITE_UMAMI_ID no
-         atributo data-umami do <html> (Vite troca %VITE_UMAMI_ID% no build); sem a
-         variavel, public/umami.js usa o id do AOB. CSP ja libera cloud e gateway. -->
-    <script src="/umami.js" defer></script>
+    <!-- Medição (Umami por marca, Meta Pixel só na rede) é ligada em src/main.tsx,
+         que sabe qual marca este build é. A CSP do netlify.toml já libera
+         cloud.umami.is, gateway.umami.is e connect.facebook.net. -->
     <title>Aves Ornamentais Brasil — aves ornamentais à pronta entrega</title>
     <meta name="description" content="Aves ornamentais à pronta entrega de três criadouros parceiros: aquáticas, faisões, pavões, perdizes e mais. Rota de entrega marcada, pagamento na entrega." />
     <meta name="theme-color" content="#1F3B2E" />
@@ -29,21 +27,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "Aves Ornamentais Brasil",
-        "alternateName": "AOB",
-        "url": "https://avesornamentaisbrasil.com.br/",
-        "logo": "https://avesornamentaisbrasil.com.br/logo-selo-escuro.svg",
-        "image": "https://avesornamentaisbrasil.com.br/og-image.png",
-        "description": "Aves ornamentais à pronta entrega de criadouros parceiros, com rota de entrega a partir de São Paulo.",
-        "email": "avesornamentaisbrasil@gmail.com",
-        "telephone": "+5511995610741",
-        "areaServed": { "@type": "Country", "name": "Brasil" }
-      }
-    </script>
+    <!-- JSON-LD da organização: gravado por scripts/prerender.mjs com os dados da marca do build. -->
   </head>
   <body>
     <!-- Formulário estático oculto: a Netlify só reconhece formulários presentes no HTML do deploy.
@@ -72,6 +56,7 @@
       <input type="text" name="Total" />
       <input type="text" name="Origem" />
       <input type="text" name="Página" />
+      <input type="text" name="Site" />
       <textarea name="Itens JSON"></textarea>
       <input type="text" name="bot-field" />
     </form>
