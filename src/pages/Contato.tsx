@@ -3,6 +3,7 @@ import { MessageCircle, Mail, Instagram, MapPin } from 'lucide-react';
 import { PageRoute } from '../types';
 import { CONSTANTS } from '../data/catalogo';
 import { waComOrigem } from '../lib/links';
+import { EH_REDE, MARCA_ATUAL } from '../marcas';
 
 export const Contato: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNavigate }) => (
   <>
@@ -10,7 +11,7 @@ export const Contato: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNa
       <div className="wrap py-10 sm:py-14">
         <div className="eyebrow">Fale com a gente</div>
         <h1 className="sec-title" style={{ fontSize: '2.4rem' }}>Contato</h1>
-        <p className="sec-sub" style={{ marginBottom: 0 }}>Um WhatsApp só para pedidos, rotas e dúvidas dos três criadouros.</p>
+        <p className="sec-sub" style={{ marginBottom: 0 }}>{EH_REDE ? 'Um WhatsApp só para pedidos, rotas e dúvidas dos três criadouros.' : `Pedidos, rotas e dúvidas direto com ${MARCA_ATUAL.responsavel}.`}</p>
       </div>
     </section>
     <section className="section" style={{ paddingTop: 32 }}>
@@ -35,7 +36,7 @@ export const Contato: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNa
         </a>
       </div>
       <div className="wrap mt-8">
-        <div className="note flex items-start gap-2"><MapPin className="w-4 h-4 flex-none mt-1 text-[var(--ouro2)]" /> <span>Retirada em {CONSTANTS.RETIRADA}, com dia e hora combinados. Entregas em rota a partir de São Paulo — veja o <button onClick={() => onNavigate('rotas')} className="underline bg-transparent border-0 cursor-pointer text-[var(--verde)] font-serif text-[0.95rem] p-0">calendário de rotas</button>.</span></div>
+        <div className="note flex items-start gap-2"><MapPin className="w-4 h-4 flex-none mt-1 text-[var(--ouro2)]" /> <span>Retirada em {CONSTANTS.RETIRADA}, com dia e hora combinados. Entregas em rota por região — veja o <button onClick={() => onNavigate('rotas')} className="underline bg-transparent border-0 cursor-pointer text-[var(--verde)] font-serif text-[0.95rem] p-0">calendário de rotas</button>.</span></div>
       </div>
     </section>
   </>

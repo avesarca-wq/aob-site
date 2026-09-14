@@ -6,6 +6,7 @@ import { ZONAS } from '../data/zonas';
 import { CIDADES } from '../data/cidades';
 import { CidadeInput, entregaDaCidade } from '../components/CidadeInput';
 import { waComOrigem } from '../lib/links';
+import { EH_REDE } from '../marcas';
 
 export const Rotas: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNavigate }) => {
   const [cidade, setCidade] = useState('');
@@ -19,7 +20,7 @@ export const Rotas: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNavi
           <div className="eyebrow">Entrega</div>
           <h1 className="sec-title" style={{ fontSize: '2.4rem' }}>Rotas de entrega</h1>
           <p className="sec-sub" style={{ marginBottom: 0 }}>
-            As aves dos três criadouros saem juntas de São Paulo numa rota por região, em data marcada. Frete por saída, não por quilômetro. Pagamento na entrega.
+            {EH_REDE ? 'As aves dos três criadouros saem juntas de São Paulo numa rota por região, em data marcada.' : `As aves viajam na rota de entrega da rede Aves Ornamentais Brasil, por região e em data marcada — ou você retira em ${CONSTANTS.RETIRADA}.`} Frete por saída, não por quilômetro. Pagamento na entrega.
           </p>
         </div>
       </section>
@@ -40,7 +41,7 @@ export const Rotas: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNavi
                     : info.zona.n === 4
                       ? 'Sua cidade está fora das rotas atuais; combinamos pelo WhatsApp.'
                       : info.zona.n === 1
-                        ? 'Data combinada direto pelo WhatsApp — ou retirada em São Paulo.'
+                        ? `Data combinada direto pelo WhatsApp — ou retirada em ${CONSTANTS.RETIRADA}.`
                         : 'Rota em formação: faça o pedido e a gente avisa quando fechar a data.'}
                 </div>
                 <div className="font-sans text-[0.85rem] text-[var(--claro-2)] mt-1">Frete: <strong className="text-[var(--marfim)]">{info.zona.tarifaTexto}</strong> · {info.zona.rotulo}</div>
