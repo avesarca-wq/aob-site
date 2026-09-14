@@ -236,7 +236,12 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
       <section className="section" style={{ paddingTop: 32 }}>
         <div className="wrap">
           {/* DADOS */}
-          <form onSubmit={enviar} name={NOME_FORM} className="card p-6 sm:p-8">
+          {/* method="post" para o caso de o JavaScript falhar: aí o navegador posta o
+                formulário sozinho e a Netlify o reconhece pelo form-name. Os atributos
+                data-netlify ficam só no formulário estático do index.html — é aquele
+                que a Netlify lê no deploy; num formulário desenhado pelo React ela
+                nunca chega a ver. */}
+          <form onSubmit={enviar} name={NOME_FORM} method="post" className="card p-6 sm:p-8">
             <input type="hidden" name="form-name" value={NOME_FORM} />
             <p className="hidden"><label>Não preencher: <input name="bot-field" /></label></p>
             <h2 className="text-[1.5rem] text-[var(--verde)] m-0 mb-5">Seus dados</h2>
@@ -245,11 +250,11 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="rotulo" htmlFor="nome">Nome</label>
-                  <input id="nome" className="campo" required value={dados.nome} onChange={(e) => set('nome', e.target.value)} placeholder="Como quer ser chamado" />
+                  <input id="nome" name="nome" className="campo" required autoComplete="name" value={dados.nome} onChange={(e) => set('nome', e.target.value)} placeholder="Como quer ser chamado" />
                 </div>
                 <div>
                   <label className="rotulo" htmlFor="whatsapp">Telefone (WhatsApp)</label>
-                  <input id="whatsapp" className="campo" required inputMode="tel" value={dados.whatsapp} onChange={(e) => set('whatsapp', mascaraWhats(e.target.value))} placeholder="(11) 90000-0000" />
+                  <input id="whatsapp" name="whatsapp" className="campo" required type="tel" autoComplete="tel" inputMode="tel" value={dados.whatsapp} onChange={(e) => set('whatsapp', mascaraWhats(e.target.value))} placeholder="(11) 90000-0000" />
                 </div>
               </div>
               <div>

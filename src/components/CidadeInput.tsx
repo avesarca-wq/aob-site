@@ -68,7 +68,10 @@ export const CidadeInput: React.FC<Props> = ({ value, onChange, mostrarResumo = 
         type="text"
         name="cidade_uf"
         required
-        autoComplete="off"
+        // address-level2 é o campo "cidade" do preenchimento automático. A lista de
+        // sugestões própria continua: ela filtra a malha do frete, que é o que decide
+        // zona e rota — o navegador não tem como saber disso.
+        autoComplete="address-level2"
         value={value}
         onChange={(e) => {
           onChange(e.target.value, cidadeDaMalha(e.target.value)?.r || '');
