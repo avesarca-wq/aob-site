@@ -1,10 +1,18 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import { Trash2, MessageCircle, CheckCircle2, ArrowLeft, ShoppingBasket, CalendarDays, Truck, MapPin, ArrowRight } from 'lucide-react';
 import { DadosCliente, PageRoute } from '../types';
 import { aveDoId } from '../data/aves';
 import { brl, CONSTANTS, CRIADOR_ROTULO, ROTAS, UNIDADE_ROTULO, UNIDADE_PLURAL, dataCurta, dataLonga } from '../data/catalogo';
 import { useCart } from '../cart/CartContext';
-import { CidadeInput, entregaDaCidade } from '../components/CidadeInput';
+import type { Entrega } from '../components/CidadeInput';
+
+/**
+ * A malha de cidades do frete (src/data/cidades.ts) são 79 KB, e só esta página
+ * e /rotas/ a usam — antes ela viajava no pacote principal e atrasava o primeiro
+ * desenho de toda rota, fichas inclusive. Aqui ela chega em pedaço próprio, e só
+ * quando o cliente de fato mexe no endereço.
+ */
+const CidadeInput = lazy(() => import('../components/CidadeInput').then((m) => ({ default: m.CidadeInput })));
 import { waComTexto } from '../lib/links';
 import { medirInitiateCheckout, medirPedido, medirContato } from '../lib/medir';
 import { ROTULOS, ORDEM, ChavePedido } from '../lib/campos-pedido';
@@ -55,7 +63,15 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
   const [rotaSel, setRotaSel] = useState('');
 
   const itens = useMemo(() => linhas.map((l) => ({ l, a: aveDoId(l.id)! })).filter((x) => x.a), [linhas]);
-  const entrega = useMemo(() => entregaDaCidade(dados.cidade_uf), [dados.cidade_uf]);
+  // entrega vem de um módulo carregado sob demanda, então é estado, não memo.
+  // Continua nulo enquanto não houver cidade — que é como o resto da página já trata.
+  const [entrega, setEntrega] = useState<Entrega>(null);
+  useEffect(() => {
+    if (!dados.cidade_uf.trim()) { setEntrega(null); return; }
+    let vivo = true;
+    import('../components/CidadeInput').then((m) => { if (vivo) setEntrega(m.entregaDaCidade(dados.cidade_uf)); });
+    return () => { vivo = false; };
+  }, [dados.cidade_uf]);
   const frete = dados.recebimento === 'retirada' ? 0 : entrega?.zona.tarifa ?? null;
   // ao reconhecer a cidade, sugere a rota da região (o cliente pode trocar)
   useEffect(() => { if (entrega?.rota) setRotaSel(entrega.rota.regiao); }, [entrega?.rota?.regiao]);
@@ -238,7 +254,9 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
               </div>
               <div>
                 <label className="rotulo">Cidade</label>
-                <CidadeInput value={dados.cidade_uf} onChange={(c, r) => { set('cidade_uf', c); setRegiao(r); }} />
+                <Suspense fallback={<input className="campo" placeholder="Cidade e UF" disabled aria-busy="true" />}>
+                  <CidadeInput value={dados.cidade_uf} onChange={(c, r) => { set('cidade_uf', c); setRegiao(r); }} />
+                </Suspense>
               </div>
               <div>
                 <label className="rotulo" htmlFor="obs">Observações <span className="normal-case tracking-normal font-normal">(opcional)</span></label>

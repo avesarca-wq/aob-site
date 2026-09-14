@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { PageRoute } from './types';
 import { CAMINHOS, ROTA_DO_CAMINHO } from './lib/links';
 import { META, M, PAGINA_AVE_DO_SLUG, OG_IMAGEM } from './seo';
@@ -10,16 +10,30 @@ import { Footer } from './components/Footer';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import { Home } from './pages/Home';
 import { Aves } from './pages/Aves';
+import { HomeCriadouro } from './pages/HomeCriadouro';
+
 import { Tabela } from './pages/Tabela';
 import { Pedido } from './pages/Pedido';
-import { Rotas } from './pages/Rotas';
-import { Criadores } from './pages/Criadores';
-import { Consultoria } from './pages/Consultoria';
-import { Contato } from './pages/Contato';
-import { Privacidade } from './pages/Privacidade';
-import { HomeCriadouro } from './pages/HomeCriadouro';
-import { Criadouro } from './pages/Criadouro';
-import { Sanidade } from './pages/Sanidade';
+
+/**
+ * Páginas em pedaço próprio, baixadas só quando alguém abre a rota.
+ *
+ * O que motivou: a ficha lia o pacote inteiro antes de desenhar qualquer coisa.
+ * Ficam no pacote principal as portas de entrada e as páginas onde o atraso
+ * custa caro — home, vitrine, as 60 fichas, tabela e pedido: medindo, dividir
+ * /pedido/ e /tabela/ saía pior (98 -> 77 e 97 -> 76), porque o React espera o
+ * pedaço chegar antes do primeiro desenho, e nem o modulepreload resolve isso.
+ */
+const Rotas = lazy(() => import('./pages/Rotas').then((m) => ({ default: m.Rotas })));
+const Criadores = lazy(() => import('./pages/Criadores').then((m) => ({ default: m.Criadores })));
+const Criadouro = lazy(() => import('./pages/Criadouro').then((m) => ({ default: m.Criadouro })));
+const Consultoria = lazy(() => import('./pages/Consultoria').then((m) => ({ default: m.Consultoria })));
+const Contato = lazy(() => import('./pages/Contato').then((m) => ({ default: m.Contato })));
+const Privacidade = lazy(() => import('./pages/Privacidade').then((m) => ({ default: m.Privacidade })));
+const Sanidade = lazy(() => import('./pages/Sanidade').then((m) => ({ default: m.Sanidade })));
+
+/** Espaço reservado enquanto o pedaço da rota chega, para a página não saltar. */
+const Carregando = () => <div style={{ minHeight: '60vh' }} aria-busy="true" />;
 import { EH_REDE } from './marcas';
 
 
@@ -107,7 +121,7 @@ export default function App() {
               </div>
             </section>
           ) : (
-            <>
+            <Suspense fallback={<Carregando />}>
               {pagina === 'home' && (EH_REDE ? <Home onNavigate={navegar} /> : <HomeCriadouro onNavigate={navegar} />)}
               {pagina === 'aves' && <Aves key={aveSlug ?? categoria ?? 'todas'} aveSlug={aveSlug} categoriaInicial={categoria} onNavigate={navegar} />}
               {pagina === 'tabela' && <Tabela onNavigate={navegar} />}
@@ -118,7 +132,7 @@ export default function App() {
               {pagina === 'consultoria' && <Consultoria onNavigate={navegar} />}
               {pagina === 'contato' && <Contato onNavigate={navegar} />}
               {pagina === 'privacidade' && <Privacidade />}
-            </>
+            </Suspense>
           )}
         </main>
         {pagina !== 'pedido' && pagina !== 'tabela' && <FloatingWhatsApp />}

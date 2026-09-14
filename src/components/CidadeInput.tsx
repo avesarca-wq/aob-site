@@ -19,7 +19,14 @@ export const cidadeDaMalha = (texto: string): Cidade | undefined => {
 };
 
 /** Resumo de entrega para uma cidade: zona de frete + próxima saída da rota da região. */
-export const entregaDaCidade = (texto: string) => {
+export type Entrega = {
+  cidade: Cidade;
+  zona: ReturnType<typeof zonaDaCidade>;
+  rota: ReturnType<typeof rotaDaRegiao>;
+  prox: ReturnType<typeof proximaSaida>;
+} | null;
+
+export const entregaDaCidade = (texto: string): Entrega => {
   const cidade = cidadeDaMalha(texto);
   if (!cidade) return null;
   const zona = zonaDaCidade(cidade);

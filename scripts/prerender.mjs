@@ -118,6 +118,7 @@ async function main() {
     html = trocarTag(html, /<meta property="og:site_name"[^>]*>/, `<meta property="og:site_name" content="${esc(MARCA)}" />`);
     html = trocarTag(html, /<meta property="og:image"[^>]*>/, `<meta property="og:image" content="${OG_IMAGEM}" />`);
     html = comMarca(comFontes(comFavicon(html)));
+    html = await comPedacoDaRota(html, rota);
     if (TEMA) html = trocarTag(html, /<meta name="theme-color"[^>]*>/, `<meta name="theme-color" content="${TEMA}" />`);
     html = html.replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(titulo)}</title>`);
     html = trocarTag(html, /<meta name="description"[^>]*>/, `<meta name="description" content="${esc(descricao)}" />`);
@@ -235,6 +236,33 @@ const FACES_DO_PRIMEIRO_RENDER = {
  * AOB. Na Stima isso chegava a baixar a EB Garamond, que ela não usa.
  */
 const comMarca = (html) => html.replace('<html lang="pt-BR">', `<html lang="pt-BR" data-marca="${MARCA_ID}">`);
+
+/**
+ * Cada rota pesada mora num pedaço próprio (React.lazy em src/App.tsx). Sem aviso,
+ * quem abre /pedido/ direto só começa a baixar esse pedaço depois que o pacote
+ * principal roda — uma ida e volta a mais, justo em quem chegou para comprar.
+ * O modulepreload põe esse download em paralelo com o do pacote principal.
+ * O pedaço leva o nome do componente, que é como o Vite o nomeia.
+ */
+const COMPONENTE_DA_ROTA = {
+  tabela: ['Tabela'], pedido: ['Pedido', 'CidadeInput'], rotas: ['Rotas'],
+  consultoria: ['Consultoria'], contato: ['Contato'], privacidade: ['Privacidade'],
+  sanidade: ['Sanidade'],
+};
+
+let ASSETS = null;
+async function comPedacoDaRota(html, rota) {
+  const nomes = rota === 'criadores'
+    ? [MARCA_ID === 'aob' ? 'Criadores' : 'Criadouro']
+    : COMPONENTE_DA_ROTA[rota];
+  if (!nomes) return html;
+  ASSETS ??= await readdir(join(DIST, 'assets')).catch(() => []);
+  const links = ASSETS
+    .filter((f) => f.endsWith('.js') && nomes.some((n) => f.startsWith(`${n}-`)))
+    .map((f) => `<link rel="modulepreload" crossorigin href="/assets/${f}">`)
+    .join('\n    ');
+  return links ? html.replace('</head>', `  ${links}\n  </head>`) : html;
+}
 
 function comFontes(html) {
   const faces = FACES_DO_PRIMEIRO_RENDER[MARCA_ID] ?? FACES_DO_PRIMEIRO_RENDER.aob;

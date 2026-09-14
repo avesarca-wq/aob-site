@@ -31,6 +31,20 @@ const faixaDoGrupo = (aves: { preco: number | null; machos: number; femeas: numb
 
 const normaliza = (t: string) => t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
 
+/**
+ * true depois que o navegador pintou o primeiro quadro.
+ * rAF sozinho ainda roda antes da pintura; o setTimeout dentro dele cai depois.
+ */
+function useDepoisDoPrimeiroQuadro() {
+  const [pronto, setPronto] = useState(false);
+  useEffect(() => {
+    let t: number;
+    const r = requestAnimationFrame(() => { t = window.setTimeout(() => setPronto(true), 0); });
+    return () => { cancelAnimationFrame(r); clearTimeout(t); };
+  }, []);
+  return pronto;
+}
+
 export const Aves: React.FC<{ aveSlug?: string; categoriaInicial?: string; onNavigate: (p: PageRoute) => void }> = ({ aveSlug, categoriaInicial, onNavigate }) => {
   // /aves/<slug>/ — ficha da espécie. Os lotes vêm do slug, não da busca por nome:
   // busca por nome traria "Pavão Azul" junto de "Pavão Azul Pied" e a ficha mostraria
@@ -55,7 +69,10 @@ export const Aves: React.FC<{ aveSlug?: string; categoriaInicial?: string; onNav
     [aveSlug],
   );
 
+  // Numa ficha a vitrine inteira não é desenhada, então também não é calculada:
+  // este filtro + ordenação varria os 62 lotes do AOB a cada render da ficha.
   const lista = useMemo(() => {
+    if (ficha) return [];
     const f = FAIXAS.find((x) => x.id === faixa)!;
     const q = normaliza(busca.trim());
     let r = AVES.filter(
@@ -75,19 +92,22 @@ export const Aves: React.FC<{ aveSlug?: string; categoriaInicial?: string; onNav
     else if (EH_REDE) r = [...r].sort((a, b) => precoOrd(a.preco) - precoOrd(b.preco));
     else r = [...r].sort((a, b) => (a.preco === null ? 1 : b.preco === null ? -1 : b.preco - a.preco));
     return r;
-  }, [categoria, criador, unidade, faixa, busca, ordem, soPromo, soEstoque]);
+  }, [ficha, categoria, criador, unidade, faixa, busca, ordem, soPromo, soEstoque]);
 
   // Agrupa por subgrupo quando a ordem é por nome (lista parecida com o PDF)
   const grupos = useMemo(() => {
-    if (ordem !== 'nome') return null;
+    if (ficha || ordem !== 'nome') return null;
     // Ordem dos grupos = ordem da lista impressa (gansos, tadornas, marrecos…, pavões, faisões…)
     const ordemGrupos = [...new Set(AVES.map((a) => a.grupo))];
     const m = new Map<string, typeof lista>();
     for (const a of lista) m.set(a.grupo, [...(m.get(a.grupo) || []), a]);
     return [...m.entries()].sort((x, y) => ordemGrupos.indexOf(x[0]) - ordemGrupos.indexOf(y[0]));
-  }, [lista, ordem]);
+  }, [ficha, lista, ordem]);
 
-  const categoriasComAves = CATEGORIAS.filter((c) => AVES.some((a) => a.categoria === c.id));
+  const categoriasComAves = useMemo(
+    () => (ficha ? [] : CATEGORIAS.filter((c) => AVES.some((a) => a.categoria === c.id))),
+    [ficha],
+  );
   const totalFiltrado = lista.reduce((s, a) => s + a.machos + a.femeas, 0);
 
   return (
