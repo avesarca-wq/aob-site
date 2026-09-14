@@ -143,11 +143,11 @@ export const PLANTEL_STIMA: Variedade[] = [
 
   // ---------------- PERUS ----------------
   { id: 'peru', nome: 'Peru', cientifico: 'Meleagris gallopavo dom.', categoria: 'perus', grupo: 'Perus', preco: null, foto: f('peru'), foto_credito: CC, detalhe: 'Bronze · Branco · Preto · Royal Palm',
-    resumo: 'Peru doméstico em quatro cores: Bronze (o mais próximo do selvagem), Branco, Preto e Royal Palm (branco com barras pretas). Ave de terreiro e de pasto, vendida por cabeça; fauna doméstica, sem exigência de anilha ou registro.' },
+    resumo: 'Peru doméstico em quatro cores: Bronze (o mais próximo do selvagem), Branco, Preto e Royal Palm (branco com barras pretas). Ave de quintal e de pasto, vendida por cabeça; fauna doméstica, sem exigência de anilha ou registro.' },
 
   // ---------------- GALINHAS-D'ANGOLA ----------------
   { id: 'galinha-dangola', nome: 'Galinha-d’angola', cientifico: 'Numida meleagris', categoria: 'angolas', grupo: 'Galinhas-d’angola', preco: null, foto: f('galinha-dangola'), foto_credito: CC, detalhe: 'Chita · Branca · Azul · Lilás · Chocolate',
-    resumo: 'A galinha-d’angola em cinco cores: chita (a pérola clássica), branca, azul, lilás e chocolate. Vigia do terreiro, come carrapato e vive em bando. Fauna doméstica pela Portaria IBAMA 93/1998 — venda livre, sem anilha.' },
+    resumo: 'A galinha-d’angola em cinco cores: chita (a pérola clássica), branca, azul, lilás e chocolate. Vigia do quintal, come carrapato e vive em bando. Fauna doméstica pela Portaria IBAMA 93/1998 — venda livre, sem anilha.' },
 
   // ---------------- EMU ----------------
   { id: 'emu', nome: 'Emu', cientifico: 'Dromaius novaehollandiae', categoria: 'emu', grupo: 'Emu', preco: null, foto: f('emu'), foto_credito: CC,
