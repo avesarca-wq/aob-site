@@ -10,7 +10,7 @@ variedades, qual arquivo usar, qual o preço e de onde veio a foto.
 **Todas as fotos são ilustrativas da espécie, não do plantel do Waldir.**
 Vieram do Wikimedia Commons sob CC BY, CC BY-SA ou CC0 e servem só para o site
 não nascer vazio. O crédito tem de aparecer na ficha enquanto elas estiverem
-no ar, e cada uma sai assim que chegar a foto do viveiro de Atibaia.
+no ar, e cada uma sai assim que chegar a foto do viveiro de Itatiba.
 
 `status` no manifesto:
 - `ok` — foto conferida, é a espécie certa.
