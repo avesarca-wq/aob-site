@@ -55,8 +55,25 @@ export interface PaginaAve {
   emEstoque: boolean;
   resumo: string;
   grupo: string;
+  /** false = `imagem` é a placa da categoria, não uma foto do plantel. */
+  temFotoPropria: boolean;
 }
 const corta = (t: string, n: number) => (t.length <= n ? t : t.slice(0, n - 1).replace(/\s+\S*$/, '') + '…');
+
+/** Placa da categoria, para a ave sem foto. Gerada por scripts/og-categorias.mjs. */
+const ogDaCategoria = (categoria: string) => `/og/${categoria}-${MARCA_ATUAL.id}.png`;
+
+/**
+ * Title de ficha em no máximo 60 caracteres — acima disso o Google corta no meio
+ * e a marca some justo do fim. O nome científico saiu daqui: ele continua no H1
+ * da página e no alternateName do JSON-LD, que é onde faz diferença.
+ * Se o nome da ave for comprido a ponto de estourar sozinho, ele é que encolhe.
+ */
+const LIMITE_TITULO = 60;
+const tituloDaFicha = (nome: string, precoTxt: string) => {
+  const cauda = ` — ${precoTxt} — ${MARCA_ATUAL.sigla}`;
+  return corta(nome, Math.max(LIMITE_TITULO - cauda.length, 12)) + cauda;
+};
 export const PAGINAS_AVES: PaginaAve[] = (() => {
   const vistos = new Set<string>();
   const saida: PaginaAve[] = [];
@@ -70,13 +87,15 @@ export const PAGINAS_AVES: PaginaAve[] = (() => {
     const emEstoque = irmaos.some((x) => x.machos + x.femeas > 0);
     const precoTxt = preco === null ? 'sob consulta' : `a partir de ${brl(preco)}`;
     const onde = EH_REDE ? 'à pronta entrega, com rota de entrega marcada' : `criado em ${MARCA_ATUAL.cidade} por ${MARCA_ATUAL.responsavel}, ${MARCA_ATUAL.credencial}`;
-    const base = a.resumo ? corta(a.resumo, 110) + ' ' : '';
+    // Um corte só: antes o resumo era cortado em 110 e a frase inteira em 158,
+    // o que deixava duas reticências na mesma descrição.
+    const base = a.resumo ? a.resumo + ' ' : '';
     saida.push({
       slug, caminho: `/aves/${slug}/`, nome: a.nome, cientifico: a.cientifico, grupo: a.grupo,
-      titulo: `${a.nome} (${a.cientifico}) — ${precoTxt} — ${M}`,
+      titulo: tituloDaFicha(a.nome, precoTxt),
       descricao: corta(`${a.nome}, ${a.cientifico}: ${base}${emEstoque ? 'Disponível agora' : 'Sob consulta'}, ${onde}. Pagamento na entrega.`, 158),
-      imagem: a.foto ? SITE + a.foto : null,
-      preco, emEstoque, resumo: a.resumo,
+      imagem: a.foto ? SITE + a.foto : SITE + ogDaCategoria(a.categoria),
+      preco, emEstoque, resumo: a.resumo, temFotoPropria: Boolean(a.foto),
     });
   }
   return saida;
@@ -106,7 +125,7 @@ export const jsonldAve = (p: PaginaAve) => ({
   name: p.nome,
   alternateName: p.cientifico,
   description: p.resumo || p.descricao,
-  ...(p.imagem ? { image: p.imagem } : {}),
+  image: p.imagem,
   category: p.grupo,
   brand: { '@type': 'Brand', name: M },
   url: SITE + p.caminho,

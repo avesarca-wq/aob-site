@@ -34,6 +34,10 @@ As fotos das aves têm variantes menores geradas por `node scripts/imagens.mjs`
 `src/lib/variantes.ts`, de onde saem `srcset` e `width`/`height`. **Rode o script
 ao acrescentar foto nova** — sem a variante, o card serve a de 1200 px.
 
+As placas de reserva das fichas (`public/og/<categoria>-<marca>.png`, 1200x900)
+saem de `node scripts/og-categorias.mjs` — o Product do JSON-LD precisa de
+`image`, e a ave sem foto no plantel ficaria sem. Rode ao acrescentar categoria.
+
 ## Dados (v0.1)
 
 - `src/data/aves.ts` — lotes da lista de 03/09/2026 (gerado a partir do PDF da lista). Na v0.2 vem do Supabase.

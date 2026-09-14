@@ -156,17 +156,21 @@ async function main() {
     html = trocarTag(html, /<meta property="og:description"[^>]*>/, `<meta property="og:description" content="${esc(p.descricao)}" />`);
     html = trocarTag(html, /<meta property="og:url"[^>]*>/, `<meta property="og:url" content="${url}" />`);
     html = trocarTag(html, /<meta property="og:site_name"[^>]*>/, `<meta property="og:site_name" content="${esc(MARCA)}" />`);
-    html = trocarTag(html, /<meta property="og:image"[^>]*>/, `<meta property="og:image" content="${p.imagem ?? OG_IMAGEM}" />`);
-    if (p.imagem) {
-      html = trocarTag(html, /<meta property="og:image:width"[^>]*>/, '<meta property="og:image:width" content="1200" />');
-      html = trocarTag(html, /<meta property="og:image:height"[^>]*>/, '<meta property="og:image:height" content="900" />');
-    }
+    html = trocarTag(html, /<meta property="og:image"[^>]*>/, `<meta property="og:image" content="${p.imagem}" />`);
     if (TEMA) html = trocarTag(html, /<meta name="theme-color"[^>]*>/, `<meta name="theme-color" content="${TEMA}" />`);
     html = comMarca(comFontes(comFavicon(html)));
     // A foto da ficha é o LCP. Sem isto o navegador só a descobre quando o React
     // monta; o preload deixa o download começar junto com o do JavaScript, e com
     // o mesmo srcset/sizes do site, para vir a variante do tamanho da tela.
-    const foto = p.imagem ? imagem(p.imagem.replace(SITE, '')) : null;
+    // Só a foto de verdade entra no preload e no corpo sem JS. A ave sem foto
+    // mostra a moldura da categoria na tela; a placa de /og/ é para o
+    // compartilhamento e para o JSON-LD, não para o primeiro render.
+    const foto = p.temFotoPropria ? imagem(p.imagem.replace(SITE, '')) : null;
+    // og:image:width/height com o tamanho real do arquivo: a lista tem foto
+    // 1200x900, 1200x675 e 1200x803, e antes ia 900 para todas. As placas de
+    // categoria são 1200x900 por construção.
+    html = trocarTag(html, /<meta property="og:image:width"[^>]*>/, `<meta property="og:image:width" content="${foto ? foto.width : 1200}" />`);
+    html = trocarTag(html, /<meta property="og:image:height"[^>]*>/, `<meta property="og:image:height" content="${foto ? foto.height : 900}" />`);
     if (foto) {
       html = html.replace(
         '</head>',
@@ -271,8 +275,13 @@ async function arquivosDaMarca({ inexistentes, CAMINHOS }) {
     // As regras da marca entram ANTES do coringa, senão nunca são lidas.
     await writeFile(join(DIST, '_redirects'), atual.replace('/*  /index.html', regras.join('\n') + '\n/*  /index.html'), 'utf8');
   }
-  const lixo = ['LEIA-ME.md', 'manifesto.json', 'aves-stima/manifesto.json', 'aves-stima/LEIA-ME.md'];
+  const lixo = ['LEIA-ME.md', 'manifesto.json', 'aves-stima/manifesto.json', 'aves-stima/LEIA-ME.md', 'og/LEIA-ME.md'];
   if (MARCA_ID !== 'stima') lixo.push('aves-stima');
+  // As placas de categoria são geradas para as três marcas; vai só a desta.
+  const { readdir } = await import('node:fs/promises');
+  for (const f of await readdir(join(DIST, 'og')).catch(() => [])) {
+    if (f.endsWith('.png') && !f.endsWith(`-${MARCA_ID}.png`)) lixo.push(join('og', f));
+  }
   for (const l of lixo) await rm(join(DIST, l), { recursive: true, force: true });
   for (const m of ['aob', 'stima', 'alianca']) if (m !== MARCA_ID) await rm(join(DIST, 'marca', m), { recursive: true, force: true });
 }
