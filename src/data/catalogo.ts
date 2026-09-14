@@ -54,7 +54,7 @@ export const CRIADORES: Criador[] = [
     nome: 'Stima Aves',
     responsavel: 'Waldir Bellati',
     profissao: 'Médico Veterinário',
-    cidade: 'Atibaia – SP',
+    cidade: 'Itatiba – SP',
     especialidade: 'Pavões, faisões, perdizes, pombas, psitacídeos e aves exóticas.',
     whatsapp: '5511943007375',
     logo: '/criadouros/stima.webp',
@@ -133,7 +133,7 @@ export const ROTAS: Rota[] = [
     nome: 'Grande São Paulo e raio de 150 km',
     datas: [],
     fechaDiasAntes: 0,
-    nota: 'Data combinada direto pelo WhatsApp, sem esperar rota fechar. Retirada em São Paulo – Capital também.',
+    nota: `Data combinada direto pelo WhatsApp, sem esperar rota fechar. Retirada em ${MARCA_ATUAL.retirada} também.`,
   },
   {
     regiao: 'Ribeirão Preto e Triângulo',

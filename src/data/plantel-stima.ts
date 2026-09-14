@@ -1,4 +1,4 @@
-// src/data/plantel-stima.ts — O CATÁLOGO-BASE DO STIMA AVES (Waldir Bellati, Atibaia).
+// src/data/plantel-stima.ts — O CATÁLOGO-BASE DO STIMA AVES (Waldir Bellati, Itatiba).
 //
 // Diferente da lista semanal (aves.ts), isto é a criação inteira: as 51 variedades
 // que o Waldir cria, com ou sem lote pronto no dia. O site da Stima mostra todas —
@@ -8,7 +8,7 @@
 // Nomes revisados em 14/09/2026 (ver Catálogo base do Stima Aves). Preços: os que
 // estavam na lista de 13/09 e os que repetem a tabela do Aves Arca; null = a fechar.
 // Fotos: public/aves-stima/manifesto.json — ilustrativas da espécie (acervo livre),
-// até chegarem as do viveiro de Atibaia. O crédito aparece na ficha.
+// até chegarem as do viveiro de Itatiba. O crédito aparece na ficha.
 import { CategoriaId } from '../types';
 
 export interface Variedade {
