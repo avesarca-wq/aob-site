@@ -47,7 +47,7 @@ export const Footer: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
                   Encomenda / pré-reserva no avesarca.com.br ↗
                 </a>
               ) : (
-                <a href="https://avesornamentaisbrasil.com.br/aves" target="_blank" rel="noopener noreferrer" className="font-sans text-[0.86rem] text-[var(--claro-2)] hover:text-[var(--ouro)] no-underline">
+                <a href="https://avesornamentaisbrasil.com.br/aves/" target="_blank" rel="noopener noreferrer" className="font-sans text-[0.86rem] text-[var(--claro-2)] hover:text-[var(--ouro)] no-underline">
                   Lista conjunta da rede ↗
                 </a>
               )}

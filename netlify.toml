@@ -15,12 +15,35 @@
   directory = "netlify/functions"
   node_bundler = "esbuild"
 
-# App de página única: qualquer rota desconhecida devolve o index.
-# (o arquivo public/_redirects já faz isso; fica aqui como garantia)
+# Toda rota real é pré-renderizada em dist/<rota>/index.html; o que não tem
+# arquivo é endereço inexistente e sai com 404 de verdade (o React mostra a tela
+# de "endereço não existe"). Antes era 200 para tudo — soft-404 para o Google.
 [[redirects]]
   from = "/*"
   to = "/index.html"
-  status = 200
+  status = 404
+
+# Cache longo para o que tem hash no nome (o Vite troca o nome a cada build)
+# e médio para fotos; o HTML continua sem cache para o deploy valer na hora.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/aves/*.webp"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/aves-stima/*.webp"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/criadouros/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
 
 [[headers]]
   for = "/*"

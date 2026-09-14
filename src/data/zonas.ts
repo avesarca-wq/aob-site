@@ -21,6 +21,7 @@
 // a malha muda por decisão logística. Misturar as duas faria toda revisão de preço mexer
 // em 527 linhas de dado.
 
+import { EH_REDE, MARCA_ATUAL } from '../marcas';
 import { CIDADES, Cidade } from './cidades';
 
 export type NumeroZona = 1 | 2 | 3 | 4 | 5;
@@ -42,7 +43,7 @@ export const ZONAS: Record<NumeroZona, Zona> = {
     tarifa: 95,
     tarifaTexto: 'R$ 95',
     prazo: 'Data combinada direto, sem esperar a rota fechar',
-    detalhe: 'Saída e volta no mesmo dia, a partir de Diadema.'
+    detalhe: EH_REDE ? 'Saída e volta no mesmo dia, a partir de Diadema.' : `Saída e volta no mesmo dia, a partir de ${MARCA_ATUAL.retirada}.`
   },
   2: {
     n: 2,

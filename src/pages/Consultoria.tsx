@@ -13,7 +13,7 @@ export const Consultoria: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ 
         <p lang="pt-BR" className="sec-sub text-justify hyphens-auto" style={{ marginBottom: 0 }}>
           Comprar a ave é a parte fácil. O que separa quem desiste de quem faz plantel é o que vem
           depois: recinto certo, ração certa, casal certo. Por isso a rede tem dois consultores — um
-          biólogo e a zootecnia — para quem está começando não aprender no erro, e para quem já cria
+          biólogo e um zootecnista — para quem está começando não aprender no erro, e para quem já cria
           resolver o que emperrou.
         </p>
       </div>
@@ -86,7 +86,7 @@ export const Consultoria: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ 
               indica porque confia no trabalho. Fale direto com eles pelo WhatsApp ou pelo Instagram. Se
               não souber por onde começar, chame no nosso WhatsApp {CONSTANTS.WHATSAPP_DISPLAY} que a gente aponta o
               caminho — dúvida de espécie e recinto é com o biólogo; ração, sanidade e reprodução é
-              com a zootecnia.
+              com o zootecnista.
             </p>
           </div>
           <div className="grid gap-2 justify-self-start md:justify-self-end">

@@ -24,13 +24,17 @@ import { EH_REDE } from './marcas';
 
 
 export default function App() {
-  const [pagina, setPagina] = useState<PageRoute>('home');
-  const [existe, setExiste] = useState(true);
-  const [categoria, setCategoria] = useState<string | undefined>(undefined);
+  // Estado inicial lido da URL no primeiro render: antes, começava em 'home' e só
+  // trocava num useEffect — a home montava por um instante em toda rota e baixava
+  // as fotos de destaque em /contato, /pedido e nas fichas (achado da auditoria de 14/09).
+  const inicial = daURL();
+  const [pagina, setPagina] = useState<PageRoute>(inicial.rota ?? 'home');
+  const [existe, setExiste] = useState(Boolean(inicial.rota));
+  const [categoria, setCategoria] = useState<string | undefined>(inicial.cat);
 
-  const [aveSlug, setAveSlug] = useState<string | undefined>(undefined);
+  const [aveSlug, setAveSlug] = useState<string | undefined>(inicial.ave);
 
-  const daURL = () => {
+  function daURL() {
     const caminho = window.location.pathname.replace(/\/+$/, '') || '/';
     // /aves/<slug>: página própria de uma ave — abre a vitrine já filtrada nela.
     const mAve = caminho.match(/^\/aves\/([a-z0-9-]+)$/);
@@ -39,7 +43,7 @@ export default function App() {
     const hash = window.location.hash.replace('#', '') as PageRoute;
     const cat = new URLSearchParams(window.location.search).get('categoria') || undefined;
     return { rota: rota ?? (CAMINHOS[hash] ? hash : undefined), cat, ave: undefined as string | undefined };
-  };
+  }
 
   useEffect(() => {
     const sync = () => {
@@ -49,7 +53,6 @@ export default function App() {
       setCategoria(cat);
       setAveSlug(ave);
     };
-    sync();
     window.addEventListener('popstate', sync);
     window.addEventListener('hashchange', sync);
     return () => {

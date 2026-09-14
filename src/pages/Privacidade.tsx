@@ -1,5 +1,6 @@
 import React from 'react';
 import { CONSTANTS } from '../data/catalogo';
+import { EH_REDE } from '../marcas';
 
 export const Privacidade: React.FC = () => (
   <>
@@ -15,9 +16,9 @@ export const Privacidade: React.FC = () => (
         <h2 className="text-[1.4rem] text-[var(--verde)]">Quais dados</h2>
         <p>Ao fechar um pedido, pedimos só nome, telefone (WhatsApp) e cidade — e, se quiser, observações. São os dados mínimos para confirmar o estoque, organizar a rota de entrega e falar com você.</p>
         <h2 className="text-[1.4rem] text-[var(--verde)]">Para quê</h2>
-        <p>Confirmar o pedido no WhatsApp, avisar a data da rota, combinar retirada ou entrega e emitir a documentação da ave quando aplicável. Não vendemos nem cedemos seus dados a terceiros; os criadouros parceiros recebem apenas o necessário para separar as aves do seu pedido.</p>
+        <p>Confirmar o pedido no WhatsApp, avisar a data da rota, combinar retirada ou entrega e emitir a documentação da ave quando aplicável. Não vendemos nem cedemos seus dados a terceiros; {EH_REDE ? 'os criadouros parceiros recebem apenas o necessário para separar as aves do seu pedido.' : 'só quem separa e entrega as aves tem acesso ao pedido.'}</p>
         <h2 className="text-[1.4rem] text-[var(--verde)]">Onde ficam</h2>
-        <p>O pedido é registrado na plataforma do site (Netlify) e enviado por e-mail à equipe da Aves Ornamentais Brasil. A conversa segue no WhatsApp. O carrinho fica apenas no seu navegador até você enviar.</p>
+        <p>O pedido é registrado na plataforma do site (Netlify) e enviado por e-mail à equipe do {CONSTANTS.MARCA}. A conversa segue no WhatsApp. O carrinho fica apenas no seu navegador até você enviar.</p>
         <h2 className="text-[1.4rem] text-[var(--verde)]">Seus direitos</h2>
         <p>Você pode pedir acesso, correção ou exclusão dos seus dados a qualquer momento pelo WhatsApp {CONSTANTS.WHATSAPP_DISPLAY} ou pelo e-mail {CONSTANTS.EMAIL}.</p>
         <h2 className="text-[1.4rem] text-[var(--verde)]">Cookies e medição</h2>

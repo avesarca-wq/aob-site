@@ -5,6 +5,8 @@ import { AVES, LISTA_DATA, TOTAL_AVES, TOTAL_LOTES } from '../data/aves';
 import { CATEGORIA, CRIADOR_ROTULO, CONSTANTS, UNIDADE_ROTULO, brl } from '../data/catalogo';
 import { useCart, estoqueDaUnidade } from '../cart/CartContext';
 import { estoqueTexto } from '../components/AveCard';
+import { EH_REDE } from '../marcas';
+import { waSobConsulta } from '../lib/links';
 
 const normaliza = (t: string) => t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
 
@@ -166,7 +168,7 @@ export const Tabela: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
           </div>
 
           <p className="font-sans text-[0.74rem] text-[var(--muted)] mt-4">
-            Estoque como na lista de {LISTA_DATA}: M = machos, F = fêmeas; 00 quando não há disponibilidade daquele sexo. Retirada em {CONSTANTS.RETIRADA} ou entrega em rota. Não achou o que procura? A encomenda continua no <a href={CONSTANTS.PRE_RESERVA_URL} target="_blank" rel="noopener noreferrer" className="text-[var(--verde)] underline">avesarca.com.br</a>.
+            Estoque como na lista de {LISTA_DATA}: M = machos, F = fêmeas; 00 quando não há disponibilidade daquele sexo. Retirada em {CONSTANTS.RETIRADA} ou entrega em rota. {EH_REDE ? <>Não achou o que procura? A encomenda continua no <a href={CONSTANTS.PRE_RESERVA_URL} target="_blank" rel="noopener noreferrer" className="text-[var(--verde)] underline">avesarca.com.br</a>.</> : <>Não achou o que procura? <a href={waSobConsulta('uma ave que não está na lista')} target="_blank" rel="noopener noreferrer" className="text-[var(--verde)] underline">Pergunte no WhatsApp</a>.</>}
           </p>
         </div>
       </section>

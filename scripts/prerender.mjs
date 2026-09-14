@@ -36,7 +36,7 @@
  * dois, e não existe como um sair do outro.
  */
 import { build } from 'esbuild';
-import { mkdir, readFile, writeFile, rm } from 'node:fs/promises';
+import { mkdir, readFile, writeFile, rm, copyFile, appendFile, access } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 
 const RAIZ = process.cwd();
@@ -83,9 +83,9 @@ function trocarTag(html, seletorRegex, tagNova) {
  * de verdade porque o menu do site é feito de botões, e um robô que não executa
  * JavaScript não consegue seguir botão nenhum.
  */
-function corpoEstatico({ titulo, descricao, caminhos, rotaAtual }) {
+function corpoEstatico({ titulo, descricao, caminhos, rotaAtual, ocultas }) {
   const navegacao = Object.entries(caminhos)
-    .filter(([rota]) => rota !== rotaAtual && rota !== 'pedido')
+    .filter(([rota]) => rota !== rotaAtual && !ocultas.has(rota))
     .map(([rota, caminho]) => `<a href="${caminho}">${esc(rota)}</a>`)
     .join(' · ');
   return `<div id="conteudo-sem-js">
@@ -103,9 +103,11 @@ async function main() {
   const base = await readFile(join(DIST, 'index.html'), 'utf8');
 
   let gravadas = 0;
+  // Rotas que não existem nesta marca: não ganham página (e, abaixo, viram 301).
+  const inexistentes = new Set(EH_REDE ? [] : ['consultoria']);
   for (const [rota, { titulo, descricao }] of Object.entries(META)) {
     const caminho = CAMINHOS[rota];
-    if (!caminho) continue;
+    if (!caminho || inexistentes.has(rota)) continue;
     const url = SITE + caminho;
 
     let html = base;
@@ -114,6 +116,7 @@ async function main() {
     // og:url e theme-color inclusive. Por isso a home passa por aqui como as outras.
     html = trocarTag(html, /<meta property="og:site_name"[^>]*>/, `<meta property="og:site_name" content="${esc(MARCA)}" />`);
     html = trocarTag(html, /<meta property="og:image"[^>]*>/, `<meta property="og:image" content="${OG_IMAGEM}" />`);
+    html = comFavicon(html);
     if (TEMA) html = trocarTag(html, /<meta name="theme-color"[^>]*>/, `<meta name="theme-color" content="${TEMA}" />`);
     html = html.replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(titulo)}</title>`);
     html = trocarTag(html, /<meta name="description"[^>]*>/, `<meta name="description" content="${esc(descricao)}" />`);
@@ -132,7 +135,7 @@ async function main() {
     html = html.replace('</head>', `  <script type="application/ld+json">${JSON.stringify(JSONLD_ORGANIZACAO)}</script>\n  </head>`);
     html = html.replace(
       '<div id="root"></div>',
-      `<div id="root">${corpoEstatico({ titulo, descricao, caminhos: CAMINHOS, rotaAtual: rota })}</div>`,
+      `<div id="root">${corpoEstatico({ titulo, descricao, caminhos: CAMINHOS, rotaAtual: rota, ocultas: new Set([...foraDoSitemap, ...inexistentes]) })}</div>`,
     );
 
     const destino = caminho === '/' ? join(DIST, 'index.html') : join(DIST, caminho.replace(/^\//, ''), 'index.html');
@@ -158,6 +161,7 @@ async function main() {
       html = trocarTag(html, /<meta property="og:image:height"[^>]*>/, '<meta property="og:image:height" content="900" />');
     }
     if (TEMA) html = trocarTag(html, /<meta name="theme-color"[^>]*>/, `<meta name="theme-color" content="${TEMA}" />`);
+    html = comFavicon(html);
     html = html.replace('</head>', `  <script type="application/ld+json">${JSON.stringify(jsonldAve(p))}</script>\n  </head>`);
     const corpo = `<div id="conteudo-sem-js">
       <h1>${esc(p.nome)}</h1>
@@ -176,7 +180,7 @@ async function main() {
   // sitemap.xml e robots.txt da marca deste build (o public/ trazia os do AOB fixos).
   const hoje = new Date().toISOString().slice(0, 10);
   const urls = [
-    ...Object.entries(CAMINHOS).filter(([r]) => !foraDoSitemap.has(r)).map(([, c]) => ({ loc: SITE + c, pri: c === '/' ? '1.0' : '0.8' })),
+    ...Object.entries(CAMINHOS).filter(([r]) => !foraDoSitemap.has(r) && !inexistentes.has(r)).map(([, c]) => ({ loc: SITE + c, pri: c === '/' ? '1.0' : '0.8' })),
     ...PAGINAS_AVES.map((p) => ({ loc: SITE + p.caminho, pri: p.emEstoque ? '0.7' : '0.5' })),
   ];
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
@@ -184,8 +188,54 @@ async function main() {
   await writeFile(join(DIST, 'sitemap.xml'), sitemap, 'utf8');
   await writeFile(join(DIST, 'robots.txt'), `User-agent: *\nAllow: /\nDisallow: /pedido\nSitemap: ${SITE}/sitemap.xml\n`, 'utf8');
 
+  await arquivosDaMarca({ inexistentes, CAMINHOS });
+
   await rm(TMP, { recursive: true, force: true });
   console.log(`prerender: ${gravadas} páginas gravadas com meta própria (${PAGINAS_AVES.length} de aves) · sitemap com ${urls.length} URLs`);
+}
+
+const MARCA_ID = process.env.VITE_MARCA ?? 'aob';
+const existe = (p) => access(p).then(() => true, () => false);
+
+/**
+ * Favicon por marca. O index.html traz os ícones do AOB; para as outras marcas,
+ * public/marca/<id>/ tem favicon-32.png, favicon-192.png e icone.svg (quando há).
+ */
+function comFavicon(html) {
+  if (MARCA_ID === 'aob') return html;
+  const base = `/marca/${MARCA_ID}`;
+  html = html.replace(/<link rel="icon" type="image\/svg\+xml"[^>]*>\n?/, '');
+  html = html.replace(/<link rel="icon" type="image\/png" sizes="32x32"[^>]*>/, `<link rel="icon" type="image/png" sizes="32x32" href="${base}/favicon-32.png" />`);
+  html = html.replace(/<link rel="apple-touch-icon"[^>]*>/, `<link rel="apple-touch-icon" href="${base}/favicon-192.png" />`);
+  return html;
+}
+
+/**
+ * O public/ é um só para as três marcas. O que muda por marca é copiado aqui, por cima:
+ *   · favicon.ico                  ← public/marca/<id>/favicon.ico (ou o do AOB)
+ *   · lista-aves-disponiveis.pdf   ← public/marca/<id>/lista.pdf (o PDF da própria marca)
+ *   · _redirects                   ← ganha os 301 das rotas que a marca não tem
+ * E o que é material de trabalho (LEIA-ME, manifesto, fotos da Stima fora da Stima)
+ * sai do dist para não ser servido.
+ */
+async function arquivosDaMarca({ inexistentes, CAMINHOS }) {
+  const pasta = join(RAIZ, 'public', 'marca', MARCA_ID);
+  for (const [origem, destino] of [['favicon.ico', 'favicon.ico'], ['lista.pdf', 'lista-aves-disponiveis.pdf']]) {
+    if (await existe(join(pasta, origem))) await copyFile(join(pasta, origem), join(DIST, destino));
+  }
+  const regras = [...inexistentes].map((r) => `${CAMINHOS[r]}  ${CAMINHOS.sanidade}  301!\n${CAMINHOS[r].replace(/\/$/, '')}  ${CAMINHOS.sanidade}  301!`);
+  if (regras.length) {
+    const atual = await readFile(join(DIST, '_redirects'), 'utf8');
+    // As regras da marca entram ANTES do coringa, senão nunca são lidas.
+    await writeFile(join(DIST, '_redirects'), atual.replace('/*  /index.html', regras.join('\n') + '\n/*  /index.html'), 'utf8');
+  }
+  const lixo = ['LEIA-ME.md', 'manifesto.json', 'aves-stima (pasta de fotos)', 'SEO e medicao - Stima e AOB', 'aves-stima/manifesto.json', 'aves-stima/LEIA-ME.md'];
+  if (MARCA_ID !== 'stima') lixo.push('aves-stima');
+  // Cópias soltas das fotos da Stima na raiz do public (upload errado de 14/09): fora do dist.
+  const { readdir } = await import('node:fs/promises');
+  for (const f of await readdir(DIST)) if (f.endsWith('.webp') && await existe(join(RAIZ, 'public', 'aves-stima', f))) lixo.push(f);
+  for (const l of lixo) await rm(join(DIST, l), { recursive: true, force: true });
+  for (const m of ['aob', 'stima', 'alianca']) if (m !== MARCA_ID) await rm(join(DIST, 'marca', m), { recursive: true, force: true });
 }
 
 /** CAMINHOS mora em src/lib/links.ts; mesma transpilação do seo.ts. */

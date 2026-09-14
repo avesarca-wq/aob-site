@@ -72,7 +72,7 @@ export const PAGINAS_AVES: PaginaAve[] = (() => {
     const onde = EH_REDE ? 'à pronta entrega, com rota de entrega marcada' : `criado em ${MARCA_ATUAL.cidade} por ${MARCA_ATUAL.responsavel}, ${MARCA_ATUAL.credencial}`;
     const base = a.resumo ? corta(a.resumo, 110) + ' ' : '';
     saida.push({
-      slug, caminho: `/aves/${slug}`, nome: a.nome, cientifico: a.cientifico, grupo: a.grupo,
+      slug, caminho: `/aves/${slug}/`, nome: a.nome, cientifico: a.cientifico, grupo: a.grupo,
       titulo: `${a.nome} (${a.cientifico}) — ${precoTxt} — ${M}`,
       descricao: corta(`${a.nome}, ${a.cientifico}: ${base}${emEstoque ? 'Disponível agora' : 'Sob consulta'}, ${onde}. Pagamento na entrega.`, 158),
       imagem: a.foto ? SITE + a.foto : null,

@@ -22,7 +22,8 @@ const saidasAbertas = (datas: string[], fechaDiasAntes: number) => {
     .filter((d) => d.fecha.getTime() >= hoje.getTime());
 };
 
-/** Código do pedido: AOB-DDMM-NNN (sequencial por navegador, só para a conversa ter referência). */
+/** Código do pedido: <SIGLA>-DDMM-NNN (sequencial por navegador, só para a conversa ter referência). */
+const PREFIXO = CONSTANTS.SIGLA.normalize('NFD').replace(/[^A-Za-z]/g, '').toUpperCase().slice(0, 5) || 'AOB';
 const gerarCodigo = () => {
   const d = new Date();
   const dd = String(d.getDate()).padStart(2, '0');
@@ -33,7 +34,7 @@ const gerarCodigo = () => {
     n = Number(window.localStorage.getItem(k) || '0') + 1;
     window.localStorage.setItem(k, String(n));
   } catch { /* sem localStorage */ }
-  return `AOB-${dd}${mm}-${String(n).padStart(3, '0')}${Math.random().toString(36).slice(2, 4).toUpperCase()}`;
+  return `${PREFIXO}-${dd}${mm}-${String(n).padStart(3, '0')}${Math.random().toString(36).slice(2, 4).toUpperCase()}`;
 };
 
 const mascaraWhats = (v: string) => {
@@ -91,7 +92,7 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
     const proxTxt = saidaSel ? `${dataCurta(saidaSel.saida)} (pedidos até ${dataCurta(saidaSel.fecha)})` : entrega?.prox ? `${dataCurta(entrega.prox.saida)} (pedidos até ${dataCurta(entrega.prox.fecha)})` : '';
     const recebTxt = dados.recebimento === 'retirada' ? `Retirada em ${CONSTANTS.RETIRADA}` : dados.recebimento === 'rota' ? 'Entrega na rota' : 'Combinar';
     const texto =
-      `Olá! Fiz o pedido *${cod}* no site Aves Ornamentais Brasil.\n\n${resumoTexto()}\n\n` +
+      `Olá! Fiz o pedido *${cod}* no site ${CONSTANTS.MARCA}.\n\n${resumoTexto()}\n\n` +
       `Total de referência: *${brl(totalReferencia)}*${frete ? ` + frete ${brl(frete)}` : ''}\n` +
       `Cidade: ${dados.cidade_uf || '—'} · ${rotaTxt}${proxTxt ? ` · próxima saída ${proxTxt}` : ''}\n` +
       `Recebimento: ${recebTxt}\nNome: ${dados.nome}${dados.observacoes ? `\nObs.: ${dados.observacoes}` : ''}`;

@@ -1,22 +1,24 @@
 import { PageRoute } from '../types';
 import { CONSTANTS } from '../data/catalogo';
 
-/** Endereço próprio por página (o Google lê o href, não o clique). */
+/** Endereço próprio por página (o Google lê o href, não o clique).
+ *  Com barra final: é assim que a Netlify serve dist/<rota>/index.html sem
+ *  redirecionar — sitemap, canonical e link precisam bater com a URL servida. */
 export const CAMINHOS: Record<PageRoute, string> = {
   home: '/',
-  aves: '/aves',
-  tabela: '/tabela',
-  pedido: '/pedido',
-  rotas: '/rotas',
-  criadores: '/criadores',
-  consultoria: '/consultoria',
-  sanidade: '/sanidade',
-  contato: '/contato',
-  privacidade: '/privacidade',
+  aves: '/aves/',
+  tabela: '/tabela/',
+  pedido: '/pedido/',
+  rotas: '/rotas/',
+  criadores: '/criadores/',
+  consultoria: '/consultoria/',
+  sanidade: '/sanidade/',
+  contato: '/contato/',
+  privacidade: '/privacidade/',
 };
 
 export const ROTA_DO_CAMINHO = Object.fromEntries(
-  Object.entries(CAMINHOS).map(([rota, caminho]) => [caminho, rota as PageRoute]),
+  Object.entries(CAMINHOS).map(([rota, caminho]) => [caminho.replace(/\/+$/, '') || '/', rota as PageRoute]),
 ) as Record<string, PageRoute>;
 
 const N = CONSTANTS.MARCA;
