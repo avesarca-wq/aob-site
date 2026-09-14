@@ -10,7 +10,7 @@
  * continua saindo idêntico. Na Netlify, cada projeto aponta para este mesmo
  * repositório e define a sua VITE_MARCA em Environment variables.
  *
- * Decisão de 12/09/2026: Stima Aves = plantel do Waldir Bellati (Atibaia);
+ * Decisão de 12/09/2026: Stima Aves = plantel do Waldir Bellati (Itatiba);
  * Criadouro Aliança = plantel do Felipe Caselato (Jundiaí). Enquanto as aves
  * de parceiro ainda estiverem marcadas como 'parceiros' no aves.ts, as duas
  * marcas mostram esse grupo inteiro; quando cada linha ganhar o criador certo,
@@ -81,13 +81,13 @@ export const MARCAS: Record<MarcaId, Marca> = {
     instagram: 'https://www.instagram.com/stima.aves',
     umami: '508779ed-8e55-4b82-b18d-384c124a0a92',
     frase: 'A ave certa para o seu espaço, com a segurança que você merece.',
-    retirada: 'Atibaia – SP',
+    retirada: 'Itatiba – SP',
     logoHorizontal: '/criadouros/stima.webp',
     logoSelo: '/criadouros/stima.webp',
     ogImage: '/og-stima.png',
     responsavel: 'Dr. Waldir Bellati',
     credencial: 'médico veterinário desde 2002',
-    cidade: 'Atibaia – SP',
+    cidade: 'Itatiba – SP',
   },
   alianca: {
     id: 'alianca',

@@ -25,7 +25,7 @@
     --peso-titulo: 600;
   }
 
-  /* Stima Aves (Atibaia): branco, azul-marinho e verde-pavão, com ar de clínica.
+  /* Stima Aves (Itatiba): branco, azul-marinho e verde-pavão, com ar de clínica.
      Os nomes das variáveis são os da AOB (--verde = cor forte, --ouro = destaque);
      aqui só o valor muda — o código das páginas é o mesmo para as quatro marcas. */
   :root[data-marca="stima"] {
