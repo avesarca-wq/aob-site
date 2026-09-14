@@ -2,7 +2,7 @@ import React from 'react';
 import { ArrowRight, Truck, HandCoins, ListChecks, CalendarDays } from 'lucide-react';
 import { PageRoute } from '../types';
 import { AVES, TOTAL_AVES, TOTAL_LOTES, LISTA_DATA } from '../data/aves';
-import { CATEGORIAS, CRIADORES, ROTAS, CONSTANTS, proximaSaida, dataCurta, brl } from '../data/catalogo';
+import { CATEGORIAS, CRIADORES, ROTAS, CONSTANTS, proximaSaida, dataCurta, brl, faixaDePreco } from '../data/catalogo';
 import { AveCard } from '../components/AveCard';
 import { CAMINHOS } from '../lib/links';
 import { imagem } from '../lib/imagens';
@@ -71,6 +71,11 @@ export const Home: React.FC<{ onNavigate: (p: PageRoute, extra?: string) => void
                     {vazio ? 'em formação' : `${n.length} ${n.length === 1 ? 'lote' : 'lotes'} · ${aves} aves`}
                   </div>
                   <h3 className="text-[1.25rem] text-[var(--verde)] mt-1 mb-1">{c.nome}</h3>
+                  {/* A faixa de preço é o que a pessoa quer saber antes de clicar;
+                      a vitrine já mostrava por grupo, a home não. */}
+                  {!vazio && (
+                    <div className="font-sans text-[0.72rem] text-[var(--verde)] font-semibold mb-1">{faixaDePreco(n)}</div>
+                  )}
                   <p className="font-serif text-[0.9rem] text-[var(--muted)] m-0">{c.descricao}</p>
                 </a>
               );
@@ -151,6 +156,12 @@ export const Home: React.FC<{ onNavigate: (p: PageRoute, extra?: string) => void
                 </div>
               </div>
             ))}
+            {rotasComData.length === 0 && (
+              <div className="fundo-escuro rounded-2xl border border-[var(--verde-claro)] bg-[var(--verde-2)] p-5">
+                <div className="font-serif text-[1.2rem] text-[var(--marfim)]">Próximo ciclo de rotas em definição</div>
+                <div className="font-sans text-[0.78rem] text-[var(--claro-2)]">As datas do ciclo seguinte saem em breve; a entrega continua sendo combinada pelo WhatsApp.</div>
+              </div>
+            )}
             <div className="rounded-2xl border border-dashed border-[var(--verde-claro)] p-5">
               <div className="font-serif text-[1.2rem] text-[var(--marfim)]">Grande São Paulo e raio de 150 km</div>
               <div className="font-sans text-[0.78rem] text-[var(--claro-2)]">Data combinada direto pelo WhatsApp · retirada em {CONSTANTS.RETIRADA}</div>

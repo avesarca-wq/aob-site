@@ -192,6 +192,34 @@ export const dataLonga = (d: Date) =>
 export const brl = (v: number | null) =>
   v === null ? 'Sob consulta' : new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 }).format(v);
 /** Valor numérico para ordenar: sem preço vai para o fim. */
+/**
+ * "set–nov/2026" calculado da primeira e da última data de ROTAS. Estava escrito
+ * na mão na página de rotas e venceria sozinho: em dezembro o site seguiria
+ * anunciando um calendário que acabou.
+ * Sem locale de propósito — o prerender roda no Node e o resultado tem de ser o
+ * mesmo do navegador.
+ */
+const MES_CURTO = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+export const PERIODO_DAS_ROTAS: string = (() => {
+  const datas = ROTAS.flatMap((r) => r.datas).sort();
+  if (!datas.length) return '';
+  const parte = (iso: string) => ({ mes: MES_CURTO[Number(iso.slice(5, 7)) - 1], ano: iso.slice(0, 4) });
+  const a = parte(datas[0]);
+  const b = parte(datas[datas.length - 1]);
+  if (a.mes === b.mes && a.ano === b.ano) return `${a.mes}/${a.ano}`;
+  return a.ano === b.ano ? `${a.mes}–${b.mes}/${b.ano}` : `${a.mes}/${a.ano}–${b.mes}/${b.ano}`;
+})();
+
+/** "de R$ 800 a R$ 4.500 · 6 prontas" — a distância entre os dois números é o argumento. */
+export const faixaDePreco = (aves: { preco: number | null; machos: number; femeas: number }[]): string => {
+  const p = aves.map((a) => a.preco).filter((x): x is number => x !== null);
+  const prontas = aves.filter((a) => a.machos + a.femeas > 0).length;
+  if (!p.length) return 'sob consulta';
+  const mn = Math.min(...p), mx = Math.max(...p);
+  const faixa = mn === mx ? brl(mn) : `de ${brl(mn)} a ${brl(mx)}`;
+  return prontas ? `${faixa} · ${prontas} ${prontas === 1 ? 'pronta' : 'prontas'}` : faixa;
+};
+
 export const precoOrd = (v: number | null) => (v === null ? Number.POSITIVE_INFINITY : v);
 
 export const UNIDADE_ROTULO = { casal: 'casal', macho: 'macho', femea: 'fêmea' } as const;

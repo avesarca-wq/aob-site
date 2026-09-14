@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { CalendarDays, MapPin, MessageCircle } from 'lucide-react';
 import { PageRoute } from '../types';
-import { ROTAS, CONSTANTS, proximaSaida, dataCurta, dataLonga, brl } from '../data/catalogo';
+import { ROTAS, CONSTANTS, proximaSaida, dataCurta, dataLonga, brl, PERIODO_DAS_ROTAS } from '../data/catalogo';
 import { ZONAS } from '../data/zonas';
 import { CIDADES } from '../data/cidades';
 import { CidadeInput, entregaDaCidade } from '../components/CidadeInput';
@@ -50,7 +50,7 @@ export const Rotas: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNavi
             )}
           </div>
 
-          <div className="eyebrow">Calendário set–nov/2026</div>
+          <div className="eyebrow">{PERIODO_DAS_ROTAS ? `Calendário ${PERIODO_DAS_ROTAS}` : 'Calendário de rotas'}</div>
           <h2 className="sec-title">Rotas por região</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {ROTAS.map((r) => {

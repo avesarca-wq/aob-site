@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Search, SlidersHorizontal, FileDown, ChevronDown } from 'lucide-react';
 import { CategoriaId, CriadorId, PageRoute, Unidade } from '../types';
 import { AVES, LISTA_DATA, TOTAL_AVES, TOTAL_LOTES, TOTAL_VARIEDADES } from '../data/aves';
-import { CATEGORIAS, CRIADOR_ROTULO, CONSTANTS, brl, precoOrd } from '../data/catalogo';
+import { CATEGORIAS, CRIADOR_ROTULO, CONSTANTS, brl, precoOrd, faixaDePreco } from '../data/catalogo';
 import { EH_REDE, MARCA_ATUAL } from '../marcas';
 import { AveCard } from '../components/AveCard';
 import { FichaAve } from '../components/FichaAve';
@@ -19,15 +19,6 @@ const FAIXAS: { id: string; rotulo: string; min: number; max: number }[] = [
   { id: 'acima6000', rotulo: 'acima de R$ 6.000', min: 6000, max: Infinity },
 ];
 
-/** "de R$ 800 a R$ 4.500" — a distância entre os dois números é o argumento. */
-const faixaDoGrupo = (aves: { preco: number | null; machos: number; femeas: number }[]) => {
-  const p = aves.map((a) => a.preco).filter((x): x is number => x !== null);
-  const prontas = aves.filter((a) => a.machos + a.femeas > 0).length;
-  if (!p.length) return 'sob consulta';
-  const mn = Math.min(...p), mx = Math.max(...p);
-  const faixa = mn === mx ? brl(mn) : `de ${brl(mn)} a ${brl(mx)}`;
-  return prontas ? `${faixa} · ${prontas} ${prontas === 1 ? 'pronta' : 'prontas'}` : faixa;
-};
 
 const normaliza = (t: string) => t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
 
@@ -239,7 +230,7 @@ export const Aves: React.FC<{ aveSlug?: string; categoriaInicial?: string; onNav
             grupos.map(([g, aves]) => (
               <div key={g} className="mb-10">
                 <h2 className="text-[1.5rem] text-[var(--verde)] m-0 mb-4 flex items-baseline gap-3 flex-wrap">
-                  {g} <span className="font-sans text-[0.7rem] tracking-[1px] uppercase text-[var(--ouro-texto)]">{EH_REDE ? `${aves.length} ${aves.length === 1 ? 'lote' : 'lotes'}` : faixaDoGrupo(aves)}</span>
+                  {g} <span className="font-sans text-[0.7rem] tracking-[1px] uppercase text-[var(--ouro-texto)]">{EH_REDE ? `${aves.length} ${aves.length === 1 ? 'lote' : 'lotes'}` : faixaDePreco(aves)}</span>
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                   {aves.map((a) => <AveCard key={a.id} ave={a} onVerPedido={() => onNavigate('pedido')} />)}
