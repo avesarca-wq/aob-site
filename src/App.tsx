@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { PageRoute } from './types';
 import { CAMINHOS, ROTA_DO_CAMINHO } from './lib/links';
-import { META, M } from './seo';
+import { META, M, PAGINA_AVE_DO_SLUG, OG_IMAGEM } from './seo';
 import { TOTAL_AVES, TOTAL_LOTES } from './data/aves';
 import { CONSTANTS } from './data/catalogo';
 import { CartProvider } from './cart/CartContext';
@@ -28,20 +28,26 @@ export default function App() {
   const [existe, setExiste] = useState(true);
   const [categoria, setCategoria] = useState<string | undefined>(undefined);
 
+  const [aveSlug, setAveSlug] = useState<string | undefined>(undefined);
+
   const daURL = () => {
     const caminho = window.location.pathname.replace(/\/+$/, '') || '/';
+    // /aves/<slug>: página própria de uma ave — abre a vitrine já filtrada nela.
+    const mAve = caminho.match(/^\/aves\/([a-z0-9-]+)$/);
+    if (mAve && PAGINA_AVE_DO_SLUG[mAve[1]]) return { rota: 'aves' as PageRoute, cat: undefined, ave: mAve[1] };
     const rota = ROTA_DO_CAMINHO[caminho];
     const hash = window.location.hash.replace('#', '') as PageRoute;
     const cat = new URLSearchParams(window.location.search).get('categoria') || undefined;
-    return { rota: rota ?? (CAMINHOS[hash] ? hash : undefined), cat };
+    return { rota: rota ?? (CAMINHOS[hash] ? hash : undefined), cat, ave: undefined as string | undefined };
   };
 
   useEffect(() => {
     const sync = () => {
-      const { rota, cat } = daURL();
+      const { rota, cat, ave } = daURL();
       setPagina(rota ?? 'home');
       setExiste(Boolean(rota));
       setCategoria(cat);
+      setAveSlug(ave);
     };
     sync();
     window.addEventListener('popstate', sync);
@@ -60,21 +66,24 @@ export default function App() {
     };
     if (!existe) { document.title = `Página não encontrada — ${M}`; tag('robots', 'name').content = 'noindex, follow'; return; }
     tag('robots', 'name').content = pagina === 'pedido' ? 'noindex, follow' : 'index, follow';
-    const { titulo, descricao } = META[pagina];
+    const ave = aveSlug ? PAGINA_AVE_DO_SLUG[aveSlug] : undefined;
+    const { titulo, descricao } = ave ?? META[pagina];
     document.title = titulo;
     tag('description', 'name').content = descricao;
     tag('og:title', 'property').content = titulo;
     tag('og:description', 'property').content = descricao;
-    const url = CONSTANTS.DOMINIO + CAMINHOS[pagina];
+    tag('og:image', 'property').content = ave?.imagem ?? OG_IMAGEM;
+    const url = CONSTANTS.DOMINIO + (ave ? ave.caminho : CAMINHOS[pagina]);
     tag('og:url', 'property').content = url;
     let can = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]');
     if (!can) { can = document.createElement('link'); can.rel = 'canonical'; document.head.appendChild(can); }
     can.href = url;
-  }, [pagina, existe]);
+  }, [pagina, existe, aveSlug]);
 
   const navegar = (p: PageRoute, extra?: string) => {
     setPagina(p);
     setExiste(true);
+    setAveSlug(undefined);
     setCategoria(p === 'aves' ? extra : undefined);
     window.history.pushState({}, '', CAMINHOS[p] + (p === 'aves' && extra ? `?categoria=${extra}` : ''));
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -97,7 +106,7 @@ export default function App() {
           ) : (
             <>
               {pagina === 'home' && (EH_REDE ? <Home onNavigate={navegar} /> : <HomeCriadouro onNavigate={navegar} />)}
-              {pagina === 'aves' && <Aves categoriaInicial={categoria} onNavigate={navegar} />}
+              {pagina === 'aves' && <Aves key={aveSlug ?? categoria ?? 'todas'} categoriaInicial={categoria} buscaInicial={aveSlug ? PAGINA_AVE_DO_SLUG[aveSlug].nome : undefined} onNavigate={navegar} />}
               {pagina === 'tabela' && <Tabela onNavigate={navegar} />}
               {pagina === 'pedido' && <Pedido onNavigate={navegar} />}
               {pagina === 'rotas' && <Rotas onNavigate={navegar} />}

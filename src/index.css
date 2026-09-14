@@ -50,6 +50,10 @@
     --peso-titulo: 700;
   }
   :root[data-marca="stima"] body { font-family: var(--sans); font-size: 1.02rem; }
+  /* A utilitária .font-serif do Tailwind (ui-serif, Georgia…) vence a camada base;
+     por isso a fonte de título da marca precisa entrar com !important. Vale para
+     as quatro marcas: sem isto, os títulos do AOB saíam em Georgia, não em Garamond. */
+  h1.font-serif, h2.font-serif, h3.font-serif, h4.font-serif { font-family: var(--serif) !important; }
   /* Na Stima o texto corrido é sans; só título leva a Poppins. */
   :root[data-marca="stima"] .font-serif:not(h1):not(h2):not(h3):not(h4) { font-family: var(--sans) !important; font-style: normal; }
   :root[data-marca="stima"] h1, :root[data-marca="stima"] h2, :root[data-marca="stima"] h3, :root[data-marca="stima"] h4 { letter-spacing: -0.01em; }

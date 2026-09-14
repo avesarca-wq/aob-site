@@ -40,6 +40,8 @@ export interface Marca {
   /** Logos em public/. */
   logoHorizontal: string;
   logoSelo: string;
+  /** Imagem de compartilhamento (1200x630), em public/. */
+  ogImage: string;
   /** Quem responde — aparece no hero e no rodapé dos sites de criadouro. */
   responsavel: string;
   credencial: string;
@@ -62,6 +64,7 @@ export const MARCAS: Record<MarcaId, Marca> = {
     retirada: 'São Paulo – Capital',
     logoHorizontal: '/logo-horizontal.png',
     logoSelo: '/logo-selo.png',
+    ogImage: '/og-image.png',
     responsavel: 'Ricardo Dutra',
     credencial: 'coordena as rotas da rede',
     cidade: 'São Paulo – Capital',
@@ -74,13 +77,14 @@ export const MARCAS: Record<MarcaId, Marca> = {
     criadores: ['stima', 'parceiros'],
     whatsappDisplay: '(11) 94300-7375',
     whatsappLink: 'https://wa.me/5511943007375',
-    email: 'stimaaves@gmail.com',
+    email: 'avesarca@gmail.com', // conta stimaaves@gmail.com desativada pelo Google em 14/09; volta quando houver conta própria
     instagram: 'https://www.instagram.com/stima.aves',
     umami: '508779ed-8e55-4b82-b18d-384c124a0a92',
     frase: 'A ave certa para o seu espaço, com a segurança que você merece.',
     retirada: 'Atibaia – SP',
     logoHorizontal: '/criadouros/stima.webp',
     logoSelo: '/criadouros/stima.webp',
+    ogImage: '/og-stima.png',
     responsavel: 'Dr. Waldir Bellati',
     credencial: 'médico veterinário desde 2002',
     cidade: 'Atibaia – SP',
@@ -100,6 +104,7 @@ export const MARCAS: Record<MarcaId, Marca> = {
     retirada: 'Jundiaí – SP',
     logoHorizontal: '/criadouros/alianca.webp',
     logoSelo: '/criadouros/alianca.webp',
+    ogImage: '/og-alianca.png',
     responsavel: 'Felipe Caselato',
     credencial: 'criador e palestrante de faisões',
     cidade: 'Jundiaí – SP',
