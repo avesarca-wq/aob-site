@@ -21,6 +21,19 @@ A Netlify constrói a partir deste repositório (branch `main`): commit = public
 Formulário `pedido` = Netlify Forms (precisa existir espelhado no `index.html`). O aviso por e-mail sai pela função
 `netlify/functions/pedido-email.mts` (variável `RESEND_API_KEY`).
 
+## Fontes e imagens
+
+As fontes são servidas pelo próprio site, em `public/fonts` (woff2, subconjunto
+latin — que cobre todo o português). Vieram dos pacotes `@fontsource/eb-garamond`,
+`@fontsource/inter` e `@fontsource/poppins`; para trocar de peso, instale o pacote,
+copie o `.woff2` e acerte o `@font-face` no topo de `src/index.css`. Os pacotes não
+ficam no `package.json` porque o build não precisa deles.
+
+As fotos das aves têm variantes menores geradas por `node scripts/imagens.mjs`
+(`-480`/`-800` para fotos, `-240`/`-480`/`-960` para logotipos) mais o manifesto
+`src/lib/variantes.ts`, de onde saem `srcset` e `width`/`height`. **Rode o script
+ao acrescentar foto nova** — sem a variante, o card serve a de 1200 px.
+
 ## Dados (v0.1)
 
 - `src/data/aves.ts` — lotes da lista de 03/09/2026 (gerado a partir do PDF da lista). Na v0.2 vem do Supabase.

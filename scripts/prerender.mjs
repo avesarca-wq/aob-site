@@ -117,7 +117,7 @@ async function main() {
     // og:url e theme-color inclusive. Por isso a home passa por aqui como as outras.
     html = trocarTag(html, /<meta property="og:site_name"[^>]*>/, `<meta property="og:site_name" content="${esc(MARCA)}" />`);
     html = trocarTag(html, /<meta property="og:image"[^>]*>/, `<meta property="og:image" content="${OG_IMAGEM}" />`);
-    html = comFavicon(html);
+    html = comMarca(comFontes(comFavicon(html)));
     if (TEMA) html = trocarTag(html, /<meta name="theme-color"[^>]*>/, `<meta name="theme-color" content="${TEMA}" />`);
     html = html.replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(titulo)}</title>`);
     html = trocarTag(html, /<meta name="description"[^>]*>/, `<meta name="description" content="${esc(descricao)}" />`);
@@ -162,7 +162,7 @@ async function main() {
       html = trocarTag(html, /<meta property="og:image:height"[^>]*>/, '<meta property="og:image:height" content="900" />');
     }
     if (TEMA) html = trocarTag(html, /<meta name="theme-color"[^>]*>/, `<meta name="theme-color" content="${TEMA}" />`);
-    html = comFavicon(html);
+    html = comMarca(comFontes(comFavicon(html)));
     // A foto da ficha é o LCP. Sem isto o navegador só a descobre quando o React
     // monta; o preload deixa o download começar junto com o do JavaScript, e com
     // o mesmo srcset/sizes do site, para vir a variante do tamanho da tela.
@@ -212,6 +212,37 @@ const existe = (p) => access(p).then(() => true, () => false);
  * Favicon por marca. O index.html traz os ícones do AOB; para as outras marcas,
  * public/marca/<id>/ tem favicon-32.png, favicon-192.png e icone.svg (quando há).
  */
+/**
+ * Preload das duas faces do primeiro render, por marca. O index.html traz as do
+ * AOB (EB Garamond 600 + Inter 400); a Stima e a Aliança abrem em Poppins.
+ * Preload de fonte que a página não usa é byte jogado fora e ainda atrasa o
+ * que importa — por isso a troca, e não a soma.
+ */
+const FACES_DO_PRIMEIRO_RENDER = {
+  aob: ['eb-garamond-latin-600-normal', 'inter-latin-400-normal'],
+  stima: ['poppins-latin-600-normal', 'inter-latin-400-normal'],
+  alianca: ['poppins-latin-600-normal', 'inter-latin-400-normal'],
+};
+
+/**
+ * data-marca no <html> já no arquivo gravado. src/main.tsx também escreve, mas
+ * só quando o React monta — até lá a página pintava com a paleta e as fontes do
+ * AOB. Na Stima isso chegava a baixar a EB Garamond, que ela não usa.
+ */
+const comMarca = (html) => html.replace('<html lang="pt-BR">', `<html lang="pt-BR" data-marca="${MARCA_ID}">`);
+
+function comFontes(html) {
+  const faces = FACES_DO_PRIMEIRO_RENDER[MARCA_ID] ?? FACES_DO_PRIMEIRO_RENDER.aob;
+  if (faces === FACES_DO_PRIMEIRO_RENDER.aob) return html;
+  const linhas = faces
+    .map((f) => `<link rel="preload" as="font" type="font/woff2" href="/fonts/${f}.woff2" crossorigin>`)
+    .join('\n    ');
+  return html.replace(
+    /<link rel="preload" as="font"[^>]*>\s*<link rel="preload" as="font"[^>]*>/,
+    linhas,
+  );
+}
+
 function comFavicon(html) {
   if (MARCA_ID === 'aob') return html;
   const base = `/marca/${MARCA_ID}`;

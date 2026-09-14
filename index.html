@@ -24,9 +24,12 @@
     <link rel="icon" type="image/svg+xml" href="/icone.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="apple-touch-icon" href="/favicon-192.png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- Fontes do próprio site (public/fonts); as @font-face estão em src/index.css.
+         Só as duas faces do primeiro render vêm com preload: o título e o texto
+         corrido. O resto o navegador busca quando encontrar quem as use.
+         scripts/prerender.mjs troca estas duas linhas nas marcas que não são o AOB. -->
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/eb-garamond-latin-600-normal.woff2" crossorigin>
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/inter-latin-400-normal.woff2" crossorigin>
     <!-- JSON-LD da organização: gravado por scripts/prerender.mjs com os dados da marca do build. -->
   </head>
   <body>
