@@ -85,6 +85,17 @@
     --muted-3: #8FA08F;
     --verde-hover: #3a6650;
     --wa: #1C8253;
+    /* Superfície um passo acima do fundo escuro, e a borda que a divide: é o
+       cartão do carrinho em /pedido/, que tinha o verde do AOB escrito na mão e
+       aparecia igual no site da Stima. */
+    --escura-2: #22412F;
+    --escura-borda: #3B5B4A;
+    --escura-apagado: #8FA08F;
+    /* Linha marcada no pedido (a ave já está no carrinho). */
+    --selecionado: #FFF8E6;
+    /* Alerta: erro de formulário e o hover do "remover". Não é cor de marca. */
+    --alerta: #B5532E;
+    --alerta-claro: #E08463;
     --sans: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     --serif: 'EB Garamond', Georgia, 'Times New Roman', serif;
     --peso-titulo: 600;
@@ -99,6 +110,12 @@
     --verde-claro: #3A4390;
     --verde-hover: #4A54A8;
     --wa: #1C8253;
+    --escura-2: #2C3580;
+    --escura-borda: #46509E;
+    --escura-apagado: #8E97B5;
+    --selecionado: #EEF1FA;
+    --alerta: #B5532E;
+    --alerta-claro: #E08463;
     --ouro: #3E9A5A;
     --ouro2: #2F7D48;
     --ouro-texto: #2F7D48;

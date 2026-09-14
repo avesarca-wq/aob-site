@@ -202,21 +202,21 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
             ) : (
               <div className="grid gap-2">
                 {itens.map(({ l, a }) => (
-                  <div key={a.id} className="flex items-start gap-3 rounded-xl bg-[#22412F] px-3.5 py-2.5">
+                  <div key={a.id} className="flex items-start gap-3 rounded-xl bg-[var(--escura-2)] px-3.5 py-2.5">
                     <div className="min-w-0 flex-1">
                       <div className="font-serif text-[1rem] text-[var(--marfim)] leading-tight">{a.nome}{a.detalhe ? <span className="italic text-[var(--claro-2)]"> · {a.detalhe}</span> : ''}</div>
                       <div className="font-sans text-[0.68rem] text-[var(--claro-3)] mt-0.5">{CRIADOR_ROTULO[a.criador]} · {brl(a.preco)}/{UNIDADE_ROTULO[a.unidade]}</div>
                     </div>
                     <div className="flex items-center gap-1 flex-none">
-                      <button type="button" onClick={() => alterar(a.id, l.quantidade - 1)} aria-label="Menos" className="w-6 h-6 rounded-md border border-[#3B5B4A] bg-transparent text-[var(--marfim)] cursor-pointer leading-none">−</button>
+                      <button type="button" onClick={() => alterar(a.id, l.quantidade - 1)} aria-label="Menos" className="w-6 h-6 rounded-md border border-[var(--escura-borda)] bg-transparent text-[var(--marfim)] cursor-pointer leading-none">−</button>
                       <span className="w-6 text-center font-sans text-[0.85rem] font-bold text-[var(--marfim)]">{l.quantidade}</span>
-                      <button type="button" onClick={() => alterar(a.id, l.quantidade + 1)} aria-label="Mais" className="w-6 h-6 rounded-md border border-[#3B5B4A] bg-transparent text-[var(--marfim)] cursor-pointer leading-none">+</button>
+                      <button type="button" onClick={() => alterar(a.id, l.quantidade + 1)} aria-label="Mais" className="w-6 h-6 rounded-md border border-[var(--escura-borda)] bg-transparent text-[var(--marfim)] cursor-pointer leading-none">+</button>
                     </div>
                     <div className="text-right flex-none w-20 font-sans text-[0.85rem] font-bold text-[var(--marfim)]">{brl(a.preco * l.quantidade)}</div>
-                    <button type="button" onClick={() => remover(a.id)} className="flex-none bg-transparent border-0 cursor-pointer text-[#7E9587] hover:text-[#E08463] p-0" aria-label="Remover"><Trash2 className="w-4 h-4" /></button>
+                    <button type="button" onClick={() => remover(a.id)} className="flex-none bg-transparent border-0 cursor-pointer text-[var(--escura-apagado)] hover:text-[var(--alerta-claro)] p-0" aria-label="Remover"><Trash2 className="w-4 h-4" /></button>
                   </div>
                 ))}
-                <div className="mt-1 pt-3 border-t border-[#3B5B4A] flex items-baseline justify-between gap-3">
+                <div className="mt-1 pt-3 border-t border-[var(--escura-borda)] flex items-baseline justify-between gap-3">
                   <span className="font-sans text-[0.78rem] text-[var(--claro-2)]">{totalUnidades} {totalUnidades === 1 ? 'unidade' : 'unidades'} · valores de referência</span>
                   <span className="font-serif text-[1.4rem] text-[var(--marfim)]">{brl(totalReferencia)}</span>
                 </div>
@@ -228,7 +228,7 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
                 )}
               </div>
             )}
-            <button onClick={() => onNavigate('aves')} className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-[#3B5B4A] bg-transparent px-4 py-2 cursor-pointer font-sans text-[0.8rem] font-bold text-[var(--marfim)]"><ArrowLeft className="w-4 h-4" /> Adicionar mais aves</button>
+            <button onClick={() => onNavigate('aves')} className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-[var(--escura-borda)] bg-transparent px-4 py-2 cursor-pointer font-sans text-[0.8rem] font-bold text-[var(--marfim)]"><ArrowLeft className="w-4 h-4" /> Adicionar mais aves</button>
           </div>
         </div>
       </section>
@@ -357,7 +357,7 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
               </div>
 
               <div className="lg:col-span-2 grid gap-3">
-                {erro && <div className="note !border-l-[#B5532E]">{erro}</div>}
+                {erro && <div className="note !border-l-[var(--alerta)]">{erro}</div>}
                 <button type="submit" className="btn btn-wa w-full text-[1rem] !py-3.5" disabled={enviando || itens.length === 0}>
                   <MessageCircle className="w-5 h-5" /> {enviando ? 'Registrando…' : 'Enviar pedido pelo WhatsApp'}
                 </button>

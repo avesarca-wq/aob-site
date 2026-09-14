@@ -101,7 +101,7 @@ export const Tabela: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
                       const q = quantidadeDe(a.id);
                       const max = estoqueDaUnidade(a.id);
                       return (
-                        <tr key={a.id} className={q > 0 ? 'bg-[#FFF8E6]' : ''}>
+                        <tr key={a.id} className={q > 0 ? 'bg-[var(--selecionado)]' : ''}>
                           <td>
                             <div className="font-serif text-[1.02rem] text-[var(--verde)] leading-tight">
                               {a.nome}
@@ -153,7 +153,7 @@ export const Tabela: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
                     const q = quantidadeDe(a.id);
                     const max = estoqueDaUnidade(a.id);
                     return (
-                      <div key={a.id} className={`flex items-center gap-3 px-3.5 py-2.5 border-b border-[var(--line)] last:border-b-0 ${q > 0 ? 'bg-[#FFF8E6]' : ''}`}>
+                      <div key={a.id} className={`flex items-center gap-3 px-3.5 py-2.5 border-b border-[var(--line)] last:border-b-0 ${q > 0 ? 'bg-[var(--selecionado)]' : ''}`}>
                         <div className="flex-1 min-w-0">
                           <div className="font-serif text-[1rem] text-[var(--verde)] leading-tight">
                             {a.nome}{a.detalhe && <span className="italic text-[var(--muted)] text-[0.85rem]"> · {a.detalhe}</span>}
