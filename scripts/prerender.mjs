@@ -36,7 +36,7 @@
  * dois, e não existe como um sair do outro.
  */
 import { build } from 'esbuild';
-import { mkdir, readFile, writeFile, rm, copyFile, appendFile, access } from 'node:fs/promises';
+import { mkdir, readFile, writeFile, rm, copyFile, appendFile, access, readdir } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 
 const RAIZ = process.cwd();
@@ -203,7 +203,8 @@ async function main() {
   await writeFile(join(DIST, 'sitemap.xml'), sitemap, 'utf8');
   await writeFile(join(DIST, 'robots.txt'), `User-agent: *\nAllow: /\nDisallow: /pedido\nSitemap: ${SITE}/sitemap.xml\n`, 'utf8');
 
-  await arquivosDaMarca({ inexistentes, CAMINHOS });
+  const { AVES } = await carregarAves();
+  await arquivosDaMarca({ inexistentes, CAMINHOS, fotosUsadas: new Set(AVES.map((a) => a.foto).filter(Boolean)) });
 
   await rm(TMP, { recursive: true, force: true });
   console.log(`prerender: ${gravadas} páginas gravadas com meta própria (${PAGINAS_AVES.length} de aves) · sitemap com ${urls.length} URLs`);
@@ -264,7 +265,7 @@ function comFavicon(html) {
  * E o que é material de trabalho (LEIA-ME, manifesto, e as fotos da Stima nas
  * marcas que não são a Stima) sai do dist para não ser servido.
  */
-async function arquivosDaMarca({ inexistentes, CAMINHOS }) {
+async function arquivosDaMarca({ inexistentes, CAMINHOS, fotosUsadas }) {
   const pasta = join(RAIZ, 'public', 'marca', MARCA_ID);
   for (const [origem, destino] of [['favicon.ico', 'favicon.ico'], ['lista.pdf', 'lista-aves-disponiveis.pdf']]) {
     if (await existe(join(pasta, origem))) await copyFile(join(pasta, origem), join(DIST, destino));
@@ -276,14 +277,34 @@ async function arquivosDaMarca({ inexistentes, CAMINHOS }) {
     await writeFile(join(DIST, '_redirects'), atual.replace('/*  /index.html', regras.join('\n') + '\n/*  /index.html'), 'utf8');
   }
   const lixo = ['LEIA-ME.md', 'manifesto.json', 'aves-stima/manifesto.json', 'aves-stima/LEIA-ME.md', 'og/LEIA-ME.md'];
-  if (MARCA_ID !== 'stima') lixo.push('aves-stima');
+  // Fora da Stima, /aves-stima/ não sai inteira: o AOB herda a foto da variedade
+  // (src/data/aves.ts) e precisa das que usa. Some só o que esta marca não mostra
+  // — a pasta tem 4,8 MB, não faz sentido publicar as 33 em todo build.
+  if (MARCA_ID !== 'stima') {
+    for (const f of await readdir(join(DIST, 'aves-stima')).catch(() => [])) {
+      if (!f.endsWith('.webp')) continue;
+      // Da variante -480/-800 vale a original: se a foto é usada, as variantes vão junto.
+      const original = `/aves-stima/${f.replace(/-\d+\.webp$/, '.webp')}`;
+      if (!fotosUsadas.has(original)) lixo.push(join('aves-stima', f));
+    }
+  }
   // As placas de categoria são geradas para as três marcas; vai só a desta.
-  const { readdir } = await import('node:fs/promises');
   for (const f of await readdir(join(DIST, 'og')).catch(() => [])) {
     if (f.endsWith('.png') && !f.endsWith(`-${MARCA_ID}.png`)) lixo.push(join('og', f));
   }
   for (const l of lixo) await rm(join(DIST, l), { recursive: true, force: true });
   for (const m of ['aob', 'stima', 'alianca']) if (m !== MARCA_ID) await rm(join(DIST, 'marca', m), { recursive: true, force: true });
+}
+
+/** AVES mora em src/data/aves.ts; mesma transpilação do seo.ts. */
+async function carregarAves() {
+  const saida = join(TMP, 'aves.mjs');
+  await build({
+    entryPoints: [join(RAIZ, 'src/data/aves.ts')],
+    bundle: true, format: 'esm', platform: 'node', outfile: saida, logLevel: 'silent',
+    define: { 'import.meta.env': JSON.stringify({ VITE_MARCA: process.env.VITE_MARCA ?? 'aob' }) },
+  });
+  return import(`file://${saida}`);
 }
 
 /** srcset e sizes moram em src/lib/imagens.ts; mesma transpilação do seo.ts. */

@@ -131,13 +131,32 @@ function juntar(base: Variedade[], lotes: Ave[], criador: CriadorId): Ave[] {
   return saida;
 }
 
+/** Toda variedade de catálogo-base, por id, para achar a foto pelo campo `variedade`. */
+const VARIEDADE_POR_ID = new Map<string, Variedade>(
+  Object.values(CATALOGO_BASE).flatMap((base) => (base ?? []).map((v) => [v.id, v] as const)),
+);
+
+/**
+ * Foto herdada da variedade quando o lote não tem a sua.
+ *
+ * Na rede os lotes não passam pelo juntar() — ela lista os lotes de todos os
+ * criadouros, sem catálogo-base — e por isso os lotes do Stima apareciam com
+ * moldura no AOB enquanto a mesma ave tinha foto no stimaaves.com.br. Só a foto
+ * e o crédito são herdados: preço, estoque e texto continuam sendo os do lote.
+ */
+const comFotoDaVariedade = (l: Ave): Ave => {
+  if (l.foto || !l.variedade) return l;
+  const v = VARIEDADE_POR_ID.get(l.variedade);
+  return v?.foto ? { ...l, foto: v.foto, foto_credito: v.foto_credito } : l;
+};
+
 /**
  * Catálogo desta marca. A rede (AOB) mostra os lotes de todos; o site de um
  * criadouro mostra o catálogo-base dele com os lotes da semana por cima.
  * Todo o resto do código lê AVES e não precisa saber que existe mais de uma marca.
  */
 export const AVES: Ave[] = (() => {
-  if (MARCA_ATUAL.criadores === 'todos') return lotesDaMarca;
+  if (MARCA_ATUAL.criadores === 'todos') return lotesDaMarca.map(comFotoDaVariedade);
   const dono = (MARCA_ATUAL.criadores as CriadorId[]).find((c) => CATALOGO_BASE[c]);
   return dono ? juntar(CATALOGO_BASE[dono]!, lotesDaMarca, dono) : lotesDaMarca;
 })();
