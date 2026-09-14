@@ -116,6 +116,7 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
       total_referencia: String(totalReferencia),
       origem: document.referrer || 'direto',
       pagina_entrada: window.location.href,
+      site: `${CONSTANTS.MARCA} · ${CONSTANTS.WHATSAPP_DISPLAY}`,
       pedido_json: JSON.stringify(itens.map(({ l, a }) => ({ id: a.id, nome: a.nome, detalhe: a.detalhe, criador: CRIADOR_ROTULO[a.criador], unidade: a.unidade, quantidade: l.quantidade, valorUnitario: a.preco }))),
     };
 

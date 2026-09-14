@@ -28,12 +28,12 @@ const faixaDoGrupo = (aves: { preco: number | null; machos: number; femeas: numb
 
 const normaliza = (t: string) => t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
 
-export const Aves: React.FC<{ categoriaInicial?: string; onNavigate: (p: PageRoute) => void }> = ({ categoriaInicial, onNavigate }) => {
+export const Aves: React.FC<{ categoriaInicial?: string; buscaInicial?: string; onNavigate: (p: PageRoute) => void }> = ({ categoriaInicial, buscaInicial, onNavigate }) => {
   const [categoria, setCategoria] = useState<CategoriaId | 'todas'>((categoriaInicial as CategoriaId) || 'todas');
   const [criador, setCriador] = useState<CriadorId | 'todos'>('todos');
   const [unidade, setUnidade] = useState<Unidade | 'todas'>('todas');
   const [faixa, setFaixa] = useState('todas');
-  const [busca, setBusca] = useState('');
+  const [busca, setBusca] = useState(buscaInicial ?? '');
   const [ordem, setOrdem] = useState<Ordem>('nome');
   const [soPromo, setSoPromo] = useState(false);
   const [soEstoque, setSoEstoque] = useState(false);
