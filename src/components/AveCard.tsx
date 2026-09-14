@@ -4,6 +4,7 @@ import { Ave } from '../types';
 import { brl, CRIADOR_ROTULO, UNIDADE_ROTULO, UNIDADE_PLURAL, CATEGORIA } from '../data/catalogo';
 import { useCart, estoqueDaUnidade } from '../cart/CartContext';
 import { waSobConsulta, slugDaAve, caminhoDaAve } from '../lib/links';
+import { imagem, SIZES_CARD } from '../lib/imagens';
 import { EH_REDE } from '../marcas';
 
 /** Texto de estoque: machos à esquerda, fêmeas à direita — "4M · 2F". */
@@ -21,6 +22,12 @@ export const Moldura: React.FC<{ ave: Ave }> = ({ ave }) => (
   </div>
 );
 
+/** Foto do card: exibida a ~352px, então o celular baixa a de 480, não a de 1200. */
+const FotoDoCard: React.FC<{ foto: string; alt: string }> = ({ foto, alt }) => {
+  const i = imagem(foto);
+  return <img src={i.src} srcSet={i.srcSet} sizes={SIZES_CARD} alt={alt} width={i.width || undefined} height={i.height || undefined} loading="lazy" decoding="async" />;
+};
+
 export const AveCard: React.FC<{ ave: Ave; onVerPedido?: () => void }> = ({ ave, onVerPedido }) => {
   const { quantidadeDe, adicionar, alterar } = useCart();
   const q = quantidadeDe(ave.id);
@@ -35,7 +42,7 @@ export const AveCard: React.FC<{ ave: Ave; onVerPedido?: () => void }> = ({ ave,
         {/* Foto e nome levam à ficha da espécie. O Google segue o href; o botão de
             adicionar ao pedido fica fora do link, para não virar clique dentro de link. */}
         <a href={ficha} aria-label={`Ficha de ${ave.nome}`} tabIndex={-1}>
-          {ave.foto ? <img src={ave.foto} alt={ave.nome} loading="lazy" /> : <Moldura ave={ave} />}
+          {ave.foto ? <FotoDoCard foto={ave.foto} alt={ave.nome} /> : <Moldura ave={ave} />}
         </a>
         <div className="absolute top-3 left-3 flex gap-1.5 flex-wrap">
           {ave.preco_de && <span className="chip chip-promo">Promoção</span>}

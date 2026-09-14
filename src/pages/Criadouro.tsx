@@ -7,6 +7,7 @@ import { CRIADORES, CONSTANTS } from '../data/catalogo';
 import { TOTAL_VARIEDADES } from '../data/aves';
 import { MARCA_ATUAL } from '../marcas';
 import { waComOrigem } from '../lib/links';
+import { imagem, sizesPorAltura } from '../lib/imagens';
 
 export const Criadouro: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNavigate }) => {
   const c = CRIADORES.find((x) => (MARCA_ATUAL.criadores as string[]).includes(x.id)) ?? CRIADORES[0];
@@ -27,7 +28,7 @@ export const Criadouro: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ on
         <div className="wrap grid grid-cols-1 md:grid-cols-[0.9fr_1.1fr] gap-8 items-start">
           <div className="card p-7 text-center">
             <div className="h-40 mb-5 flex items-center justify-center rounded-xl bg-white border border-[var(--line)] px-5 py-3 overflow-hidden">
-              <img src={c.logo} alt={`Logotipo ${c.nome}`} className="max-h-full max-w-full w-auto h-auto object-contain" style={c.logoEscala ? { transform: `scale(${c.logoEscala})` } : undefined} />
+              <img {...imagem(c.logo)} sizes={sizesPorAltura(c.logo, 136)} alt={`Logotipo ${c.nome}`} className="max-h-full max-w-full w-auto h-auto object-contain" style={c.logoEscala ? { transform: `scale(${c.logoEscala})` } : undefined} />
             </div>
             <p className="font-sans text-[0.78rem] text-[var(--muted)] mt-1 mb-1 flex items-center justify-center gap-1.5"><MapPin className="w-3.5 h-3.5 text-[var(--ouro2)]" /> {c.cidade}</p>
             <p className="font-sans text-[0.78rem] text-[var(--muted)] mt-0 mb-4 flex items-center justify-center gap-1.5"><Stethoscope className="w-3.5 h-3.5 text-[var(--ouro2)]" /> <span><b className="text-[var(--verde)] font-semibold">{m.responsavel}</b> · {m.credencial}</span></p>

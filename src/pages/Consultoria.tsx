@@ -3,6 +3,7 @@ import { Instagram, UserRound, Sprout, ArrowRight, MessageCircle } from 'lucide-
 import { PageRoute } from '../types';
 import { CONSULTORES, CONSTANTS } from '../data/catalogo';
 import { waComOrigem } from '../lib/links';
+import { imagem, sizesPorAltura } from '../lib/imagens';
 
 export const Consultoria: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNavigate }) => (
   <>
@@ -25,7 +26,8 @@ export const Consultoria: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ 
           <div key={c.id} className="card p-7 flex flex-col text-center h-full">
             <div className="h-44 mb-5 flex items-center justify-center rounded-xl bg-white border border-[var(--line)] px-5 py-3 overflow-hidden">
               <img
-                src={c.logo}
+                {...imagem(c.logo)}
+                sizes={sizesPorAltura(c.logo, 152)}
                 alt={`Logotipo ${c.nome}`}
                 className="max-h-full max-w-full w-auto h-auto object-contain"
                 style={c.logoEscala ? { transform: `scale(${c.logoEscala})` } : undefined}

@@ -2,6 +2,7 @@ import React from 'react';
 import { MapPin, Feather, UserRound } from 'lucide-react';
 import { PageRoute } from '../types';
 import { CRIADORES, CONSTANTS } from '../data/catalogo';
+import { imagem, sizesPorAltura } from '../lib/imagens';
 
 export const Criadores: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNavigate }) => {
   return (
@@ -25,7 +26,7 @@ export const Criadores: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ on
                 </div>
                 <div className="h-36 mb-5 flex items-center justify-center rounded-xl bg-white border border-[var(--line)] px-5 py-3 overflow-hidden">
                   {c.logo
-                    ? <img src={c.logo} alt={`Logotipo ${c.nome}`} className="max-h-full max-w-full w-auto h-auto object-contain" style={c.logoEscala ? { transform: `scale(${c.logoEscala})` } : undefined} loading="lazy" />
+                    ? <img {...imagem(c.logo)} sizes={sizesPorAltura(c.logo, 120)} alt={`Logotipo ${c.nome}`} className="max-h-full max-w-full w-auto h-auto object-contain" style={c.logoEscala ? { transform: `scale(${c.logoEscala})` } : undefined} loading="lazy" />
                     : <span className="font-sans text-[0.7rem] uppercase tracking-[1.5px] text-[var(--muted-2)] font-bold border border-dashed border-[var(--claro-2)] rounded-lg px-3 py-2">Logotipo em breve</span>}
                 </div>
                 <h2 className="text-[1.6rem] text-[var(--verde)] m-0">{c.nome}</h2>

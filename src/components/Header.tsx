@@ -5,6 +5,7 @@ import { CAMINHOS, waComOrigem } from '../lib/links';
 import { useCart } from '../cart/CartContext';
 import { brl, CONSTANTS } from '../data/catalogo';
 import { EH_REDE, MARCA_ATUAL } from '../marcas';
+import { imagem, sizesPorAltura } from '../lib/imagens';
 
 interface Props {
   currentPage: PageRoute;
@@ -84,8 +85,8 @@ export const Header: React.FC<Props> = ({ currentPage, onNavigate }) => {
             className="flex items-center"
           >
             {EH_REDE
-              ? <img src={MARCA_ATUAL.logoHorizontal} alt={CONSTANTS.MARCA} className="h-[44px] sm:h-[52px] w-auto" />
-              : <span className="flex items-center gap-2.5"><span className="bg-white rounded-md px-1.5 py-1 flex items-center"><img src={MARCA_ATUAL.logoHorizontal} alt="" className="h-[36px] sm:h-[42px] w-auto" /></span><span className="font-serif text-[1.15rem] sm:text-[1.3rem] font-semibold text-[var(--marfim)] leading-none">{CONSTANTS.MARCA}</span></span>}
+              ? <img {...imagem(MARCA_ATUAL.logoHorizontal)} sizes={sizesPorAltura(MARCA_ATUAL.logoHorizontal, 44, 52)} alt={CONSTANTS.MARCA} className="h-[44px] sm:h-[52px] w-auto" />
+              : <span className="flex items-center gap-2.5"><span className="bg-white rounded-md px-1.5 py-1 flex items-center"><img {...imagem(MARCA_ATUAL.logoHorizontal)} sizes={sizesPorAltura(MARCA_ATUAL.logoHorizontal, 36, 42)} alt="" className="h-[36px] sm:h-[42px] w-auto" /></span><span className="font-serif text-[1.15rem] sm:text-[1.3rem] font-semibold text-[var(--marfim)] leading-none">{CONSTANTS.MARCA}</span></span>}
           </a>
 
           <nav className="hidden lg:flex items-center gap-5 whitespace-nowrap" aria-label="Navegação principal">

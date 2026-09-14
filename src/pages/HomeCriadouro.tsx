@@ -13,6 +13,7 @@ import { CATEGORIAS, ROTAS, proximaSaida, dataCurta, brl } from '../data/catalog
 import { MARCA_ATUAL } from '../marcas';
 import { AveCard } from '../components/AveCard';
 import { CAMINHOS } from '../lib/links';
+import { imagem } from '../lib/imagens';
 
 /** Cara, barata, cara, barata — quatro cards com foto, alternando as pontas. */
 function vitrineAlternada(): typeof AVES {
@@ -59,7 +60,7 @@ export const HomeCriadouro: React.FC<{ onNavigate: (p: PageRoute, extra?: string
           </div>
           <div className="hidden lg:flex justify-center items-center">
             <div className="rounded-2xl bg-white/95 p-8 w-[380px] max-w-full flex items-center justify-center">
-              <img src={m.logoSelo} alt="" className="w-full h-auto" />
+              <img {...imagem(m.logoSelo)} sizes="316px" alt="" className="w-full h-auto" />
             </div>
           </div>
         </div>

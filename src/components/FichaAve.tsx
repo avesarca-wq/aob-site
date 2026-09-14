@@ -5,6 +5,7 @@ import { PaginaAve } from '../seo';
 import { CRIADOR_ROTULO, CONSTANTS, brl } from '../data/catalogo';
 import { EH_REDE, MARCA_ATUAL } from '../marcas';
 import { waSobConsulta } from '../lib/links';
+import { imagem, SIZES_FICHA } from '../lib/imagens';
 import { Moldura } from './AveCard';
 
 /**
@@ -36,7 +37,15 @@ export const FichaAve: React.FC<{ ficha: PaginaAve; lotes: Ave[]; onVoltar: () =
           <div className="ficha-foto">
             {comFoto?.foto ? (
               <>
-                <img src={comFoto.foto} alt={ficha.nome} width={1200} height={900} fetchPriority="high" />
+                {/* É a maior imagem da ficha e quase sempre o LCP: sem lazy e com
+                    prioridade alta, mas no tamanho da coluna, não nos 1200 px. */}
+                <img
+                  {...imagem(comFoto.foto)}
+                  sizes={SIZES_FICHA}
+                  alt={ficha.nome}
+                  fetchPriority="high"
+                  decoding="async"
+                />
                 {comFoto.foto_credito && <span className="foto-credito">{comFoto.foto_credito}</span>}
               </>
             ) : (

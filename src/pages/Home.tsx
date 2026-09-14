@@ -5,6 +5,7 @@ import { AVES, TOTAL_AVES, TOTAL_LOTES, LISTA_DATA } from '../data/aves';
 import { CATEGORIAS, CRIADORES, ROTAS, CONSTANTS, proximaSaida, dataCurta, brl } from '../data/catalogo';
 import { AveCard } from '../components/AveCard';
 import { CAMINHOS } from '../lib/links';
+import { imagem } from '../lib/imagens';
 
 export const Home: React.FC<{ onNavigate: (p: PageRoute, extra?: string) => void }> = ({ onNavigate }) => {
   const destaques = AVES.filter((a) => a.foto).sort((a, b) => b.preco - a.preco).slice(0, 6);
@@ -35,7 +36,7 @@ export const Home: React.FC<{ onNavigate: (p: PageRoute, extra?: string) => void
             </div>
           </div>
           <div className="hidden lg:flex justify-start items-center">
-            <img src="/logo-selo.png" alt="" className="w-[460px] max-w-full" />
+            <img {...imagem('/logo-selo.png')} sizes="min(460px, 100vw - 44px)" alt="" className="w-[460px] max-w-full" fetchPriority="high" />
           </div>
         </div>
         <div className="border-t border-[var(--verde-claro)]">

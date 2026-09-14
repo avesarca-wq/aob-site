@@ -4,6 +4,7 @@ import { PageRoute } from '../types';
 import { CAMINHOS, waComOrigem } from '../lib/links';
 import { CONSTANTS } from '../data/catalogo';
 import { EH_REDE, MARCA_ATUAL } from '../marcas';
+import { imagem, sizesPorAltura } from '../lib/imagens';
 
 export const Footer: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNavigate }) => {
   const L = ({ route, label }: { route: PageRoute; label: string }) => (
@@ -24,8 +25,8 @@ export const Footer: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           <div>
             {EH_REDE
-              ? <img src={MARCA_ATUAL.logoSelo} alt={CONSTANTS.MARCA} className="h-[110px] w-auto mb-3" />
-              : <div className="inline-block bg-white rounded-lg p-3 mb-3"><img src={MARCA_ATUAL.logoSelo} alt={CONSTANTS.MARCA} className="h-[64px] w-auto" /></div>}
+              ? <img {...imagem(MARCA_ATUAL.logoSelo)} sizes={sizesPorAltura(MARCA_ATUAL.logoSelo, 110)} alt={CONSTANTS.MARCA} className="h-[110px] w-auto mb-3" loading="lazy" />
+              : <div className="inline-block bg-white rounded-lg p-3 mb-3"><img {...imagem(MARCA_ATUAL.logoSelo)} sizes={sizesPorAltura(MARCA_ATUAL.logoSelo, 64)} alt={CONSTANTS.MARCA} className="h-[64px] w-auto" loading="lazy" /></div>}
             <p className="font-serif italic text-[var(--claro-2)] text-[0.98rem] m-0 max-w-[36ch]">
               {EH_REDE ? 'Aves à pronta entrega, de criadouros parceiros, com rota de entrega organizada a partir de São Paulo.' : MARCA_ATUAL.frase}
             </p>

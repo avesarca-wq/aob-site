@@ -100,6 +100,7 @@ async function main() {
   // Rotas que esta marca não linka no menu ficam fora do sitemap (existem, mas não são convite).
   const foraDoSitemap = new Set(['pedido', 'privacidade', EH_REDE ? 'sanidade' : 'consultoria']);
   const { CAMINHOS } = await carregarCaminhos();
+  const { imagem, SIZES_FICHA } = await carregarImagens();
   const base = await readFile(join(DIST, 'index.html'), 'utf8');
 
   let gravadas = 0;
@@ -162,11 +163,21 @@ async function main() {
     }
     if (TEMA) html = trocarTag(html, /<meta name="theme-color"[^>]*>/, `<meta name="theme-color" content="${TEMA}" />`);
     html = comFavicon(html);
+    // A foto da ficha é o LCP. Sem isto o navegador só a descobre quando o React
+    // monta; o preload deixa o download começar junto com o do JavaScript, e com
+    // o mesmo srcset/sizes do site, para vir a variante do tamanho da tela.
+    const foto = p.imagem ? imagem(p.imagem.replace(SITE, '')) : null;
+    if (foto) {
+      html = html.replace(
+        '</head>',
+        `  <link rel="preload" as="image" href="${foto.src}" imagesrcset="${foto.srcSet}" imagesizes="${SIZES_FICHA}" fetchpriority="high" />\n  </head>`,
+      );
+    }
     html = html.replace('</head>', `  <script type="application/ld+json">${JSON.stringify(jsonldAve(p))}</script>\n  </head>`);
     const corpo = `<div id="conteudo-sem-js">
       <h1>${esc(p.nome)}</h1>
       <p><em>${esc(p.cientifico)}</em> · ${esc(p.grupo)} · ${p.preco === null ? 'sob consulta' : 'a partir de R$ ' + p.preco.toLocaleString('pt-BR')}</p>
-      ${p.imagem ? `<img src="${p.imagem}" alt="${esc(p.nome)}" width="1200" height="900" />` : ''}
+      ${foto ? `<img src="${foto.src}" srcset="${foto.srcSet}" sizes="${SIZES_FICHA}" alt="${esc(p.nome)}" width="${foto.width}" height="${foto.height}" fetchpriority="high" />` : ''}
       <p>${esc(p.resumo || p.descricao)}</p>
       <nav><a href="${CAMINHOS.aves}">Ver todas as aves</a> · <a href="${CAMINHOS.home}">${esc(MARCA)}</a></nav>
     </div>`;
@@ -233,6 +244,20 @@ async function arquivosDaMarca({ inexistentes, CAMINHOS }) {
   if (MARCA_ID !== 'stima') lixo.push('aves-stima');
   for (const l of lixo) await rm(join(DIST, l), { recursive: true, force: true });
   for (const m of ['aob', 'stima', 'alianca']) if (m !== MARCA_ID) await rm(join(DIST, 'marca', m), { recursive: true, force: true });
+}
+
+/** srcset e sizes moram em src/lib/imagens.ts; mesma transpilação do seo.ts. */
+async function carregarImagens() {
+  const saida = join(TMP, 'imagens.mjs');
+  await build({
+    entryPoints: [join(RAIZ, 'src/lib/imagens.ts')],
+    bundle: true,
+    format: 'esm',
+    platform: 'node',
+    outfile: saida,
+    logLevel: 'silent',
+  });
+  return import(`file://${saida}`);
 }
 
 /** CAMINHOS mora em src/lib/links.ts; mesma transpilação do seo.ts. */
