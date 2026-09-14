@@ -46,7 +46,7 @@ export const HomeCriadouro: React.FC<{ onNavigate: (p: PageRoute, extra?: string
             <div className="eyebrow">{m.cidade} · criação própria</div>
             <h1 className="font-serif text-[2.3rem] sm:text-[3.1rem] leading-[1.08] m-0 text-[var(--marfim)]">{m.frase}</h1>
             <p className="font-serif text-[1.15rem] text-[var(--claro-2)] mt-5 mb-8 max-w-[54ch]">
-              Pavões para o gramado, aquáticas para o lago, faisões e turacos para o viveiro, peru e angola para o terreiro. {TOTAL_VARIEDADES} variedades criadas no mesmo plantel, sob responsabilidade técnica de médico veterinário — e entregues na rota, com pagamento só quando a ave chega na sua mão.
+              Pavões para o gramado, aquáticas para o lago, faisões e turacos para o viveiro, peru e angola para o quintal. {TOTAL_VARIEDADES} variedades criadas no mesmo plantel, sob responsabilidade técnica de médico veterinário — e entregues na rota, com pagamento só quando a ave chega na sua mão.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
               <a href={CAMINHOS.aves} onClick={(e) => { e.preventDefault(); onNavigate('aves'); }} className="btn btn-ouro">

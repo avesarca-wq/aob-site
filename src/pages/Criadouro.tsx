@@ -38,7 +38,7 @@ export const Criadouro: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ on
             <div className="eyebrow">A criação</div>
             <h2 className="text-[1.6rem] text-[var(--verde)] m-0 mb-3">Um pouco de tudo — e é essa a ideia.</h2>
             <p lang="pt-BR" className="font-serif text-[1.02rem] text-[var(--ink)] m-0 mb-4 text-justify hyphens-auto">
-              Pavões, faisões, perdizes, pombas, psitacídeos, turacos, aquáticas e aves de terreiro no mesmo plantel. Não é dispersão: é a única criação da rede que consegue montar um espaço inteiro — o lago, o gramado, o viveiro e o terreiro — com aves que nasceram no mesmo lugar, sob o mesmo manejo, e que chegam na mesma rota.
+              Pavões, faisões, perdizes, pombas, psitacídeos, turacos, aquáticas e aves de quintal no mesmo plantel. Não é dispersão: é a única criação da rede que consegue montar um espaço inteiro — o lago, o gramado, o viveiro e o quintal — com aves que nasceram no mesmo lugar, sob o mesmo manejo, e que chegam na mesma rota.
             </p>
             <p lang="pt-BR" className="font-serif text-[1.02rem] text-[var(--ink)] m-0 mb-4 text-justify hyphens-auto">
               {c.descricao}
