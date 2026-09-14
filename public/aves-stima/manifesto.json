@@ -1,7 +1,7 @@
 {
  "marca": "stima",
  "atualizado": "2026-09-14",
- "nota": "Fotos ilustrativas da espécie (Wikimedia Commons). Trocar pelas fotos do plantel do Waldir assim que existirem.",
+ "nota": "Fotos ilustrativas da espécie (Wikimedia Commons), com crédito na ficha. As variedades cujo crédito é \"Foto: Aves Arca\" saíram desta lista: a foto é do plantel, não de acervo livre.",
  "aves": [
   {
    "id": "pavao-azul",
@@ -254,66 +254,6 @@
    "status": "ok"
   },
   {
-   "id": "pato-mandarim",
-   "busca": "Aix galericulata male",
-   "preco": 1200,
-   "foto": "/aves-stima/pato-mandarim.webp",
-   "licenca": "CC BY 4.0",
-   "autor": "Alexis Lours",
-   "arquivo": "File:Mandarin duck (Aix galericulata).jpg",
-   "status": "ok"
-  },
-  {
-   "id": "pato-carolina",
-   "busca": "Aix sponsa male",
-   "preco": 1500,
-   "foto": null,
-   "licenca": null,
-   "autor": null,
-   "arquivo": null,
-   "status": "sem foto"
-  },
-  {
-   "id": "marreco-cool-mosaico",
-   "busca": "domestic mallard duck pied",
-   "preco": 400,
-   "foto": null,
-   "licenca": null,
-   "autor": null,
-   "arquivo": null,
-   "status": "sem foto"
-  },
-  {
-   "id": "marreco-cool-arlequim",
-   "busca": "harlequin domestic duck",
-   "preco": 400,
-   "foto": null,
-   "licenca": null,
-   "autor": null,
-   "arquivo": null,
-   "status": "sem foto"
-  },
-  {
-   "id": "marreco-cool-gray",
-   "busca": "grey domestic mallard duck",
-   "preco": 350,
-   "foto": "/aves-stima/marreco-cool-gray.webp",
-   "licenca": "CC BY 2.0",
-   "autor": "shankar s. from Dubai, united arab emirates",
-   "arquivo": "File:Mallard duck (8455369508).jpg",
-   "status": "ok"
-  },
-  {
-   "id": "marreco-cool-branco",
-   "busca": "white domestic duck Anas platyrhynchos",
-   "preco": 450,
-   "foto": null,
-   "licenca": null,
-   "autor": null,
-   "arquivo": null,
-   "status": "refazer"
-  },
-  {
    "id": "marreco-cayuga",
    "busca": "Cayuga duck black",
    "preco": 350,
@@ -334,16 +274,6 @@
    "status": "refazer"
   },
   {
-   "id": "marreco-spotbill",
-   "busca": "Anas poecilorhyncha",
-   "preco": 500,
-   "foto": null,
-   "licenca": null,
-   "autor": null,
-   "arquivo": null,
-   "status": "sem foto"
-  },
-  {
    "id": "cisne-negro",
    "busca": "Cygnus atratus",
    "preco": null,
@@ -352,56 +282,6 @@
    "autor": "Francis C. Franklin",
    "arquivo": "File:Black Swan at Martin Mere.JPG",
    "status": "ok"
-  },
-  {
-   "id": "tadorna-ferruginea",
-   "busca": "Tadorna ferruginea",
-   "preco": null,
-   "foto": "/aves-stima/tadorna-ferruginea.webp",
-   "licenca": "CC BY 3.0",
-   "autor": "Michael Gäbler",
-   "arquivo": "File:A couple of Tadorna ferruginea.jpg",
-   "status": "ok"
-  },
-  {
-   "id": "tadorna-radjah",
-   "busca": "Radjah radjah duck",
-   "preco": 4000,
-   "foto": "/aves-stima/tadorna-radjah.webp",
-   "licenca": "CC BY-SA 4.0",
-   "autor": "Gzen92",
-   "arquivo": "File:Tadorne radjah (Radjah radjah).jpg",
-   "status": "ok"
-  },
-  {
-   "id": "tadorna-tricolor",
-   "busca": "Tadorna tadorna",
-   "preco": 5500,
-   "foto": null,
-   "licenca": null,
-   "autor": null,
-   "arquivo": null,
-   "status": "refazer"
-  },
-  {
-   "id": "ganso-do-egito",
-   "busca": "Alopochen aegyptiaca",
-   "preco": 900,
-   "foto": null,
-   "licenca": null,
-   "autor": null,
-   "arquivo": null,
-   "status": "refazer"
-  },
-  {
-   "id": "ganso-do-egito-branco",
-   "busca": "white Alopochen aegyptiaca",
-   "preco": 1500,
-   "foto": null,
-   "licenca": null,
-   "autor": null,
-   "arquivo": null,
-   "status": "refazer"
   },
   {
    "id": "ganso-sinaleiro-buff",
@@ -442,16 +322,6 @@
    "autor": "Karrackoo",
    "arquivo": "File:Canadagoose.jpg",
    "status": "ok"
-  },
-  {
-   "id": "ganso-do-havai",
-   "busca": "Branta sandvicensis nene",
-   "preco": 7000,
-   "foto": null,
-   "licenca": null,
-   "autor": null,
-   "arquivo": null,
-   "status": "sem foto"
   },
   {
    "id": "turaco-persa",

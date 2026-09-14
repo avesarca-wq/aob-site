@@ -18,6 +18,7 @@ export const VARIANTES: Record<string, Variante> = {
   '/aves-stima/ganso-canadense.webp': { w: 1200, h: 900, degraus: [480, 800] },
   '/aves-stima/loris-molucano.webp': { w: 1200, h: 900, degraus: [480, 800] },
   '/aves-stima/marreco-cool-gray.webp': { w: 1200, h: 900, degraus: [480, 800] },
+  '/aves-stima/pato-carolina.webp': { w: 1200, h: 900, degraus: [480, 800] },
   '/aves-stima/pato-mandarim.webp': { w: 1200, h: 900, degraus: [480, 800] },
   '/aves-stima/pavao-arlequim.webp': { w: 1200, h: 900, degraus: [480, 800] },
   '/aves-stima/pavao-azul.webp': { w: 1200, h: 900, degraus: [480, 800] },
