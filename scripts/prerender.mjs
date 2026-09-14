@@ -205,6 +205,8 @@ async function main() {
   await writeFile(join(DIST, 'robots.txt'), `User-agent: *\nAllow: /\nDisallow: /pedido\nSitemap: ${SITE}/sitemap.xml\n`, 'utf8');
 
   const { AVES } = await carregarAves();
+  await cabecalhosDaMarca();
+
   await arquivosDaMarca({ inexistentes, CAMINHOS, fotosUsadas: new Set(AVES.map((a) => a.foto).filter(Boolean)) });
 
   await rm(TMP, { recursive: true, force: true });
@@ -235,6 +237,35 @@ const FACES_DO_PRIMEIRO_RENDER = {
  * só quando o React monta — até lá a página pintava com a paleta e as fontes do
  * AOB. Na Stima isso chegava a baixar a EB Garamond, que ela não usa.
  */
+/**
+ * dist/_headers com a CSP desta marca.
+ *
+ * Mora aqui, e não no netlify.toml, porque muda por marca: o Meta Pixel só roda
+ * no AOB (src/main.tsx), então os hosts do Facebook não têm por que estar
+ * liberados no stimaaves.com.br. O netlify.toml é um só para os três sites, e
+ * regra repetida nos dois lugares faz a dele vencer — por isso a CSP saiu de lá.
+ *
+ * O Umami precisa de duas liberações: script-src para carregar o script e
+ * connect-src para o beacon de cada evento, que sai para gateway.umami.is.
+ */
+async function cabecalhosDaMarca() {
+  const facebook = MARCA_ID === 'aob';
+  const csp = [
+    "default-src 'self'",
+    "base-uri 'self'",
+    "object-src 'none'",
+    "frame-ancestors 'self'",
+    "form-action 'self'",
+    `script-src 'self'${facebook ? ' https://connect.facebook.net' : ''} https://cloud.umami.is`,
+    "style-src 'self' 'unsafe-inline'",
+    "font-src 'self' data:",
+    `img-src 'self' data: blob:${facebook ? ' https://www.facebook.com' : ''}`,
+    `connect-src 'self'${facebook ? ' https://www.facebook.com https://connect.facebook.net' : ''} https://cloud.umami.is https://gateway.umami.is`,
+    'upgrade-insecure-requests',
+  ].join('; ');
+  await writeFile(join(DIST, '_headers'), `/*\n  Content-Security-Policy: ${csp}\n`, 'utf8');
+}
+
 const comMarca = (html) => html.replace('<html lang="pt-BR">', `<html lang="pt-BR" data-marca="${MARCA_ID}">`);
 
 /**

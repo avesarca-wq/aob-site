@@ -57,9 +57,13 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
     X-Frame-Options = "SAMEORIGIN"
-    # CSP: próprio site + fontes do Google + Meta Pixel (06/09) + Umami (07/09).
-    # O Umami precisa de duas liberações: script-src para carregar o script.js
-    # e connect-src para o beacon de cada evento, que sai para gateway.umami.is
-    # (e não para cloud.umami.is — verificado no site da Arca em 07/09).
-    # Já liberado para quando o Umami do AOB for ligado.
-    Content-Security-Policy = "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self'; script-src 'self' https://connect.facebook.net https://cloud.umami.is; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: blob: https://www.facebook.com; connect-src 'self' https://www.facebook.com https://connect.facebook.net https://cloud.umami.is https://gateway.umami.is; upgrade-insecure-requests"
+    # HSTS com preload: um ano, subdomínios inclusive. Só faz sentido porque os
+    # dois domínios servem tudo por HTTPS e não há subdomínio em HTTP.
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+    # O site não usa câmera, microfone nem localização; negar é explicitar isso
+    # para o navegador e para quem audita.
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    # A CSP NÃO mora aqui: ela muda por marca (só o AOB usa o Meta Pixel) e este
+    # arquivo é um só para os três sites. Quem a escreve é scripts/prerender.mjs,
+    # em dist/_headers, com os hosts de cada marca. Regra repetida nos dois
+    # lugares faz a do netlify.toml vencer, então aqui não pode haver nenhuma.
