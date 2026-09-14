@@ -48,6 +48,7 @@ export const ROTULOS = {
   total_referencia: 'Total',
   origem: 'Origem',
   pagina_entrada: 'Página',
+  site: 'Site',
   // Fica por último de propósito: é registro de máquina, não linha de leitura.
   pedido_json: 'Itens JSON',
 } as const;
@@ -62,7 +63,7 @@ export const ORDEM: ChavePedido[] = [
   'codigo', 'nome', 'whatsapp', 'cidade_uf', 'regiao',
   'rota', 'rota_escolhida', 'proxima_saida', 'frete_zona', 'frete_valor',
   'recebimento', 'observacoes', 'pedido_resumo', 'total_referencia',
-  'origem', 'pagina_entrada', 'pedido_json',
+  'origem', 'pagina_entrada', 'site', 'pedido_json',
 ];
 
 /**
