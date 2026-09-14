@@ -1,0 +1,517 @@
+{
+ "marca": "stima",
+ "atualizado": "2026-09-14",
+ "nota": "Fotos ilustrativas da espécie (Wikimedia Commons). Trocar pelas fotos do plantel do Waldir assim que existirem.",
+ "aves": [
+  {
+   "id": "pavao-azul",
+   "busca": "Pavo cristatus male displaying",
+   "preco": 800,
+   "foto": "/aves-stima/pavao-azul.webp",
+   "licenca": "CC BY-SA 2.5",
+   "autor": "This picture was realized by Richard Bartz by using a Canon ",
+   "arquivo": "File:Pavo cristatus Phasianidae.jpg",
+   "status": "ok"
+  },
+  {
+   "id": "pavao-branco",
+   "busca": "white peafowl Pavo cristatus",
+   "preco": 1200,
+   "foto": "/aves-stima/pavao-branco.webp",
+   "licenca": "CC0",
+   "autor": "Bj.schoenmakers",
+   "arquivo": "File:Pavo cristatus mut. alba (White Peafowl), Limonas Monastery, Kalloni, Lesbos, Greece.jpg",
+   "status": "ok"
+  },
+  {
+   "id": "pavao-arlequim",
+   "busca": "pied peafowl Pavo cristatus",
+   "preco": 1200,
+   "foto": "/aves-stima/pavao-arlequim.webp",
+   "licenca": "CC0",
+   "autor": "Bethlea Bell",
+   "arquivo": "File:Pavo cristatus 446365579.jpg",
+   "status": "ok"
+  },
+  {
+   "id": "pavao-ombros-negros",
+   "busca": "black-shouldered peafowl nigripennis",
+   "preco": null,
+   "foto": null,
+   "licenca": null,
+   "autor": null,
+   "arquivo": null,
+   "status": "sem foto"
+  },
+  {
+   "id": "pavao-purple",
+   "busca": "purple peafowl mutation",
+   "preco": 4500,
+   "foto": null,
+   "licenca": null,
+   "autor": null,
+   "arquivo": null,
+   "status": "sem foto"
+  },
+  {
+   "id": "faisao-lady-amherst",
+   "busca": "Chrysolophus amherstiae male",
+   "preco": 400,
+   "foto": "/aves-stima/faisao-lady-amherst.webp",
+   "licenca": "CC BY 2.0",
+   "autor": "Reg Mckenna from New Malden, UK",
+   "arquivo": "File:Chrysolophus amherstiae -captive -male-8a.jpg",
+   "status": "ok"
+  },
+  {
+   "id": "faisao-canario",
+   "busca": "Chrysolophus pictus yellow mutation",
+   "preco": 800,
+   "foto": null,
+   "licenca": null,
+   "autor": null,
+   "arquivo": null,
+   "status": "sem foto"
+  },
+  {
+   "id": "faisao-dourado",
+   "busca": "Chrysolophus pictus male",
+   "preco": 800,
+   "foto": "/aves-stima/faisao-dourado.webp",
+   "licenca": "CC BY-SA 4.0",
+   "autor": "Shahzaib Damn Cruze",
+   "arquivo": "File:Chrysolophus pictus (male), Lahore Zoo - 06.jpg",
+   "status": "ok"
+  },
+  {
+   "id": "faisao-prata",
+   "busca": "Lophura nycthemera male",
+   "preco": 800,
+   "foto": "/aves-stima/faisao-prata.webp",
+   "licenca": "CC BY 2.0",
+   "autor": "MZPlus",
+   "arquivo": "File:Lophura nycthemera -Mauritius -male-8a.jpg",
+   "status": "ok"
+  },
+  {
+   "id": "faisao-venerado",
+   "busca": "Syrmaticus reevesii male",
+   "preco": null,
+   "foto": "/aves-stima/faisao-venerado.webp",
+   "licenca": "CC BY-SA 2.0",
+   "autor": "Ernst Vikne",
+   "arquivo": "File:Syrmaticus reevesii -Norway -captive-8.jpg",
+   "status": "ok"
+  },
+  {
+   "id": "faisao-swinhoe",
+   "busca": "Lophura swinhoii male",
+   "preco": 1500,
+   "foto": "/aves-stima/faisao-swinhoe.webp",
+   "licenca": "CC BY-SA 2.0",
+   "autor": "Charles Lam from Hong Kong, China",
+   "arquivo": "File:Lophura swinhoii, male, Daxueshan, Taichung, Taiwan (12576304895).jpg",
+   "status": "ok"
+  },
+  {
+   "id": "faisao-prelado",
+   "busca": "Lophura diardi male",
+   "preco": 3800,
+   "foto": "/aves-stima/faisao-prelado.webp",
+   "licenca": "CC BY 2.0",
+   "autor": "cuatrok77 hernandez",
+   "arquivo": "File:Lophura diardi -Florida, USA -captive-8a (2).jpg",
+   "status": "ok"
+  },
+  {
+   "id": "galo-sonnerat",
+   "busca": "Gallus sonneratii male",
+   "preco": null,
+   "foto": "/aves-stima/galo-sonnerat.webp",
+   "licenca": "CC BY-SA 4.0",
+   "autor": "Dr. Raju Kasambe",
+   "arquivo": "File:Grey Junglefowl Gallus sonneratii male by Dr. Raju Kasambe DSCN0012 (1).jpg",
+   "status": "ok"
+  },
+  {
+   "id": "perdiz-chukar",
+   "busca": "Alectoris chukar bird",
+   "preco": null,
+   "foto": "/aves-stima/perdiz-chukar.webp",
+   "licenca": "CC0",
+   "autor": "a-mccarty",
+   "arquivo": "File:Alectoris chukar 127503047.jpg",
+   "status": "ok"
+  },
+  {
+   "id": "codorna-escamada",
+   "busca": "Callipepla squamata bird",
+   "preco": null,
+   "foto": "/aves-stima/codorna-escamada.webp",
+   "licenca": "CC BY-SA",
+   "autor": "Wikimedia Commons",
+   "arquivo": "Callipepla squamata",
+   "status": "ok"
+  },
+  {
+   "id": "codorna-california",
+   "busca": "California quail Callipepla californica male",
+   "preco": 1500,
+   "foto": "/aves-stima/codorna-california.webp",
+   "licenca": "CC0",
+   "autor": "Biveti46",
+   "arquivo": "File:California Quail in Forest.jpg",
+   "status": "ok"
+  },
+  {
+   "id": "ring-neck",
+   "busca": "Psittacula krameri mutation",
+   "preco": 3500,
+   "foto": "/aves-stima/ring-neck.webp",
+   "licenca": "CC0",
+   "autor": "Bernard Spragg. NZ from Christchurch, New Zealand",
+   "arquivo": "File:Indian Ringnecked Parrot. (Psittacula krameri) (9107400482).jpg",
+   "status": "ok"
+  },
+  {
+   "id": "rosela",
+   "busca": "Platycercus eximius",
+   "preco": null,
+   "foto": "/aves-stima/rosela.webp",
+   "licenca": "CC BY-SA 3.0",
+   "autor": "JJ Harrison (https://www.jjharrison.com.au/)",
+   "arquivo": "File:Platycercus eximius diemenensis male.jpg",
+   "status": "ok"
+  },
+  {
+   "id": "neophema",
+   "busca": "Neophema splendida",
+   "preco": null,
+   "foto": null,
+   "licenca": null,
+   "autor": null,
+   "arquivo": null,
+   "status": "sem foto"
+  },
+  {
+   "id": "loris-molucano",
+   "busca": "Eos bornea lory",
+   "preco": 6000,
+   "foto": "/aves-stima/loris-molucano.webp",
+   "licenca": "CC BY 2.0",
+   "autor": "Andrew Kraker",
+   "arquivo": "File:Red Lory (Eos bornea)-6.jpg",
+   "status": "ok"
+  },
+  {
+   "id": "pomba-guine",
+   "busca": "Columba guinea",
+   "preco": 250,
+   "foto": "/aves-stima/pomba-guine.webp",
+   "licenca": "CC BY-SA 4.0",
+   "autor": "Krigore",
+   "arquivo": "File:Gołąb okularowy – Speckled pigeon – Columba guinea.jpg",
+   "status": "ok"
+  },
+  {
+   "id": "pomba-lofote",
+   "busca": "Ocyphaps lophotes",
+   "preco": 750,
+   "foto": "/aves-stima/pomba-lofote.webp",
+   "licenca": "CC BY-SA 3.0",
+   "autor": "Benjamint444",
+   "arquivo": "File:Crested pigeon442.jpg",
+   "status": "ok"
+  },
+  {
+   "id": "pomba-asa-verde",
+   "busca": "Chalcophaps indica",
+   "preco": 1500,
+   "foto": "/aves-stima/pomba-asa-verde.webp",
+   "licenca": "CC0",
+   "autor": "Wikimedia Commons",
+   "arquivo": "Common emerald dove",
+   "status": "ok"
+  },
+  {
+   "id": "rolinha-zebrinha",
+   "busca": "Geopelia striata",
+   "preco": null,
+   "foto": "/aves-stima/rolinha-zebrinha.webp",
+   "licenca": "CC BY-SA 4.0",
+   "autor": "NorbertNagel",
+   "arquivo": "File:Barred Ground Dove (Geopelia striata) - Mahe - Seychelles - 05.jpg",
+   "status": "ok"
+  },
+  {
+   "id": "pomba-senegal",
+   "busca": "Spilopelia senegalensis",
+   "preco": 800,
+   "foto": "/aves-stima/pomba-senegal.webp",
+   "licenca": "CC BY-SA 4.0",
+   "autor": "Giles Laurent",
+   "arquivo": "File:140 Laughing dove in Twyfelfontein Photo by Giles Laurent.jpg",
+   "status": "ok"
+  },
+  {
+   "id": "pato-mandarim",
+   "busca": "Aix galericulata male",
+   "preco": 1200,
+   "foto": "/aves-stima/pato-mandarim.webp",
+   "licenca": "CC BY 4.0",
+   "autor": "Alexis Lours",
+   "arquivo": "File:Mandarin duck (Aix galericulata).jpg",
+   "status": "ok"
+  },
+  {
+   "id": "pato-carolina",
+   "busca": "Aix sponsa male",
+   "preco": 1500,
+   "foto": null,
+   "licenca": null,
+   "autor": null,
+   "arquivo": null,
+   "status": "sem foto"
+  },
+  {
+   "id": "marreco-cool-mosaico",
+   "busca": "domestic mallard duck pied",
+   "preco": 400,
+   "foto": null,
+   "licenca": null,
+   "autor": null,
+   "arquivo": null,
+   "status": "sem foto"
+  },
+  {
+   "id": "marreco-cool-arlequim",
+   "busca": "harlequin domestic duck",
+   "preco": 400,
+   "foto": null,
+   "licenca": null,
+   "autor": null,
+   "arquivo": null,
+   "status": "sem foto"
+  },
+  {
+   "id": "marreco-cool-gray",
+   "busca": "grey domestic mallard duck",
+   "preco": 350,
+   "foto": "/aves-stima/marreco-cool-gray.webp",
+   "licenca": "CC BY 2.0",
+   "autor": "shankar s. from Dubai, united arab emirates",
+   "arquivo": "File:Mallard duck (8455369508).jpg",
+   "status": "ok"
+  },
+  {
+   "id": "marreco-cool-branco",
+   "busca": "white domestic duck Anas platyrhynchos",
+   "preco": 450,
+   "foto": null,
+   "licenca": null,
+   "autor": null,
+   "arquivo": null,
+   "status": "refazer"
+  },
+  {
+   "id": "marreco-cayuga",
+   "busca": "Cayuga duck black",
+   "preco": 350,
+   "foto": null,
+   "licenca": null,
+   "autor": null,
+   "arquivo": null,
+   "status": "refazer"
+  },
+  {
+   "id": "marreco-topetudo",
+   "busca": "crested duck domestic",
+   "preco": 350,
+   "foto": null,
+   "licenca": null,
+   "autor": null,
+   "arquivo": null,
+   "status": "refazer"
+  },
+  {
+   "id": "marreco-spotbill",
+   "busca": "Anas poecilorhyncha",
+   "preco": 500,
+   "foto": null,
+   "licenca": null,
+   "autor": null,
+   "arquivo": null,
+   "status": "sem foto"
+  },
+  {
+   "id": "cisne-negro",
+   "busca": "Cygnus atratus",
+   "preco": null,
+   "foto": "/aves-stima/cisne-negro.webp",
+   "licenca": "CC BY-SA 3.0",
+   "autor": "Francis C. Franklin",
+   "arquivo": "File:Black Swan at Martin Mere.JPG",
+   "status": "ok"
+  },
+  {
+   "id": "tadorna-ferruginea",
+   "busca": "Tadorna ferruginea",
+   "preco": null,
+   "foto": "/aves-stima/tadorna-ferruginea.webp",
+   "licenca": "CC BY 3.0",
+   "autor": "Michael Gäbler",
+   "arquivo": "File:A couple of Tadorna ferruginea.jpg",
+   "status": "ok"
+  },
+  {
+   "id": "tadorna-radjah",
+   "busca": "Radjah radjah duck",
+   "preco": 4000,
+   "foto": "/aves-stima/tadorna-radjah.webp",
+   "licenca": "CC BY-SA 4.0",
+   "autor": "Gzen92",
+   "arquivo": "File:Tadorne radjah (Radjah radjah).jpg",
+   "status": "ok"
+  },
+  {
+   "id": "tadorna-tricolor",
+   "busca": "Tadorna tadorna",
+   "preco": 5500,
+   "foto": null,
+   "licenca": null,
+   "autor": null,
+   "arquivo": null,
+   "status": "refazer"
+  },
+  {
+   "id": "ganso-do-egito",
+   "busca": "Alopochen aegyptiaca",
+   "preco": 900,
+   "foto": null,
+   "licenca": null,
+   "autor": null,
+   "arquivo": null,
+   "status": "refazer"
+  },
+  {
+   "id": "ganso-do-egito-branco",
+   "busca": "white Alopochen aegyptiaca",
+   "preco": 1500,
+   "foto": null,
+   "licenca": null,
+   "autor": null,
+   "arquivo": null,
+   "status": "refazer"
+  },
+  {
+   "id": "ganso-sinaleiro-buff",
+   "busca": "buff Chinese goose Anser cygnoides",
+   "preco": null,
+   "foto": null,
+   "licenca": null,
+   "autor": null,
+   "arquivo": null,
+   "status": "sem foto"
+  },
+  {
+   "id": "ganso-sinaleiro-splash",
+   "busca": "Chinese goose Anser cygnoides domestic",
+   "preco": null,
+   "foto": null,
+   "licenca": null,
+   "autor": null,
+   "arquivo": null,
+   "status": "refazer"
+  },
+  {
+   "id": "ganso-toulouse",
+   "busca": "Toulouse goose",
+   "preco": null,
+   "foto": null,
+   "licenca": null,
+   "autor": null,
+   "arquivo": null,
+   "status": "sem foto"
+  },
+  {
+   "id": "ganso-canadense",
+   "busca": "Branta canadensis",
+   "preco": null,
+   "foto": "/aves-stima/ganso-canadense.webp",
+   "licenca": "CC BY-SA 3.0",
+   "autor": "Karrackoo",
+   "arquivo": "File:Canadagoose.jpg",
+   "status": "ok"
+  },
+  {
+   "id": "ganso-do-havai",
+   "busca": "Branta sandvicensis nene",
+   "preco": 7000,
+   "foto": null,
+   "licenca": null,
+   "autor": null,
+   "arquivo": null,
+   "status": "sem foto"
+  },
+  {
+   "id": "turaco-persa",
+   "busca": "Tauraco persa",
+   "preco": 15000,
+   "foto": "/aves-stima/turaco-persa.webp",
+   "licenca": "CC BY 4.0",
+   "autor": "Daniel S. Katz",
+   "arquivo": "File:Tauraco persa 260567004.jpg",
+   "status": "ok"
+  },
+  {
+   "id": "turaco-violeta",
+   "busca": "Musophaga violacea",
+   "preco": 9000,
+   "foto": "/aves-stima/turaco-violeta.webp",
+   "licenca": "CC BY-SA 3.0",
+   "autor": "DickDaniels (http://theworldbirds.org/)",
+   "arquivo": "File:Violet Turaco RWD3.jpg",
+   "status": "ok"
+  },
+  {
+   "id": "turaco-orelha-branca",
+   "busca": "Tauraco leucotis",
+   "preco": 4000,
+   "foto": "/aves-stima/turaco-orelha-branca.webp",
+   "licenca": "CC BY-SA 3.0",
+   "autor": "Chrumps",
+   "arquivo": "File:Tauraco leucotis.jpg",
+   "status": "ok"
+  },
+  {
+   "id": "peru",
+   "busca": "Meleagris gallopavo domestic turkey",
+   "preco": null,
+   "foto": "/aves-stima/peru.webp",
+   "licenca": "CC BY-SA 4.0",
+   "autor": "Anil Öztas",
+   "arquivo": "File:Meleagris gallopavo domesticus, Neuss (DE) -- 2022 -- 0189.jpg",
+   "status": "ok"
+  },
+  {
+   "id": "galinha-dangola",
+   "busca": "Numida meleagris helmeted guineafowl",
+   "preco": null,
+   "foto": "/aves-stima/galinha-dangola.webp",
+   "licenca": "CC0",
+   "autor": "Hobbyfotowiki",
+   "arquivo": "File:Helmeted guineafowl (Numida meleagris), Kenya.jpg",
+   "status": "ok"
+  },
+  {
+   "id": "emu",
+   "busca": "Dromaius novaehollandiae",
+   "preco": null,
+   "foto": "/aves-stima/emu.webp",
+   "licenca": "CC0",
+   "autor": "Relativity",
+   "arquivo": "File:HeadofEmu.jpg",
+   "status": "ok"
+  }
+ ]
+}
