@@ -215,8 +215,8 @@ function comFavicon(html) {
  *   · favicon.ico                  ← public/marca/<id>/favicon.ico (ou o do AOB)
  *   · lista-aves-disponiveis.pdf   ← public/marca/<id>/lista.pdf (o PDF da própria marca)
  *   · _redirects                   ← ganha os 301 das rotas que a marca não tem
- * E o que é material de trabalho (LEIA-ME, manifesto, fotos da Stima fora da Stima)
- * sai do dist para não ser servido.
+ * E o que é material de trabalho (LEIA-ME, manifesto, e as fotos da Stima nas
+ * marcas que não são a Stima) sai do dist para não ser servido.
  */
 async function arquivosDaMarca({ inexistentes, CAMINHOS }) {
   const pasta = join(RAIZ, 'public', 'marca', MARCA_ID);
@@ -229,11 +229,8 @@ async function arquivosDaMarca({ inexistentes, CAMINHOS }) {
     // As regras da marca entram ANTES do coringa, senão nunca são lidas.
     await writeFile(join(DIST, '_redirects'), atual.replace('/*  /index.html', regras.join('\n') + '\n/*  /index.html'), 'utf8');
   }
-  const lixo = ['LEIA-ME.md', 'manifesto.json', 'aves-stima (pasta de fotos)', 'SEO e medicao - Stima e AOB', 'aves-stima/manifesto.json', 'aves-stima/LEIA-ME.md'];
+  const lixo = ['LEIA-ME.md', 'manifesto.json', 'aves-stima/manifesto.json', 'aves-stima/LEIA-ME.md'];
   if (MARCA_ID !== 'stima') lixo.push('aves-stima');
-  // Cópias soltas das fotos da Stima na raiz do public (upload errado de 14/09): fora do dist.
-  const { readdir } = await import('node:fs/promises');
-  for (const f of await readdir(DIST)) if (f.endsWith('.webp') && await existe(join(RAIZ, 'public', 'aves-stima', f))) lixo.push(f);
   for (const l of lixo) await rm(join(DIST, l), { recursive: true, force: true });
   for (const m of ['aob', 'stima', 'alianca']) if (m !== MARCA_ID) await rm(join(DIST, 'marca', m), { recursive: true, force: true });
 }
