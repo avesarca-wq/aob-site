@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { FileDown, Search, ShoppingBasket, Trash2 } from 'lucide-react';
 import { PageRoute } from '../types';
 import { AVES, LISTA_DATA, TOTAL_AVES, TOTAL_LOTES } from '../data/aves';
-import { CATEGORIA, CRIADOR_ROTULO, CONSTANTS, UNIDADE_ROTULO, brl } from '../data/catalogo';
+import { CATEGORIA, CRIADOR_ROTULO, CONSTANTS, UNIDADE_ROTULO, brl, precoOrd } from '../data/catalogo';
 import { useCart, estoqueDaUnidade } from '../cart/CartContext';
 import { estoqueTexto } from '../components/AveCard';
 import { EH_REDE } from '../marcas';
@@ -29,10 +29,19 @@ export const Tabela: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
     for (const a of lista) m.set(a.grupo, [...(m.get(a.grupo) || []), a]);
     return [...m.entries()]
       .sort((x, y) => ordem.indexOf(x[0]) - ordem.indexOf(y[0]))
-      .map(([g, aves]) => [g, [...aves].sort((a, b) => a.preco - b.preco)] as const);
+      .map(([g, aves]) => [g, [...aves].sort((a, b) => precoOrd(a.preco) - precoOrd(b.preco))] as const);
   }, [busca, soPromo]);
 
   const totalMostrado = grupos.reduce((s, [, l]) => s + l.length, 0);
+  // O título fala de lotes prontos (TOTAL_LOTES) e a tabela lista tudo, inclusive
+  // o que é sob consulta. Mostrar só "53 lotes" ao lado de "22 lotes" no título
+  // parecia erro de conta; agora a contagem diz qual é qual.
+  const prontosMostrados = grupos.reduce((s, [, l]) => s + l.filter((a) => a.machos + a.femeas > 0).length, 0);
+  const sobConsultaMostrados = totalMostrado - prontosMostrados;
+  // Sem nenhum lote em promoção, o filtro só esvazia a tabela. Fora da rede é o
+  // caso hoje: a promoção de setembro é dos lotes do AOB.
+  const temPromocao = AVES.some((a) => a.preco_de);
+  const colunas = EH_REDE ? 6 : 5;
 
   return (
     <>
@@ -53,13 +62,18 @@ export const Tabela: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
               <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--muted)]" />
               <input className="campo !pl-10 !py-2.5" placeholder="Buscar na tabela…" value={busca} onChange={(e) => setBusca(e.target.value)} aria-label="Buscar" />
             </div>
-            <label className="flex items-center gap-2 font-sans text-[0.82rem] text-[var(--muted)] cursor-pointer">
-              <input type="checkbox" checked={soPromo} onChange={(e) => setSoPromo(e.target.checked)} /> Só promoções
-            </label>
+            {temPromocao && (
+              <label className="flex items-center gap-2 font-sans text-[0.82rem] text-[var(--muted)] cursor-pointer">
+                <input type="checkbox" checked={soPromo} onChange={(e) => setSoPromo(e.target.checked)} /> Só promoções
+              </label>
+            )}
             <a href="/lista-aves-disponiveis.pdf" target="_blank" rel="noopener noreferrer" className="btn btn-ghost !py-2 !px-4 text-[0.8rem]">
               <FileDown className="w-4 h-4" /> PDF
             </a>
-            <span className="font-sans text-[0.78rem] text-[var(--muted)] ml-auto">{totalMostrado} lotes</span>
+            <span className="font-sans text-[0.78rem] text-[var(--muted)] ml-auto">
+              {prontosMostrados} {prontosMostrados === 1 ? 'lote pronto' : 'lotes prontos'}
+              {sobConsultaMostrados > 0 && ` · ${sobConsultaMostrados} sob consulta`}
+            </span>
           </div>
 
           <div className="card overflow-x-auto hidden md:block">
@@ -68,7 +82,7 @@ export const Tabela: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
                 <tr>
                   <th className="w-[38%]">Ave</th>
                   <th>Estoque <span className="normal-case tracking-normal font-normal text-[0.68rem] text-[var(--muted-2)]">M · F</span></th>
-                  <th>Criadouro</th>
+                  {EH_REDE && <th>Criadouro</th>}
                   <th>Unid.</th>
                   <th className="text-right">Preço</th>
                   <th className="text-center w-[150px]">Quantidade</th>
@@ -78,7 +92,7 @@ export const Tabela: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
                 {grupos.map(([g, aves]) => (
                   <React.Fragment key={g}>
                     <tr>
-                      <td colSpan={6} className="!py-2 bg-[var(--marfim)]">
+                      <td colSpan={colunas} className="!py-2 bg-[var(--marfim)]">
                         <span className="font-serif text-[1.05rem] text-[var(--verde)] font-semibold">{g}</span>
                         <span className="font-sans text-[0.62rem] tracking-[1.5px] uppercase text-[var(--ouro-texto)] ml-3">{CATEGORIA[aves[0].categoria].nome}</span>
                       </td>
@@ -102,7 +116,7 @@ export const Tabela: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
                               <span className={`text-right ${a.femeas ? 'text-[var(--ink)]' : 'text-[var(--claro-2)]'}`}>{String(a.femeas).padStart(2, '0')}<span className="text-[0.72rem] ml-0.5">F</span></span>
                             </span>
                           </td>
-                          <td className="text-[0.74rem] text-[var(--muted)]">{CRIADOR_ROTULO[a.criador]}</td>
+                          {EH_REDE && <td className="text-[0.74rem] text-[var(--muted)]">{CRIADOR_ROTULO[a.criador]}</td>}
                           <td className="text-[0.8rem]">{UNIDADE_ROTULO[a.unidade]}</td>
                           <td className="text-right whitespace-nowrap">
                             {a.preco_de && <s className="text-[0.75rem] text-[var(--muted-2)] mr-1.5">{brl(a.preco_de)}</s>}
@@ -121,7 +135,7 @@ export const Tabela: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
                   </React.Fragment>
                 ))}
                 {totalMostrado === 0 && (
-                  <tr><td colSpan={6} className="text-center text-[var(--muted)] py-8">Nenhuma ave com esse filtro.</td></tr>
+                  <tr><td colSpan={colunas} className="text-center text-[var(--muted)] py-8">Nenhuma ave com esse filtro.</td></tr>
                 )}
               </tbody>
             </table>
@@ -145,7 +159,7 @@ export const Tabela: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
                             {a.nome}{a.detalhe && <span className="italic text-[var(--muted)] text-[0.85rem]"> · {a.detalhe}</span>}
                           </div>
                           <div className="font-sans text-[0.7rem] text-[var(--muted)]">
-                            {estoqueTexto(a)} · {UNIDADE_ROTULO[a.unidade]} · {CRIADOR_ROTULO[a.criador]}
+                            {estoqueTexto(a)} · {UNIDADE_ROTULO[a.unidade]}{EH_REDE && ` · ${CRIADOR_ROTULO[a.criador]}`}
                           </div>
                           <div className="font-sans text-[0.92rem] whitespace-nowrap">
                             {a.preco_de && <s className="text-[0.72rem] text-[var(--muted-2)] mr-1.5">{brl(a.preco_de)}</s>}
