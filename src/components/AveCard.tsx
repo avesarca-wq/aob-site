@@ -3,7 +3,7 @@ import { Bird, Check, Plus } from 'lucide-react';
 import { Ave } from '../types';
 import { brl, CRIADOR_ROTULO, UNIDADE_ROTULO, UNIDADE_PLURAL, CATEGORIA } from '../data/catalogo';
 import { useCart, estoqueDaUnidade } from '../cart/CartContext';
-import { waSobConsulta } from '../lib/links';
+import { waSobConsulta, slugDaAve, caminhoDaAve } from '../lib/links';
 import { EH_REDE } from '../marcas';
 
 /** Texto de estoque: machos à esquerda, fêmeas à direita — "4M · 2F". */
@@ -27,11 +27,16 @@ export const AveCard: React.FC<{ ave: Ave; onVerPedido?: () => void }> = ({ ave,
   const max = estoqueDaUnidade(ave.id);
   /** Variedade do plantel sem lote na semana ou sem preço fechado: vira conversa. */
   const sobConsulta = ave.preco === null || ave.machos + ave.femeas === 0;
+  const ficha = caminhoDaAve(slugDaAve(ave));
 
   return (
     <article className="card">
       <div className="card-foto">
-        {ave.foto ? <img src={ave.foto} alt={ave.nome} loading="lazy" /> : <Moldura ave={ave} />}
+        {/* Foto e nome levam à ficha da espécie. O Google segue o href; o botão de
+            adicionar ao pedido fica fora do link, para não virar clique dentro de link. */}
+        <a href={ficha} aria-label={`Ficha de ${ave.nome}`} tabIndex={-1}>
+          {ave.foto ? <img src={ave.foto} alt={ave.nome} loading="lazy" /> : <Moldura ave={ave} />}
+        </a>
         <div className="absolute top-3 left-3 flex gap-1.5 flex-wrap">
           {ave.preco_de && <span className="chip chip-promo">Promoção</span>}
           {sobConsulta ? <span className="chip chip-claro">Sob consulta</span> : <span className="chip chip-claro">{estoqueTexto(ave)}</span>}
@@ -43,7 +48,7 @@ export const AveCard: React.FC<{ ave: Ave; onVerPedido?: () => void }> = ({ ave,
           {ave.grupo}{EH_REDE && <> · {CRIADOR_ROTULO[ave.criador]}</>}
         </div>
         <h3 className="text-[1.3rem] leading-tight text-[var(--verde)] m-0">
-          {ave.nome}
+          <a href={ficha} className="card-titulo-link">{ave.nome}</a>
           {ave.detalhe && <span className="block font-serif italic font-normal text-[0.95rem] text-[var(--muted)]">{ave.detalhe}</span>}
         </h3>
         <p className="font-serif italic text-[0.88rem] text-[var(--muted)] mt-0.5 mb-3">{ave.cientifico}</p>

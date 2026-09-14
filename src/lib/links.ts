@@ -43,3 +43,11 @@ export const waComTexto = (texto: string): string =>
 /** Pergunta sobre uma variedade sem preço ou sem lote na semana. */
 export const waSobConsulta = (nome: string): string =>
   waComTexto(`Olá! Vi ${nome} no site ${N} e quero saber disponibilidade e preço.`);
+
+/** Slug da ficha de uma ave: o lote herda o slug da variedade do catálogo-base
+ *  quando tem uma, senão usa o próprio id. Mesma regra do PAGINAS_AVES (seo.ts),
+ *  senão o link do card aponta para uma página que não foi gerada. */
+export const slugDaAve = (a: { id: string; variedade?: string }): string => a.variedade ?? a.id;
+
+/** Endereço da ficha. Com barra final, como o resto das rotas. */
+export const caminhoDaAve = (slug: string): string => `/aves/${slug}/`;

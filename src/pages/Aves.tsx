@@ -5,6 +5,9 @@ import { AVES, LISTA_DATA, TOTAL_AVES, TOTAL_LOTES, TOTAL_VARIEDADES } from '../
 import { CATEGORIAS, CRIADOR_ROTULO, CONSTANTS, brl, precoOrd } from '../data/catalogo';
 import { EH_REDE, MARCA_ATUAL } from '../marcas';
 import { AveCard } from '../components/AveCard';
+import { FichaAve } from '../components/FichaAve';
+import { PAGINA_AVE_DO_SLUG } from '../seo';
+import { slugDaAve } from '../lib/links';
 import { useCart } from '../cart/CartContext';
 
 type Ordem = 'preco-asc' | 'preco-desc' | 'nome';
@@ -28,12 +31,16 @@ const faixaDoGrupo = (aves: { preco: number | null; machos: number; femeas: numb
 
 const normaliza = (t: string) => t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
 
-export const Aves: React.FC<{ categoriaInicial?: string; buscaInicial?: string; onNavigate: (p: PageRoute) => void }> = ({ categoriaInicial, buscaInicial, onNavigate }) => {
+export const Aves: React.FC<{ aveSlug?: string; categoriaInicial?: string; onNavigate: (p: PageRoute) => void }> = ({ aveSlug, categoriaInicial, onNavigate }) => {
+  // /aves/<slug>/ — ficha da espécie. Os lotes vêm do slug, não da busca por nome:
+  // busca por nome traria "Pavão Azul" junto de "Pavão Azul Pied" e a ficha mostraria
+  // lote que não é dela.
+  const ficha = aveSlug ? PAGINA_AVE_DO_SLUG[aveSlug] : undefined;
   const [categoria, setCategoria] = useState<CategoriaId | 'todas'>((categoriaInicial as CategoriaId) || 'todas');
   const [criador, setCriador] = useState<CriadorId | 'todos'>('todos');
   const [unidade, setUnidade] = useState<Unidade | 'todas'>('todas');
   const [faixa, setFaixa] = useState('todas');
-  const [busca, setBusca] = useState(buscaInicial ?? '');
+  const [busca, setBusca] = useState('');
   const [ordem, setOrdem] = useState<Ordem>('nome');
   const [soPromo, setSoPromo] = useState(false);
   const [soEstoque, setSoEstoque] = useState(false);
@@ -42,6 +49,11 @@ export const Aves: React.FC<{ categoriaInicial?: string; buscaInicial?: string; 
   useEffect(() => {
     if (categoriaInicial) setCategoria(categoriaInicial as CategoriaId);
   }, [categoriaInicial]);
+
+  const lotesDaFicha = useMemo(
+    () => (aveSlug ? AVES.filter((a) => slugDaAve(a) === aveSlug) : []),
+    [aveSlug],
+  );
 
   const lista = useMemo(() => {
     const f = FAIXAS.find((x) => x.id === faixa)!;
@@ -80,6 +92,9 @@ export const Aves: React.FC<{ categoriaInicial?: string; buscaInicial?: string; 
 
   return (
     <>
+      {ficha ? (
+        <FichaAve ficha={ficha} lotes={lotesDaFicha} onVoltar={() => onNavigate('aves')} />
+      ) : (
       <section className="sec-escura">
         <div className="wrap py-10 sm:py-14">
           <div className="eyebrow">{EH_REDE ? `Lista de ${LISTA_DATA} · estoque sujeito a alteração` : `Criação em ${MARCA_ATUAL.cidade} · estoque de ${LISTA_DATA}`}</div>
@@ -91,9 +106,26 @@ export const Aves: React.FC<{ categoriaInicial?: string; buscaInicial?: string; 
           </p>
         </div>
       </section>
+      )}
 
       <section className="section" style={{ paddingTop: 28 }}>
         <div className="wrap">
+          {ficha ? (
+            <>
+              <h2 id="lotes" className="text-[1.5rem] text-[var(--verde)] m-0 mb-4">
+                {ficha.emEstoque ? (lotesDaFicha.length === 1 ? 'Lote disponível' : 'Lotes disponíveis') : 'Sem lote pronto nesta semana'}
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                {lotesDaFicha.map((a) => <AveCard key={a.id} ave={a} onVerPedido={() => onNavigate('pedido')} />)}
+              </div>
+              <div className="note text-center mt-8">
+                <button onClick={() => onNavigate('aves')} className="btn btn-ghost !py-2" type="button">
+                  Ver todas as aves {EH_REDE ? 'da rede' : 'do plantel'}
+                </button>
+              </div>
+            </>
+          ) : (
+            <>
           {/* Categorias */}
           <div className="flex flex-wrap gap-2 mb-4">
             <button className={`filtro ${categoria === 'todas' ? 'ativo' : ''}`} onClick={() => setCategoria('todas')}>Todas</button>
@@ -168,6 +200,8 @@ export const Aves: React.FC<{ categoriaInicial?: string; buscaInicial?: string; 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {lista.map((a) => <AveCard key={a.id} ave={a} onVerPedido={() => onNavigate('pedido')} />)}
             </div>
+          )}
+            </>
           )}
 
           <div className="note flex flex-wrap items-center justify-between gap-3 mt-8">

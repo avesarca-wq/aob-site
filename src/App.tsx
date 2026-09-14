@@ -36,7 +36,7 @@ export default function App() {
 
   function daURL() {
     const caminho = window.location.pathname.replace(/\/+$/, '') || '/';
-    // /aves/<slug>: página própria de uma ave — abre a vitrine já filtrada nela.
+    // /aves/<slug>: ficha própria da espécie (cabeçalho + os lotes dela).
     const mAve = caminho.match(/^\/aves\/([a-z0-9-]+)$/);
     if (mAve && PAGINA_AVE_DO_SLUG[mAve[1]]) return { rota: 'aves' as PageRoute, cat: undefined, ave: mAve[1] };
     const rota = ROTA_DO_CAMINHO[caminho];
@@ -109,7 +109,7 @@ export default function App() {
           ) : (
             <>
               {pagina === 'home' && (EH_REDE ? <Home onNavigate={navegar} /> : <HomeCriadouro onNavigate={navegar} />)}
-              {pagina === 'aves' && <Aves key={aveSlug ?? categoria ?? 'todas'} categoriaInicial={categoria} buscaInicial={aveSlug ? PAGINA_AVE_DO_SLUG[aveSlug].nome : undefined} onNavigate={navegar} />}
+              {pagina === 'aves' && <Aves key={aveSlug ?? categoria ?? 'todas'} aveSlug={aveSlug} categoriaInicial={categoria} onNavigate={navegar} />}
               {pagina === 'tabela' && <Tabela onNavigate={navegar} />}
               {pagina === 'pedido' && <Pedido onNavigate={navegar} />}
               {pagina === 'rotas' && <Rotas onNavigate={navegar} />}
