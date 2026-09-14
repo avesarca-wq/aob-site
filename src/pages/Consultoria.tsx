@@ -37,20 +37,20 @@ export const Consultoria: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ 
 
             <h2 className="text-[1.6rem] text-[var(--verde)] m-0">{c.nome}</h2>
             <p className="font-sans text-[0.78rem] text-[var(--muted)] mt-1 mb-4 flex items-center justify-center gap-1.5">
-              <UserRound className="w-3.5 h-3.5 text-[var(--ouro2)]" />
+              <UserRound className="w-3.5 h-3.5 text-[var(--ouro-texto)]" />
               <span>
                 <b className="text-[var(--verde)] font-semibold">{c.responsavel}</b> · {c.profissao}
               </span>
             </p>
 
-            <p className="font-serif italic text-[1rem] text-[var(--ouro2)] m-0 mb-3">“{c.chamada}”</p>
+            <p className="font-serif italic text-[1rem] text-[var(--ouro-texto)] m-0 mb-3">“{c.chamada}”</p>
             <p lang="pt-BR" className="font-serif text-[1rem] text-[var(--ink)] m-0 mb-4 text-justify hyphens-auto">
               {c.descricao}
             </p>
 
             <div className="mt-auto pt-4 border-t border-[var(--line)]">
               <p className="font-serif text-[0.92rem] text-[var(--muted)] m-0 mb-4 flex items-start justify-center gap-1.5 text-left">
-                <Sprout className="w-4 h-4 flex-none mt-1 text-[var(--ouro2)]" />
+                <Sprout className="w-4 h-4 flex-none mt-1 text-[var(--ouro-texto)]" />
                 <span>{c.frentes.join(' · ')}</span>
               </p>
               <div className="flex flex-wrap items-center justify-center gap-2">

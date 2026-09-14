@@ -20,7 +20,7 @@ export const Footer: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
     </a>
   );
   return (
-    <footer className="bg-[var(--verde-2)] text-[var(--marfim)] mt-auto">
+    <footer className="fundo-escuro bg-[var(--verde-2)] text-[var(--marfim)] mt-auto">
       <div className="wrap py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           <div>

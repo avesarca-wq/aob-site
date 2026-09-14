@@ -65,7 +65,7 @@ export const Rotas: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNavi
                     </div>
                     {p ? (
                       <div className="text-right flex-none">
-                        <div className="font-serif text-[1.7rem] text-[var(--ouro2)] leading-none">{dataCurta(p.saida)}</div>
+                        <div className="font-serif text-[1.7rem] text-[var(--ouro-texto)] leading-none">{dataCurta(p.saida)}</div>
                         <div className="font-sans text-[0.62rem] uppercase tracking-[1px] text-[var(--muted)]">próxima saída</div>
                       </div>
                     ) : (
@@ -78,7 +78,7 @@ export const Rotas: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNavi
                         const dt = new Date(d + 'T12:00:00-03:00');
                         const passada = dt.getTime() < Date.now();
                         return (
-                          <span key={d} className={`chip ${passada ? 'chip-claro opacity-50' : p && dataCurta(p.saida) === dataCurta(dt) ? 'chip-ouro' : 'chip-verde'}`}>
+                          <span key={d} className={`chip ${passada ? 'chip-passado' : p && dataCurta(p.saida) === dataCurta(dt) ? 'chip-ouro' : 'chip-verde'}`}>
                             <CalendarDays className="w-3 h-3" /> {dataCurta(dt)}
                           </span>
                         );
@@ -87,7 +87,7 @@ export const Rotas: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNavi
                   )}
                   <details className="mt-4">
                     <summary className="font-sans text-[0.78rem] font-semibold text-[var(--verde)] cursor-pointer flex items-center gap-1.5">
-                      <MapPin className="w-3.5 h-3.5 text-[var(--ouro2)]" /> {cidades.length} cidades atendidas
+                      <MapPin className="w-3.5 h-3.5 text-[var(--ouro-texto)]" /> {cidades.length} cidades atendidas
                     </summary>
                     <p className="font-sans text-[0.78rem] text-[var(--muted)] mt-2 mb-0 leading-relaxed">
                       {cidades.slice(0, 40).map((c) => c.c).join(' · ')}{cidades.length > 40 ? ` · e mais ${cidades.length - 40}` : ''}
@@ -106,7 +106,7 @@ export const Rotas: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNavi
                 <div key={z.n} className="card p-5">
                   <div className="flex items-baseline justify-between gap-2">
                     <h3 className="text-[1.15rem] text-[var(--verde)] m-0">{z.rotulo}</h3>
-                    <b className="font-serif text-[1.3rem] text-[var(--ouro2)]">{z.tarifaTexto}</b>
+                    <b className="font-serif text-[1.3rem] text-[var(--ouro-texto)]">{z.tarifaTexto}</b>
                   </div>
                   <p className="font-sans text-[0.78rem] text-[var(--muted)] mt-1 mb-1">{z.prazo}.</p>
                   <p className="font-serif text-[0.9rem] text-[var(--muted)] m-0">{z.detalhe}</p>
@@ -115,7 +115,7 @@ export const Rotas: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNavi
               <div className="card p-5 border-dashed">
                 <div className="flex items-baseline justify-between gap-2">
                   <h3 className="text-[1.15rem] text-[var(--verde)] m-0">Retirada em {CONSTANTS.RETIRADA}</h3>
-                  <b className="font-serif text-[1.3rem] text-[var(--ouro2)]">{brl(0)}</b>
+                  <b className="font-serif text-[1.3rem] text-[var(--ouro-texto)]">{brl(0)}</b>
                 </div>
                 <p className="font-serif text-[0.9rem] text-[var(--muted)] mt-1 mb-0">Dia e hora combinados pelo WhatsApp. Você confere a ave e paga na hora.</p>
               </div>

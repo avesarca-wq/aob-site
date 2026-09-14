@@ -189,7 +189,7 @@ export const Aves: React.FC<{ aveSlug?: string; categoriaInicial?: string; onNav
             grupos.map(([g, aves]) => (
               <div key={g} className="mb-10">
                 <h2 className="text-[1.5rem] text-[var(--verde)] m-0 mb-4 flex items-baseline gap-3 flex-wrap">
-                  {g} <span className="font-sans text-[0.7rem] tracking-[1px] uppercase text-[var(--ouro2)]">{EH_REDE ? `${aves.length} ${aves.length === 1 ? 'lote' : 'lotes'}` : faixaDoGrupo(aves)}</span>
+                  {g} <span className="font-sans text-[0.7rem] tracking-[1px] uppercase text-[var(--ouro-texto)]">{EH_REDE ? `${aves.length} ${aves.length === 1 ? 'lote' : 'lotes'}` : faixaDoGrupo(aves)}</span>
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                   {aves.map((a) => <AveCard key={a.id} ave={a} onVerPedido={() => onNavigate('pedido')} />)}

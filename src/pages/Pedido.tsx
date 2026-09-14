@@ -151,7 +151,7 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
     return (
       <section className="section">
         <div className="wrap max-w-2xl text-center">
-          <CheckCircle2 className="w-14 h-14 text-[#1E8E5A] mx-auto mb-3" strokeWidth={1.5} />
+          <CheckCircle2 className="w-14 h-14 text-[var(--wa)] mx-auto mb-3" strokeWidth={1.5} />
           <div className="eyebrow">Pedido registrado</div>
           <h1 className="sec-title center" style={{ fontSize: '2.2rem' }}>Código {codigo}</h1>
           <p className="sec-sub">Agora é só mandar o pedido no WhatsApp para a gente confirmar a rota e o estoque. O botão abaixo já leva a mensagem pronta.</p>
@@ -176,12 +176,12 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
           </div>
 
           {/* AVES ESCOLHIDAS — dentro do bloco verde */}
-          <div className="rounded-2xl border border-[#3B5B4A] bg-[#1A3327] p-5 sm:p-6">
-            <h2 className="text-[1.15rem] text-[var(--marfim)] m-0 mb-3 flex items-center gap-2"><ShoppingBasket className="w-4.5 h-4.5 text-[var(--ouro)]" /> Aves escolhidas</h2>
+          <div className="fundo-escuro rounded-2xl border border-[var(--verde-claro)] bg-[var(--verde-2)] p-5 sm:p-6">
+            <h2 className="text-[1.15rem] text-[var(--marfim)] m-0 mb-3 flex items-center gap-2"><ShoppingBasket className="w-4.5 h-4.5 text-[var(--ouro-texto)]" /> Aves escolhidas</h2>
             {itens.length === 0 ? (
               <p className="font-sans text-[0.85rem] text-[var(--claro-2)] m-0">
                 Seu pedido está vazio.{' '}
-                <button onClick={() => onNavigate('aves')} className="underline bg-transparent border-0 cursor-pointer text-[var(--ouro)] font-sans text-[0.85rem] font-bold p-0">Ver as aves disponíveis</button>.
+                <button onClick={() => onNavigate('aves')} className="underline bg-transparent border-0 cursor-pointer text-[var(--ouro-texto)] font-sans text-[0.85rem] font-bold p-0">Ver as aves disponíveis</button>.
               </p>
             ) : (
               <div className="grid gap-2">
@@ -272,7 +272,7 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
                 </div>
                 {dados.recebimento === 'rota' && (
                   <div className="mt-3 rounded-xl border border-[var(--ouro)] bg-[var(--marfim)] p-4">
-                    <div className="font-sans text-[0.62rem] uppercase tracking-[1.6px] text-[var(--ouro2)] font-bold mb-2">
+                    <div className="font-sans text-[0.62rem] uppercase tracking-[1.6px] text-[var(--ouro-texto)] font-bold mb-2">
                       {entrega?.rota ? 'Sua rota — confirme ou escolha outra' : 'Escolha a rota'}
                     </div>
                     <div className="grid gap-1.5 sm:grid-cols-2">
@@ -287,7 +287,7 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
                             <span className="min-w-0 flex-1">
                               <span className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
                                 <span className="font-sans text-[0.85rem] font-semibold text-[var(--verde)]">{r.nome}</span>
-                                {sugerida && <span className="font-sans text-[0.6rem] uppercase tracking-[1px] font-bold text-[#1E8E5A]">sua região</span>}
+                                {sugerida && <span className="font-sans text-[0.6rem] uppercase tracking-[1px] font-bold text-[var(--wa)]">sua região</span>}
                               </span>
                               <span className="block font-sans text-[0.72rem] text-[var(--muted)] mt-0.5">
                                 {prox
@@ -308,7 +308,7 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
                         <div className="mt-3 pt-3 border-t border-[var(--line)] grid gap-1.5">
                           {saidas.length > 1 && (
                             <div className="flex flex-wrap items-center gap-1.5">
-                              <CalendarDays className="w-3.5 h-3.5 flex-none text-[var(--ouro2)]" />
+                              <CalendarDays className="w-3.5 h-3.5 flex-none text-[var(--ouro-texto)]" />
                               <span className="font-sans text-[0.72rem] text-[var(--muted)]">Saídas de {rota.nome}:</span>
                               {saidas.slice(0, 4).map((d, i) => (
                                 <span key={d.saida.toISOString()} className={`font-sans text-[0.72rem] font-semibold rounded-full px-2.5 py-0.5 border ${i === 0 ? 'bg-[var(--ouro)] border-[var(--ouro)] text-[var(--verde)]' : 'bg-white border-[var(--line)] text-[var(--verde)]'}`}>{dataCurta(d.saida)}</span>
@@ -317,13 +317,13 @@ export const Pedido: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
                           )}
                           {entrega && entrega.zona.n !== 4 && (
                             <div className="flex items-start gap-2 font-sans text-[0.76rem] text-[var(--ink)]">
-                              <Truck className="w-3.5 h-3.5 flex-none mt-0.5 text-[var(--ouro2)]" />
+                              <Truck className="w-3.5 h-3.5 flex-none mt-0.5 text-[var(--ouro-texto)]" />
                               <span>Frete <b>{entrega.zona.tarifaTexto}</b> · {entrega.zona.rotulo}</span>
                             </div>
                           )}
                           {rota.nota && (
                             <div className="flex items-start gap-2 font-sans text-[0.76rem] text-[var(--muted)]">
-                              <MapPin className="w-3.5 h-3.5 flex-none mt-0.5 text-[var(--ouro2)]" />
+                              <MapPin className="w-3.5 h-3.5 flex-none mt-0.5 text-[var(--ouro-texto)]" />
                               <span>{rota.nota}</span>
                             </div>
                           )}

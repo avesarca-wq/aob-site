@@ -108,13 +108,13 @@ export const CidadeInput: React.FC<Props> = ({ value, onChange, mostrarResumo = 
       {mostrarResumo && info && info.zona.n !== 4 && (
         <div className="mt-2 rounded-xl border border-[var(--line)] bg-[var(--marfim)] px-3.5 py-2.5">
           <p className="flex items-start gap-1.5 font-sans text-[0.74rem] text-[var(--verde)] m-0 leading-snug">
-            <MapPin className="w-3.5 h-3.5 flex-none mt-px text-[var(--ouro2)]" />
+            <MapPin className="w-3.5 h-3.5 flex-none mt-px text-[var(--ouro-texto)]" />
             <span>
               <strong>{info.rota?.nome ?? info.cidade.r}</strong> · frete <strong>{info.zona.tarifaTexto}</strong>
             </span>
           </p>
           <p className="flex items-start gap-1.5 font-sans text-[0.74rem] text-[var(--ink)] mt-1.5 mb-0 leading-snug">
-            <Truck className="w-3.5 h-3.5 flex-none mt-px text-[var(--ouro2)]" />
+            <Truck className="w-3.5 h-3.5 flex-none mt-px text-[var(--ouro-texto)]" />
             <span>
               {info.prox
                 ? <>Próxima saída <strong>{dataCurta(info.prox.saida)}</strong> · pedidos até {dataCurta(info.prox.fecha)}</>

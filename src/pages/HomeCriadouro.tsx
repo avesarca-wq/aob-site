@@ -106,7 +106,7 @@ export const HomeCriadouro: React.FC<{ onNavigate: (p: PageRoute, extra?: string
                 <button key={c.id} onClick={() => onNavigate('aves', c.id)} className="card p-5 text-left cursor-pointer hover:-translate-y-0.5 transition-transform">
                   <h3 className="text-[1.2rem] text-[var(--verde)] m-0 mb-1">{c.nome}</h3>
                   <p className="font-sans text-[0.78rem] text-[var(--muted)] m-0">{n.length} {n.length === 1 ? 'variedade' : 'variedades'}{prontas ? ` · ${prontas} ${prontas === 1 ? 'pronta' : 'prontas'}` : ''}</p>
-                  <p className="font-sans text-[0.78rem] text-[var(--ouro2)] font-bold m-0 mt-1">{ps.length ? (Math.min(...ps) === Math.max(...ps) ? brl(ps[0]) : `${brl(Math.min(...ps))} – ${brl(Math.max(...ps))}`) : 'sob consulta'}</p>
+                  <p className="font-sans text-[0.78rem] text-[var(--ouro-texto)] font-bold m-0 mt-1">{ps.length ? (Math.min(...ps) === Math.max(...ps) ? brl(ps[0]) : `${brl(Math.min(...ps))} – ${brl(Math.max(...ps))}`) : 'sob consulta'}</p>
                 </button>
               );
             })}

@@ -51,7 +51,7 @@ export const AveCard: React.FC<{ ave: Ave; onVerPedido?: () => void }> = ({ ave,
         {ave.foto && ave.foto_credito && <span className="foto-credito">{ave.foto_credito}</span>}
       </div>
       <div className="p-5 flex flex-col flex-1">
-        <div className="font-sans text-[0.64rem] tracking-[1.5px] uppercase text-[var(--ouro2)] font-bold mb-1">
+        <div className="font-sans text-[0.64rem] tracking-[1.5px] uppercase text-[var(--ouro-texto)] font-bold mb-1">
           {ave.grupo}{EH_REDE && <> · {CRIADOR_ROTULO[ave.criador]}</>}
         </div>
         <h3 className="text-[1.3rem] leading-tight text-[var(--verde)] m-0">

@@ -65,9 +65,9 @@ export const Home: React.FC<{ onNavigate: (p: PageRoute, extra?: string) => void
                   key={c.id}
                   href={`${CAMINHOS.aves}?categoria=${c.id}`}
                   onClick={(e) => { e.preventDefault(); if (!vazio) onNavigate('aves', c.id); }}
-                  className={`card p-5 no-underline ${vazio ? 'opacity-60 cursor-default' : ''}`}
+                  className={`card p-5 no-underline ${vazio ? 'card-em-formacao cursor-default' : ''}`}
                 >
-                  <div className="font-sans text-[0.64rem] tracking-[1.5px] uppercase text-[var(--ouro2)] font-bold">
+                  <div className="font-sans text-[0.64rem] tracking-[1.5px] uppercase text-[var(--ouro-texto)] font-bold">
                     {vazio ? 'em formação' : `${n.length} ${n.length === 1 ? 'lote' : 'lotes'} · ${aves} aves`}
                   </div>
                   <h3 className="text-[1.25rem] text-[var(--verde)] mt-1 mb-1">{c.nome}</h3>
@@ -140,7 +140,7 @@ export const Home: React.FC<{ onNavigate: (p: PageRoute, extra?: string) => void
           </div>
           <div className="grid gap-3">
             {rotasComData.map(({ r, p }) => (
-              <div key={r.regiao} className="rounded-2xl border border-[var(--verde-claro)] bg-[var(--verde-2)] p-5 flex flex-wrap justify-between gap-3 items-center">
+              <div key={r.regiao} className="fundo-escuro rounded-2xl border border-[var(--verde-claro)] bg-[var(--verde-2)] p-5 flex flex-wrap justify-between gap-3 items-center">
                 <div>
                   <div className="font-serif text-[1.2rem] text-[var(--marfim)]">{r.nome}</div>
                   <div className="font-sans text-[0.78rem] text-[var(--claro-2)]">{r.nota}</div>

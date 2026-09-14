@@ -30,10 +30,10 @@ export const Criadores: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ on
                     : <span className="font-sans text-[0.7rem] uppercase tracking-[1.5px] text-[var(--muted-2)] font-bold border border-dashed border-[var(--claro-2)] rounded-lg px-3 py-2">Logotipo em breve</span>}
                 </div>
                 <h2 className="text-[1.6rem] text-[var(--verde)] m-0">{c.nome}</h2>
-                <p className="font-sans text-[0.78rem] text-[var(--muted)] mt-1 mb-1 flex items-center justify-center gap-1.5"><MapPin className="w-3.5 h-3.5 text-[var(--ouro2)]" /> {c.cidade}</p>
-                <p className="font-sans text-[0.78rem] text-[var(--muted)] mt-0 mb-4 flex items-center justify-center gap-1.5"><UserRound className="w-3.5 h-3.5 text-[var(--ouro2)]" /> <span><b className="text-[var(--verde)] font-semibold">{c.responsavel}</b> · {c.profissao}</span></p>
+                <p className="font-sans text-[0.78rem] text-[var(--muted)] mt-1 mb-1 flex items-center justify-center gap-1.5"><MapPin className="w-3.5 h-3.5 text-[var(--ouro-texto)]" /> {c.cidade}</p>
+                <p className="font-sans text-[0.78rem] text-[var(--muted)] mt-0 mb-4 flex items-center justify-center gap-1.5"><UserRound className="w-3.5 h-3.5 text-[var(--ouro-texto)]" /> <span><b className="text-[var(--verde)] font-semibold">{c.responsavel}</b> · {c.profissao}</span></p>
                 <p lang="pt-BR" className="font-serif text-[1rem] text-[var(--ink)] m-0 mb-4 text-justify hyphens-auto">{c.descricao}</p>
-                <p className="font-serif text-[0.92rem] text-[var(--muted)] m-0 mt-auto pt-4 border-t border-[var(--line)] flex items-start justify-center gap-1.5 text-left"><Feather className="w-4 h-4 flex-none mt-1 text-[var(--ouro2)]" /> <span>{c.especialidade}</span></p>
+                <p className="font-serif text-[0.92rem] text-[var(--muted)] m-0 mt-auto pt-4 border-t border-[var(--line)] flex items-start justify-center gap-1.5 text-left"><Feather className="w-4 h-4 flex-none mt-1 text-[var(--ouro-texto)]" /> <span>{c.especialidade}</span></p>
               </div>
             );
           })}

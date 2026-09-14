@@ -66,7 +66,7 @@ export const Header: React.FC<Props> = ({ currentPage, onNavigate }) => {
         </>
       }
       className={`flex items-center gap-1.5 font-sans text-[0.78rem] font-bold rounded-full px-3.5 py-1.5 transition-colors ${
-        totalUnidades > 0 ? 'bg-[var(--ouro)] text-[var(--verde)] hover:bg-[var(--ouro2)]' : 'bg-[var(--verde-claro)] text-[var(--marfim)] hover:bg-[var(--verde-hover)]'
+        totalUnidades > 0 ? 'bg-[var(--ouro)] text-[var(--texto-no-ouro)] hover:bg-[var(--ouro-hover)]' : 'bg-[var(--verde-claro)] text-[var(--marfim)] hover:bg-[var(--verde-hover)]'
       }`}
     />
   );

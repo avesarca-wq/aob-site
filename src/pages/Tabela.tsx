@@ -80,7 +80,7 @@ export const Tabela: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
                     <tr>
                       <td colSpan={6} className="!py-2 bg-[var(--marfim)]">
                         <span className="font-serif text-[1.05rem] text-[var(--verde)] font-semibold">{g}</span>
-                        <span className="font-sans text-[0.62rem] tracking-[1.5px] uppercase text-[var(--ouro2)] ml-3">{CATEGORIA[aves[0].categoria].nome}</span>
+                        <span className="font-sans text-[0.62rem] tracking-[1.5px] uppercase text-[var(--ouro-texto)] ml-3">{CATEGORIA[aves[0].categoria].nome}</span>
                       </td>
                     </tr>
                     {aves.map((a) => {
@@ -132,7 +132,7 @@ export const Tabela: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ onNav
             {grupos.map(([g, aves]) => (
               <div key={g} className="mb-5">
                 <div className="font-serif text-[1.05rem] text-[var(--verde)] font-semibold px-1 mb-1.5">
-                  {g} <span className="font-sans text-[0.6rem] tracking-[1.5px] uppercase text-[var(--ouro2)] ml-2">{CATEGORIA[aves[0].categoria].nome}</span>
+                  {g} <span className="font-sans text-[0.6rem] tracking-[1.5px] uppercase text-[var(--ouro-texto)] ml-2">{CATEGORIA[aves[0].categoria].nome}</span>
                 </div>
                 <div className="card">
                   {aves.map((a) => {
