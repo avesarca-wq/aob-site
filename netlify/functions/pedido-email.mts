@@ -43,6 +43,7 @@ const ROTULOS = {
   total_referencia: 'Total',
   origem: 'Origem',
   pagina_entrada: 'Página',
+  site: 'Site',
   pedido_json: 'Itens JSON',
 } as const;
 type ChavePedido = keyof typeof ROTULOS;
@@ -65,6 +66,12 @@ const soDigitos = (s: string) => (s || '').replace(/\D/g, '');
 const g = (d: Record<string, string>, chave: ChavePedido): string =>
   d[ROTULOS[chave]] ?? d[chave] ?? '';
 
+/** Marca que gerou o pedido ("Stima Aves · (11) 94300-7375"); pedidos antigos não têm o campo. */
+const marcaDe = (d: Record<string, string>) => {
+  const [nome, zap] = (g(d, 'site') || 'Aves Ornamentais Brasil · (11) 99561-0741').split(' · ');
+  return { nome: nome.trim(), zap: soDigitos(zap || '') ? '55' + soDigitos(zap).replace(/^55/, '') : WA };
+};
+
 interface Linha { nome?: string; detalhe?: string; criador?: string; unidade?: string; quantidade?: number; valorUnitario?: number }
 const UNID: Record<string, string> = { casal: 'casal', macho: 'macho', femea: 'fêmea' };
 
@@ -82,7 +89,7 @@ function emailPedido(d: Record<string, string>) {
   const ls = linhas(d);
   const total = Number(g(d, 'total_referencia')) || ls.reduce((s, l) => s + (l.quantidade || 0) * (l.valorUnitario || 0), 0);
   const wa = soDigitos(g(d, 'whatsapp'));
-  const waCliente = wa ? `https://wa.me/${wa.startsWith('55') ? wa : '55' + wa}?text=${encodeURIComponent(`Olá, ${g(d, 'nome')}! Recebemos seu pedido ${g(d, 'codigo')} na Aves Ornamentais Brasil.`)}` : '';
+  const waCliente = wa ? `https://wa.me/${wa.startsWith('55') ? wa : '55' + wa}?text=${encodeURIComponent(`Olá, ${g(d, 'nome')}! Recebemos seu pedido ${g(d, 'codigo')} na ${marcaDe(d).nome}.`)}` : '';
 
   const tabela = ls.length
     ? ls.map((l) => `
@@ -100,7 +107,7 @@ function emailPedido(d: Record<string, string>) {
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center">
 <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;background:#fff;border-radius:16px;overflow:hidden;border:1px solid ${COR.borda};">
   <tr><td style="background:${COR.verde};padding:22px 28px;">
-    <div style="font-family:Helvetica,Arial,sans-serif;font-size:11px;letter-spacing:.3em;color:${COR.ouro};text-transform:uppercase;">Aves Ornamentais Brasil</div>
+    <div style="font-family:Helvetica,Arial,sans-serif;font-size:11px;letter-spacing:.3em;color:${COR.ouro};text-transform:uppercase;">${esc(marcaDe(d).nome)}</div>
     <div style="font-family:Georgia,serif;font-size:26px;color:${COR.marfim};margin-top:6px;">Pedido novo · ${esc(g(d, 'codigo'))}</div>
     <div style="font-family:Helvetica,Arial,sans-serif;font-size:13px;color:#C9D2C9;margin-top:4px;">${esc(g(d, 'rota'))}${g(d, 'proxima_saida') ? ` · próxima saída ${esc(g(d, 'proxima_saida'))}` : ''}</div>
   </td></tr>
@@ -133,15 +140,16 @@ function emailPedido(d: Record<string, string>) {
 }
 
 function emailCliente(d: Record<string, string>) {
-  const texto = `Olá, ${g(d, 'nome')}!\n\nRecebemos seu pedido ${g(d, 'codigo')} na Aves Ornamentais Brasil.\n\n${g(d, 'pedido_resumo')}\n\nRota: ${g(d, 'rota')}${g(d, 'proxima_saida') ? ` · próxima saída ${g(d, 'proxima_saida')}` : ''}\nRecebimento: ${g(d, 'recebimento')}\n\nA confirmação de estoque e da data vem pelo WhatsApp. Pagamento só na entrega.\n\nWhatsApp: https://wa.me/${WA}`;
-  return { assunto: `Recebemos seu pedido ${g(d, 'codigo')} — Aves Ornamentais Brasil`, html: `<pre style="font-family:Georgia,serif;font-size:15px;white-space:pre-wrap;">${esc(texto)}</pre>`, texto };
+  const m = marcaDe(d);
+  const texto = `Olá, ${g(d, 'nome')}!\n\nRecebemos seu pedido ${g(d, 'codigo')} na ${m.nome}.\n\n${g(d, 'pedido_resumo')}\n\nRota: ${g(d, 'rota')}${g(d, 'proxima_saida') ? ` · próxima saída ${g(d, 'proxima_saida')}` : ''}\nRecebimento: ${g(d, 'recebimento')}\n\nA confirmação de estoque e da data vem pelo WhatsApp. Pagamento só na entrega.\n\nWhatsApp: https://wa.me/${m.zap}`;
+  return { assunto: `Recebemos seu pedido ${g(d, 'codigo')} — ${m.nome}`, html: `<pre style="font-family:Georgia,serif;font-size:15px;white-space:pre-wrap;">${esc(texto)}</pre>`, texto };
 }
 
 async function enviar(para: string[], peca: { assunto: string; html: string; texto: string; respostaPara?: string }) {
   const chave = process.env.RESEND_API_KEY;
   if (!chave) { console.error('[pedido-email] RESEND_API_KEY ausente — e-mail NÃO enviado.'); return; }
   const corpo: Record<string, unknown> = {
-    from: process.env.EMAIL_REMETENTE || 'Aves Ornamentais Brasil <onboarding@resend.dev>',
+    from: process.env.EMAIL_REMETENTE || 'Aves Ornamentais Brasil <onboarding@resend.dev>', // remetente é da conta Resend, não da marca
     to: para, subject: peca.assunto, html: peca.html, text: peca.texto,
   };
   if (peca.respostaPara) corpo.reply_to = peca.respostaPara;
