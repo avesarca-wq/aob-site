@@ -22,7 +22,7 @@ export const Criadores: React.FC<{ onNavigate: (p: PageRoute) => void }> = ({ on
             return (
               <div key={c.id} className="card p-7 flex flex-col text-center h-full">
                 <div className="inline-flex self-center items-center gap-2 bg-[var(--verde)] text-[var(--marfim)] font-sans text-[0.6rem] uppercase tracking-[1.6px] font-bold px-3 py-1.5 rounded-full mb-4">
-                  <img src="/simbolo-creme.svg" alt="" className="w-3.5 h-3.5" /> Membro fundador
+                  <img src="/simbolo-creme.svg" alt="" className="w-3.5 h-3.5" /> {c.vinculo === 'participante' ? 'Membro participante' : 'Membro fundador'}
                 </div>
                 <div className="h-36 mb-5 flex items-center justify-center rounded-xl bg-white border border-[var(--line)] px-5 py-3 overflow-hidden">
                   {c.logo

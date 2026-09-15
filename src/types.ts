@@ -67,6 +67,8 @@ export interface Criador {
   especialidade: string;
   whatsapp: string;
   descricao: string;
+  /** Vínculo com a rede. Sem valor = fundador. */
+  vinculo?: 'fundador' | 'participante';
   /** Caminho em public/. Sem logo = espaço "em breve". */
   logo?: string;
   /** Fator de escala da logo dentro da caixa (1 = natural). Artes altas ficam pequenas na caixa larga. */

@@ -63,6 +63,7 @@ export const CRIADORES: Criador[] = [
   {
     id: 'alianca',
     nome: 'Criadouro Aliança',
+    vinculo: 'participante',
     responsavel: 'Felipe Caselato',
     profissao: 'Empresário',
     cidade: 'Jundiaí – SP',
