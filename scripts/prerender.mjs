@@ -100,7 +100,7 @@ async function main() {
   // Rotas que esta marca não linka no menu ficam fora do sitemap (existem, mas não são convite).
   const foraDoSitemap = new Set(['pedido', 'privacidade', EH_REDE ? 'sanidade' : 'consultoria']);
   const { CAMINHOS } = await carregarCaminhos();
-  const { imagem, SIZES_FICHA } = await carregarImagens();
+  const { imagem, SIZES_FICHA, TETO_FICHA_CELULAR, MEDIA_FICHA_GRANDE, MEDIA_FICHA_PEQUENA } = await carregarImagens();
   const base = await readFile(join(DIST, 'index.html'), 'utf8');
 
   let gravadas = 0;
@@ -166,23 +166,28 @@ async function main() {
     // Só a foto de verdade entra no preload e no corpo sem JS. A ave sem foto
     // mostra a moldura da categoria na tela; a placa de /og/ é para o
     // compartilhamento e para o JSON-LD, não para o primeiro render.
-    const foto = p.temFotoPropria ? imagem(p.imagem.replace(SITE, '')) : null;
+    const foto = p.temFotoPropria ? imagem(p.imagem.replace(SITE, ''), TETO_FICHA_CELULAR) : null;
+    const fotoGrande = p.temFotoPropria ? imagem(p.imagem.replace(SITE, '')) : null;
     // og:image:width/height com o tamanho real do arquivo: a lista tem foto
     // 1200x900, 1200x675 e 1200x803, e antes ia 900 para todas. As placas de
     // categoria são 1200x900 por construção.
     html = trocarTag(html, /<meta property="og:image:width"[^>]*>/, `<meta property="og:image:width" content="${foto ? foto.width : 1200}" />`);
     html = trocarTag(html, /<meta property="og:image:height"[^>]*>/, `<meta property="og:image:height" content="${foto ? foto.height : 900}" />`);
     if (foto) {
+      // Dois preloads com media excludente: cada tela busca só o seu, e o arquivo
+      // é o mesmo que o <picture> vai acabar escolhendo. Um preload sem media
+      // baixaria a de 1.200 também no celular, desfazendo o corte.
       html = html.replace(
         '</head>',
-        `  <link rel="preload" as="image" href="${foto.src}" imagesrcset="${foto.srcSet}" imagesizes="${SIZES_FICHA}" fetchpriority="high" />\n  </head>`,
+        `  <link rel="preload" as="image" media="${MEDIA_FICHA_GRANDE}" href="${fotoGrande.src}" imagesrcset="${fotoGrande.srcSet}" imagesizes="${SIZES_FICHA}" fetchpriority="high" />\n` +
+        `  <link rel="preload" as="image" media="${MEDIA_FICHA_PEQUENA}" href="${foto.src}" imagesrcset="${foto.srcSet}" imagesizes="${SIZES_FICHA}" fetchpriority="high" />\n  </head>`,
       );
     }
     html = html.replace('</head>', `  <script type="application/ld+json">${JSON.stringify(jsonldAve(p))}</script>\n  </head>`);
     const corpo = `<div id="conteudo-sem-js">
       <h1>${esc(p.nome)}</h1>
       <p><em>${esc(p.cientifico)}</em> · ${esc(p.grupo)} · ${p.preco === null ? 'sob consulta' : 'a partir de R$ ' + p.preco.toLocaleString('pt-BR')}</p>
-      ${foto ? `<img src="${foto.src}" srcset="${foto.srcSet}" sizes="${SIZES_FICHA}" alt="${esc(p.nome)}" width="${foto.width}" height="${foto.height}" fetchpriority="high" />` : ''}
+      ${foto ? `<picture><source media="${MEDIA_FICHA_GRANDE}" srcset="${fotoGrande.srcSet}" sizes="${SIZES_FICHA}"><img src="${foto.src}" srcset="${foto.srcSet}" sizes="${SIZES_FICHA}" alt="${esc(p.nome)}" width="${foto.width}" height="${foto.height}" fetchpriority="high"></picture>` : ''}
       <p>${esc(p.resumo || p.descricao)}</p>
       <nav><a href="${CAMINHOS.aves}">Ver todas as aves</a> · <a href="${CAMINHOS.home}">${esc(MARCA)}</a></nav>
     </div>`;

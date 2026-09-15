@@ -4,7 +4,7 @@ import { Ave } from '../types';
 import { brl, CRIADOR_ROTULO, UNIDADE_ROTULO, UNIDADE_PLURAL, CATEGORIA } from '../data/catalogo';
 import { useCart, estoqueDaUnidade } from '../cart/CartContext';
 import { waSobConsulta, slugDaAve, caminhoDaAve } from '../lib/links';
-import { imagem, SIZES_CARD } from '../lib/imagens';
+import { imagem, SIZES_CARD, TETO_CARD } from '../lib/imagens';
 import { EH_REDE } from '../marcas';
 
 /** Texto de estoque: machos à esquerda, fêmeas à direita — "4M · 2F". */
@@ -32,7 +32,7 @@ export const Moldura: React.FC<{ ave: Ave }> = ({ ave }) => (
  * Os demais seguem com lazy: medindo, adiantar três disputava banda e piorava.
  */
 const FotoDoCard: React.FC<{ foto: string; alt: string; prioridade?: boolean }> = ({ foto, alt, prioridade }) => {
-  const i = imagem(foto);
+  const i = imagem(foto, TETO_CARD);
   return (
     <img
       src={i.src} srcSet={i.srcSet} sizes={SIZES_CARD} alt={alt}

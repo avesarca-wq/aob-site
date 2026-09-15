@@ -5,7 +5,7 @@ import { PaginaAve } from '../seo';
 import { CRIADOR_ROTULO, CONSTANTS, brl } from '../data/catalogo';
 import { EH_REDE, MARCA_ATUAL } from '../marcas';
 import { waSobConsulta } from '../lib/links';
-import { imagem, SIZES_FICHA } from '../lib/imagens';
+import { imagem, SIZES_FICHA, TETO_FICHA_CELULAR, MEDIA_FICHA_GRANDE } from '../lib/imagens';
 import { Moldura } from './AveCard';
 
 /**
@@ -38,14 +38,20 @@ export const FichaAve: React.FC<{ ficha: PaginaAve; lotes: Ave[]; onVoltar: () =
             {comFoto?.foto ? (
               <>
                 {/* É a maior imagem da ficha e quase sempre o LCP: sem lazy e com
-                    prioridade alta, mas no tamanho da coluna, não nos 1200 px. */}
-                <img
-                  {...imagem(comFoto.foto)}
-                  sizes={SIZES_FICHA}
-                  alt={ficha.nome}
-                  fetchPriority="high"
-                  decoding="async"
-                />
+                    prioridade alta, e no tamanho da coluna, não nos 1200 px.
+                    O <picture> guarda a de 1.200 para as telas de duas colunas;
+                    no celular só existem 480 e 800, senão um aparelho de DPR 3
+                    pede 1.038px e leva a original. */}
+                <picture>
+                  <source media={MEDIA_FICHA_GRANDE} srcSet={imagem(comFoto.foto).srcSet} sizes={SIZES_FICHA} />
+                  <img
+                    {...imagem(comFoto.foto, TETO_FICHA_CELULAR)}
+                    sizes={SIZES_FICHA}
+                    alt={ficha.nome}
+                    fetchPriority="high"
+                    decoding="async"
+                  />
+                </picture>
                 {comFoto.foto_credito && <span className="foto-credito">{comFoto.foto_credito}</span>}
               </>
             ) : (
