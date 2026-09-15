@@ -26,18 +26,47 @@ import sharp from 'sharp';
 import { readdir, stat, unlink, writeFile } from 'node:fs/promises';
 import { join, basename, extname } from 'node:path';
 
-const QUALIDADE = 80;
-/** Pastas varridas: [caminho, degraus de largura]. */
+/**
+ * Compressão por tipo de imagem.
+ *
+ * Foto de ave a 72 (era 80): medindo os arquivos gerados, 20 das 57 variantes de
+ * 480 passavam de 30 KB e 18 das de 800 passavam de 70 KB — e na ficha do
+ * ganso-do-havai a foto chegava depois da montagem do React só por peso. `effort`
+ * 6 (o padrão é 4) faz o codificador procurar mais, o que custa tempo de build e
+ * não custa nada a quem acessa.
+ *
+ * Logotipo continua a 80: são poucos arquivos, já leves, e neles o artefato
+ * aparece em área chapada, que é onde o WebP com qualidade baixa mais se denuncia.
+ *
+ * Nada de withMetadata aqui: o sharp já grava sem metadado por padrão, e foi
+ * conferido que nem as variantes nem as originais de 1200 carregam EXIF, ICC ou
+ * XMP. A chamada seria linha morta.
+ */
+/**
+ * Foto de ave: 72 com um segundo passe a 65 quando o arquivo passa do teto.
+ *
+ * O teto é regra, não lista: foto de fundo detalhado (muro, cascalho, folhagem)
+ * não comprime, e é justamente ela que atrasa a ficha. Assim, foto nova entra no
+ * mesmo critério sem ninguém precisar lembrar de acrescentá-la em lugar nenhum.
+ * A 65 e a 72 são indistinguíveis no tamanho em que aparecem — conferido lado a
+ * lado antes de adotar; o que muda é ~8% de peso.
+ */
+const FOTO = { webp: { quality: 72, effort: 6 }, segundoPasse: { quality: 65, effort: 6 }, tetoKB: { 480: 30, 800: 70 } };
+/** Logotipo continua a 80: poucos arquivos, já leves, e o artefato do WebP em
+ *  qualidade baixa aparece justamente em área chapada, que é o que eles têm. */
+const LOGOTIPO = { webp: { quality: 80, effort: 6 } };
+
+/** Pastas varridas: [caminho, degraus de largura, receita]. */
 const ALVOS = [
-  ['public/aves', [480, 800]],
-  ['public/aves-stima', [480, 800]],
-  ['public/criadouros', [240, 480, 960]],
-  ['public/consultoria', [240, 480, 960]],
+  ['public/aves', [480, 800], FOTO],
+  ['public/aves-stima', [480, 800], FOTO],
+  ['public/criadouros', [240, 480, 960], LOGOTIPO],
+  ['public/consultoria', [240, 480, 960], LOGOTIPO],
 ];
 /** Imagens soltas na raiz de public/ que também são exibidas pequenas. */
 const SOLTAS = [
-  ['public/logo-horizontal.png', [240, 480, 960]],
-  ['public/logo-selo.png', [240, 480, 960]],
+  ['public/logo-horizontal.png', [240, 480, 960], LOGOTIPO],
+  ['public/logo-selo.png', [240, 480, 960], LOGOTIPO],
 ];
 
 const EXTENSOES = ['.webp', '.png', '.jpg', '.jpeg'];
@@ -62,7 +91,7 @@ async function main() {
   const manifesto = {};
 
   const trabalho = [...SOLTAS];
-  for (const [pasta, degraus] of ALVOS) {
+  for (const [pasta, degraus, webp] of ALVOS) {
     let arquivos;
     try {
       arquivos = await readdir(pasta);
@@ -78,18 +107,28 @@ async function main() {
     }
     for (const f of arquivos) {
       if (!EXTENSOES.includes(extname(f).toLowerCase()) || ehVariante(f)) continue;
-      trabalho.push([join(pasta, f), degraus]);
+      trabalho.push([join(pasta, f), degraus, webp]);
     }
   }
 
-  for (const [caminho, degraus] of trabalho) {
+  let segundosPasses = 0;
+  for (const [caminho, degraus, receita] of trabalho) {
     const { width, height } = await sharp(caminho).metadata();
     // Só os degraus que realmente encolhem o arquivo; o original fecha o srcset.
     const uteis = degraus.filter((w) => w < width);
     for (const largura of uteis) {
       const destino = nomeVariante(caminho, largura);
       if (!tudo && (await maisNovo(destino, caminho))) { puladas++; continue; }
-      await sharp(caminho).resize({ width: largura, withoutEnlargement: true }).webp({ quality: QUALIDADE }).toFile(destino);
+      const encolher = (opcoes) => sharp(caminho).resize({ width: largura, withoutEnlargement: true }).webp(opcoes).toBuffer();
+      let buf = await encolher(receita.webp);
+      const teto = receita.tetoKB?.[largura];
+      if (teto && buf.length / 1024 > teto) {
+        // Passou do teto: uma segunda tentativa mais comprimida. Se ainda passar,
+        // fica assim mesmo — é foto detalhada, e apertar mais estragaria à vista.
+        buf = await encolher(receita.segundoPasse);
+        segundosPasses++;
+      }
+      await writeFile(destino, buf);
       geradas++;
     }
     // A chave é o endereço público (sem o "public/"), como aparece no src.
@@ -111,7 +150,9 @@ async function main() {
   );
 
   console.log(
-    `imagens: ${trabalho.length} originais · ${geradas} variantes gravadas · ${puladas} já em dia` +
+    `imagens: ${trabalho.length} originais · ${geradas} variantes gravadas` +
+    (segundosPasses ? ` (${segundosPasses} com segundo passe a 65 por passar do teto)` : '') +
+    ` · ${puladas} já em dia` +
     (removidas ? ` · ${removidas} órfãs removidas` : '') +
     ` · manifesto com ${Object.keys(manifesto).length} entradas`,
   );
