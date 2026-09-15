@@ -22,13 +22,29 @@ export const Moldura: React.FC<{ ave: Ave }> = ({ ave }) => (
   </div>
 );
 
-/** Foto do card: exibida a ~352px, então o celular baixa a de 480, não a de 1200. */
-const FotoDoCard: React.FC<{ foto: string; alt: string }> = ({ foto, alt }) => {
+/**
+ * Foto do card: exibida a ~352px, então o celular baixa a de 480, não a de 1200.
+ *
+ * `prioridade` só para o primeiro card. Desde que os filtros passaram a abrir
+ * recolhidos no celular (onda 3/5), ele aparece sem rolagem e é o maior
+ * elemento pintado da vitrine — em produção a foto levava 1.030 ms só de
+ * espera, porque loading="lazy" adia justamente o que a pessoa veio ver.
+ * Os demais seguem com lazy: medindo, adiantar três disputava banda e piorava.
+ */
+const FotoDoCard: React.FC<{ foto: string; alt: string; prioridade?: boolean }> = ({ foto, alt, prioridade }) => {
   const i = imagem(foto);
-  return <img src={i.src} srcSet={i.srcSet} sizes={SIZES_CARD} alt={alt} width={i.width || undefined} height={i.height || undefined} loading="lazy" decoding="async" />;
+  return (
+    <img
+      src={i.src} srcSet={i.srcSet} sizes={SIZES_CARD} alt={alt}
+      width={i.width || undefined} height={i.height || undefined}
+      loading={prioridade ? undefined : 'lazy'}
+      fetchPriority={prioridade ? 'high' : undefined}
+      decoding="async"
+    />
+  );
 };
 
-export const AveCard: React.FC<{ ave: Ave; onVerPedido?: () => void }> = ({ ave, onVerPedido }) => {
+export const AveCard: React.FC<{ ave: Ave; onVerPedido?: () => void; prioridade?: boolean }> = ({ ave, onVerPedido, prioridade }) => {
   const { quantidadeDe, adicionar, alterar } = useCart();
   const q = quantidadeDe(ave.id);
   const max = estoqueDaUnidade(ave.id);
@@ -42,7 +58,7 @@ export const AveCard: React.FC<{ ave: Ave; onVerPedido?: () => void }> = ({ ave,
         {/* Foto e nome levam à ficha da espécie. O Google segue o href; o botão de
             adicionar ao pedido fica fora do link, para não virar clique dentro de link. */}
         <a href={ficha} aria-label={`Ficha de ${ave.nome}`} tabIndex={-1}>
-          {ave.foto ? <FotoDoCard foto={ave.foto} alt={ave.nome} /> : <Moldura ave={ave} />}
+          {ave.foto ? <FotoDoCard foto={ave.foto} alt={ave.nome} prioridade={prioridade} /> : <Moldura ave={ave} />}
         </a>
         <div className="absolute top-3 left-3 flex gap-1.5 flex-wrap">
           {ave.preco_de && <span className="chip chip-promo">Promoção</span>}

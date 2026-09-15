@@ -111,6 +111,13 @@ export const Aves: React.FC<{ aveSlug?: string; categoriaInicial?: string; onNav
     return [...m.entries()].sort((x, y) => ordemGrupos.indexOf(x[0]) - ordemGrupos.indexOf(y[0]));
   }, [ficha, listaVisivel, ordem]);
 
+  // O primeiro card na ordem em que de fato aparece — os grupos reordenam, então
+  // não dá para usar o primeiro da lista filtrada.
+  const primeiroId = useMemo(() => {
+    const ordem = grupos ? grupos.flatMap(([, aves]) => aves) : listaVisivel;
+    return ordem[0]?.id;
+  }, [grupos, listaVisivel]);
+
   const categoriasComAves = useMemo(
     () => (ficha ? [] : CATEGORIAS.filter((c) => AVES.some((a) => a.categoria === c.id))),
     [ficha],
@@ -233,13 +240,13 @@ export const Aves: React.FC<{ aveSlug?: string; categoriaInicial?: string; onNav
                   {g} <span className="font-sans text-[0.7rem] tracking-[1px] uppercase text-[var(--ouro-texto)]">{EH_REDE ? `${aves.length} ${aves.length === 1 ? 'lote' : 'lotes'}` : faixaDePreco(aves)}</span>
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                  {aves.map((a) => <AveCard key={a.id} ave={a} onVerPedido={() => onNavigate('pedido')} />)}
+                  {aves.map((a) => <AveCard key={a.id} ave={a} prioridade={a.id === primeiroId} onVerPedido={() => onNavigate('pedido')} />)}
                 </div>
               </div>
             ))
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {listaVisivel.map((a) => <AveCard key={a.id} ave={a} onVerPedido={() => onNavigate('pedido')} />)}
+              {listaVisivel.map((a) => <AveCard key={a.id} ave={a} prioridade={a.id === primeiroId} onVerPedido={() => onNavigate('pedido')} />)}
             </div>
           )}
             </>
