@@ -24,6 +24,9 @@
 // rede. As chamadas de init e PageView entram nessa fila na hora de sempre, e
 // são processadas quando o fbevents.js chega — nenhum evento se perde, só
 // chega alguns segundos depois. O que foi adiado é a busca do script.
+//
+// A primeira tentativa usava requestIdleCallback depois do load e não bastou:
+// ver o comentário do gatilho, lá embaixo.
 // ---------------------------------------------------------------------------
 
 // Fila do fbq (o mesmo stub do trecho oficial, sem a injeção do script).
@@ -43,11 +46,19 @@ fbq('init', '1024778503896521');
 fbq('init', '1426238322697174');
 fbq('track', 'PageView');
 
-// Busca do fbevents.js: no primeiro dos dois que acontecer — a página terminar
-// de carregar e o navegador ficar ocioso, ou a pessoa mexer na página.
+// Busca do fbevents.js: no primeiro dos dois que acontecer — a pessoa mexer na
+// página, ou 5 s depois do load.
+//
+// Era requestIdleCallback depois do load. Medido em produção (15/09), não serve:
+// o navegador fica ocioso cedo demais, antes de a montagem do React terminar, e
+// o fbevents entrava entre 1,3 e 2,4 s — dentro da janela que o Lighthouse mede,
+// com o LCP observado entre 1,4 e 2,5 s. Um prazo fixo e generoso é grosseiro,
+// mas é previsível: depois dos 5 s a página já está montada em qualquer aparelho
+// que nos interesse, e quem mexe antes disso puxa o pixel na hora.
 (function () {
   var buscado = false;
-  var GATILHOS = ['scroll', 'touchstart', 'pointerdown', 'keydown'];
+  var GATILHOS = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+  var ESPERA_MAXIMA = 5000;
 
   function buscar() {
     if (buscado) return;
@@ -63,13 +74,8 @@ fbq('track', 'PageView');
     window.addEventListener(ev, buscar, { once: true, passive: true, capture: true });
   });
 
-  function quandoOcioso() {
-    // O timeout do requestIdleCallback é o teto: se o navegador nunca ficar
-    // ocioso, ele chama assim mesmo. Sem ele, o pixel poderia nunca carregar.
-    if (typeof window.requestIdleCallback === 'function') window.requestIdleCallback(buscar, { timeout: 3000 });
-    else window.setTimeout(buscar, 3000);
-  }
+  function contarOsCincoSegundos() { window.setTimeout(buscar, ESPERA_MAXIMA); }
 
-  if (document.readyState === 'complete') quandoOcioso();
-  else window.addEventListener('load', quandoOcioso, { once: true });
+  if (document.readyState === 'complete') contarOsCincoSegundos();
+  else window.addEventListener('load', contarOsCincoSegundos, { once: true });
 })();

@@ -299,6 +299,24 @@ header.nav-bar::after { content: ""; display: block; height: 3px; background: va
 
 }
 
+/* Bloco pré-renderizado (#conteudo-sem-js): é o que aparece enquanto o React
+   monta, e na ficha é a primeira pintura da foto.
+   Sem CSS ele saía com os 1200px do atributo width, cortado pela tela: área de
+   LCP de 95.172 contra 101.384 da foto do React, que por ser MAIOR virava o
+   LCP e jogava a métrica para a montagem do React (1.620ms -> 2.112ms).
+   Com a mesma caixa da ficha as duas pinturas têm a mesma área, o navegador não
+   troca de candidato, e o LCP fica na pintura de 0,8s. De quebra some a rolagem
+   lateral que a imagem de 1200px causava. */
+#conteudo-sem-js { max-width: 1140px; margin: 0 auto; padding: 22px; }
+#conteudo-sem-js img {
+  display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 12px;
+}
+@media (min-width: 768px) {
+  /* Mesma conta do SIZES_FICHA em src/lib/imagens.ts: a coluna da foto é 1fr de
+     um 1fr/1.1fr com 40px de vão. */
+  #conteudo-sem-js img { max-width: calc((min(1096px, 100vw - 44px) - 40px) / 2.1); }
+}
+
 /* Ficha de uma ave (/aves/<slug>/): foto grande e o "voltar" acima do H1. */
 .ficha-foto {
   aspect-ratio: 4 / 3; max-width: 100%; background: var(--marfim);
