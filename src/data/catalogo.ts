@@ -40,7 +40,7 @@ export const CRIADORES: Criador[] = [
     id: 'aves-arca',
     nome: 'Aves Arca',
     responsavel: 'Ricardo Dutra',
-    profissao: 'Diretor Industrial',
+    profissao: 'Criador · coordena as rotas da rede',
     cidade: 'São Paulo – Capital',
     especialidade: 'Anatídeos ornamentais: patos, marrecos, gansos, cisnes, tadornas e mergulhões.',
     whatsapp: '5511995610741',
